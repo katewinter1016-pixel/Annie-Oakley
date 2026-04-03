@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     // Send emails — wrapped so a failure doesn't block the submission
     try {
       await resend.emails.send({
-        from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
+        from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: ADMIN_EMAIL,
         subject: `New Volunteer Signup — ${name}`,
         html: `
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
         `,
       })
       await resend.emails.send({
-        from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
+        from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: email,
         subject: 'Thank you for volunteering with Annie Oakley Animal Rescue!',
         html: `
