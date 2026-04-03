@@ -60,15 +60,19 @@ export default function ReviewForm() {
       photoUrl = urlData.publicUrl
     }
 
-    // Step 3: Save the review to the database
-    const { error: dbError } = await supabase.from('reviews').insert({
-      reviewer_name: fd.get('reviewer_name') as string,
-      animal_name: fd.get('animal_name') as string,
-      review_text: fd.get('review_text') as string,
-      photo_url: photoUrl,
+    // Step 3: Save the review via API (triggers email notification)
+    const res = await fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        reviewer_name: fd.get('reviewer_name') as string,
+        animal_name: fd.get('animal_name') as string,
+        review_text: fd.get('review_text') as string,
+        photo_url: photoUrl,
+      }),
     })
 
-    if (dbError) {
+    if (!res.ok) {
       setError('Something went wrong saving your review. Please try again.')
       setSubmitting(false)
       return
