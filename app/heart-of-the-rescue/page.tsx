@@ -7,6 +7,7 @@ async function getReviews() {
   const { data } = await supabase
     .from('reviews')
     .select('*')
+    .eq('approved', true)
     .order('created_at', { ascending: false })
   return data ?? []
 }
