@@ -158,12 +158,12 @@ export default async function HomePage() {
           )}
 
           <a
-            href="https://www.paypal.com/qrcodes/venmocs/2d035337-a8f0-43c4-8781-5a5627f0e065"
+            href="https://venmo.com/CareMt24"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-[#D4A017] text-[#2D1606] px-10 py-4 rounded-full font-bold text-lg hover:bg-yellow-400 transition-colors shadow-lg shadow-[#D4A017]/30"
           >
-            Donate
+            Donate via Venmo
           </a>
         </div>
       </section>

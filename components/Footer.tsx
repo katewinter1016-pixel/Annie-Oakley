@@ -49,6 +49,11 @@ export default function Footer() {
                 annieoakleyanimalrescue@gmail.com
               </a>
             </li>
+            <li>
+              <a href="https://venmo.com/CareMt24" target="_blank" rel="noopener noreferrer" className="hover:text-[#D4A017] transition-colors">
+                Donate via Venmo @CareMt24
+              </a>
+            </li>
             <li className="text-amber-200/40 text-xs mt-1">Eastern Montana</li>
           </ul>
         </div>
