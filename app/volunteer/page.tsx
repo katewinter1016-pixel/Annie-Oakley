@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { supabase } from '@/lib/supabase'
 import { Heart, Truck, Camera, DollarSign, CalendarDays, MoreHorizontal } from 'lucide-react'
 
 const VOLUNTEER_ROLES = [
@@ -27,16 +26,20 @@ export default function VolunteerPage() {
     const fd = new FormData(e.currentTarget)
     const interests = fd.getAll('interests').join(', ')
 
-    const { error: dbError } = await supabase.from('volunteers').insert({
-      name: `${fd.get('first_name')} ${fd.get('last_name')}`,
-      email: fd.get('email') as string,
-      phone: fd.get('phone') as string,
-      availability: fd.get('availability') as string,
-      interests,
-      experience: fd.get('experience') as string,
+    const res = await fetch('/api/volunteers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: `${fd.get('first_name')} ${fd.get('last_name')}`,
+        email: fd.get('email') as string,
+        phone: fd.get('phone') as string,
+        availability: fd.get('availability') as string,
+        interests,
+        experience: fd.get('experience') as string,
+      }),
     })
 
-    if (dbError) {
+    if (!res.ok) {
       setError('Something went wrong. Please try again or call us at (406) 489-0382.')
     } else {
       setSubmitted(true)
