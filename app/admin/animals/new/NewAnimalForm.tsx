@@ -37,14 +37,14 @@ export default function NewAnimalForm() {
       const ext = file.name.split('.').pop()
       const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
       const { error: uploadError } = await supabase.storage
-        .from('animal-photos')
+        .from('Animal Photos')
         .upload(path, file, { upsert: false })
       if (uploadError) {
         setError('Photo upload failed: ' + uploadError.message)
         setLoading(false)
         return
       }
-      const { data: urlData } = supabase.storage.from('animal-photos').getPublicUrl(path)
+      const { data: urlData } = supabase.storage.from('Animal Photos').getPublicUrl(path)
       photoUrls.push(urlData.publicUrl)
     }
 

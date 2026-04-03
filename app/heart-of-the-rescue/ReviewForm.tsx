@@ -43,7 +43,7 @@ export default function ReviewForm() {
       const filename = `${Date.now()}-${selectedFile.name.replace(/\s+/g, '-')}`
 
       const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('review-photos')
+        .from('Review Photos')
         .upload(filename, selectedFile)
 
       if (uploadError) {
@@ -54,7 +54,7 @@ export default function ReviewForm() {
 
       // Step 2: Get the public URL so we can display the photo later
       const { data: urlData } = supabase.storage
-        .from('review-photos')
+        .from('Review Photos')
         .getPublicUrl(uploadData.path)
 
       photoUrl = urlData.publicUrl
