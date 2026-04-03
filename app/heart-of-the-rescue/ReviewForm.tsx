@@ -47,7 +47,7 @@ export default function ReviewForm() {
         .upload(filename, selectedFile)
 
       if (uploadError) {
-        setError('Photo upload failed. Please try again or submit without a photo.')
+        setError(`Upload error: ${uploadError.message}`)
         setSubmitting(false)
         return
       }
