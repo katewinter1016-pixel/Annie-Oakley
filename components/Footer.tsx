@@ -13,7 +13,7 @@ export default function Footer() {
             alt="Annie Oakley Animal Rescue"
             width={72}
             height={72}
-            className="rounded-full bg-white p-1"
+            className="rounded bg-white p-1"
           />
           <p className="text-gray-400 text-sm leading-relaxed">
             A nonprofit animal rescue located in Eastern Montana. Rescuing animals in life or death situations and helping control the stray population.
