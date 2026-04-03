@@ -22,25 +22,29 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to save review' }, { status: 500 })
     }
 
-    // Notify admin
-    await resend.emails.send({
-      from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
-      to: ADMIN_EMAIL,
-      subject: `New Review Pending Approval — ${animal_name}`,
-      html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-          <h2 style="color:#2D1606;">New Review Submitted</h2>
-          <p><strong>Animal:</strong> ${animal_name}</p>
-          <p><strong>Reviewer:</strong> ${reviewer_name}</p>
-          <p><strong>Story:</strong> ${review_text}</p>
-          <p style="margin-top:24px;">
-            <a href="https://annie-oakley.vercel.app/admin/reviews" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
-              Approve in Admin Dashboard
-            </a>
-          </p>
-        </div>
-      `,
-    })
+    // Send email — wrapped so a failure doesn't block the submission
+    try {
+      await resend.emails.send({
+        from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
+        to: ADMIN_EMAIL,
+        subject: `New Review Pending Approval — ${animal_name}`,
+        html: `
+          <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+            <h2 style="color:#2D1606;">New Review Submitted</h2>
+            <p><strong>Animal:</strong> ${animal_name}</p>
+            <p><strong>Reviewer:</strong> ${reviewer_name}</p>
+            <p><strong>Story:</strong> ${review_text}</p>
+            <p style="margin-top:24px;">
+              <a href="https://annie-oakley.vercel.app/admin/reviews" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
+                Approve in Admin Dashboard
+              </a>
+            </p>
+          </div>
+        `,
+      })
+    } catch (emailErr) {
+      console.error('Email send failed (non-fatal):', emailErr)
+    }
 
     return NextResponse.json({ success: true })
   } catch (err) {

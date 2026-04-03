@@ -42,41 +42,43 @@ export async function POST(req: NextRequest) {
 
     const typeLabel = type === 'adoption' ? 'Adoption' : type === 'foster' ? 'Foster' : 'Surrender'
 
-    // Notify admin
-    await resend.emails.send({
-      from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
-      to: ADMIN_EMAIL,
-      subject: `New ${typeLabel} Application — ${fields.applicant_name}`,
-      html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-          <h2 style="color:#2D1606;">New ${typeLabel} Application</h2>
-          <p><strong>Name:</strong> ${fields.applicant_name}</p>
-          <p><strong>Email:</strong> ${fields.applicant_email}</p>
-          <p><strong>Phone:</strong> ${fields.applicant_phone ?? '—'}</p>
-          ${fields.animal_id ? `<p><strong>Animal ID:</strong> ${fields.animal_id}</p>` : ''}
-          <p style="margin-top:24px;">
-            <a href="https://annie-oakley.vercel.app/admin/applications" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
-              View in Admin Dashboard
-            </a>
-          </p>
-        </div>
-      `,
-    })
-
-    // Confirm to applicant
-    await resend.emails.send({
-      from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
-      to: fields.applicant_email,
-      subject: `We received your ${typeLabel.toLowerCase()} application!`,
-      html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-          <h2 style="color:#2D1606;">Thank you, ${fields.applicant_name}!</h2>
-          <p>We've received your ${typeLabel.toLowerCase()} application and will be in touch soon.</p>
-          <p>If you have any questions in the meantime, reply to this email or reach us at <a href="mailto:${ADMIN_EMAIL}">${ADMIN_EMAIL}</a>.</p>
-          <p style="margin-top:24px;color:#888;font-size:13px;">— The Annie Oakley Animal Rescue Team</p>
-        </div>
-      `,
-    })
+    // Send emails — wrapped so a failure doesn't block the submission
+    try {
+      await resend.emails.send({
+        from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
+        to: ADMIN_EMAIL,
+        subject: `New ${typeLabel} Application — ${fields.applicant_name}`,
+        html: `
+          <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+            <h2 style="color:#2D1606;">New ${typeLabel} Application</h2>
+            <p><strong>Name:</strong> ${fields.applicant_name}</p>
+            <p><strong>Email:</strong> ${fields.applicant_email}</p>
+            <p><strong>Phone:</strong> ${fields.applicant_phone ?? '—'}</p>
+            ${fields.animal_id ? `<p><strong>Animal ID:</strong> ${fields.animal_id}</p>` : ''}
+            <p style="margin-top:24px;">
+              <a href="https://annie-oakley.vercel.app/admin/applications" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
+                View in Admin Dashboard
+              </a>
+            </p>
+          </div>
+        `,
+      })
+      await resend.emails.send({
+        from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
+        to: fields.applicant_email,
+        subject: `We received your ${typeLabel.toLowerCase()} application!`,
+        html: `
+          <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+            <h2 style="color:#2D1606;">Thank you, ${fields.applicant_name}!</h2>
+            <p>We've received your ${typeLabel.toLowerCase()} application and will be in touch soon.</p>
+            <p>If you have any questions in the meantime, reply to this email or reach us at <a href="mailto:${ADMIN_EMAIL}">${ADMIN_EMAIL}</a>.</p>
+            <p style="margin-top:24px;color:#888;font-size:13px;">— The Annie Oakley Animal Rescue Team</p>
+          </div>
+        `,
+      })
+    } catch (emailErr) {
+      console.error('Email send failed (non-fatal):', emailErr)
+    }
 
     return NextResponse.json({ success: true, id: data.id })
   } catch (err) {
