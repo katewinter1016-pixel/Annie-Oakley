@@ -3,39 +3,37 @@ import Image from 'next/image'
 
 export default function Navbar() {
   return (
-    <nav className="bg-[#1a1a1a] border-b border-[#D4A017]/30 sticky top-0 z-50">
+    <nav className="bg-white shadow-sm border-b border-amber-100 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
 
-        {/* Logo — square, no border radius */}
         <Link href="/" className="flex items-center gap-3">
           <Image
             src="/logo.png"
             alt="Annie Oakley Animal Rescue"
-            width={56}
-            height={56}
-            className="bg-white p-1 rounded"
+            width={52}
+            height={52}
+            className="rounded bg-white p-0.5 border border-amber-100"
           />
-          <span className="text-[#D4A017] font-bold text-lg leading-tight hidden sm:block">
+          <span className="font-display font-bold text-lg leading-tight text-[#2D1606] hidden sm:block">
             Annie Oakley<br />
-            <span className="text-white font-normal text-sm">Animal Rescue</span>
+            <span className="text-[#D4A017] font-semibold text-sm">Animal Rescue</span>
           </span>
         </Link>
 
-        {/* Navigation links — Surrender removed, Forms added, Donate button removed */}
-        <div className="flex items-center gap-5 text-sm font-medium">
-          <Link href="/animals" className="text-gray-300 hover:text-[#D4A017] transition-colors">
+        <div className="flex items-center gap-6 text-sm font-semibold">
+          <Link href="/animals" className="text-stone-600 hover:text-[#D4A017] transition-colors">
             Animals
           </Link>
-          <Link href="/adopt" className="text-gray-300 hover:text-[#D4A017] transition-colors">
+          <Link href="/adopt" className="text-stone-600 hover:text-[#D4A017] transition-colors">
             Adopt
           </Link>
-          <Link href="/foster" className="text-gray-300 hover:text-[#D4A017] transition-colors">
+          <Link href="/foster" className="text-stone-600 hover:text-[#D4A017] transition-colors">
             Foster
           </Link>
-          <Link href="/volunteer" className="text-gray-300 hover:text-[#D4A017] transition-colors">
+          <Link href="/volunteer" className="text-stone-600 hover:text-[#D4A017] transition-colors">
             Volunteer
           </Link>
-          <Link href="/forms" className="text-gray-300 hover:text-[#D4A017] transition-colors">
+          <Link href="/forms" className="text-stone-600 hover:text-[#D4A017] transition-colors">
             Forms
           </Link>
         </div>
