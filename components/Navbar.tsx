@@ -20,10 +20,8 @@ export default function Navbar() {
           </span>
         </Link>
 
+        {/* New nav order: Adopt, Foster, Volunteer, Heart of the Rescue, Forms */}
         <div className="flex items-center gap-6 text-sm font-semibold">
-          <Link href="/animals" className="text-stone-600 hover:text-[#D4A017] transition-colors">
-            Animals
-          </Link>
           <Link href="/adopt" className="text-stone-600 hover:text-[#D4A017] transition-colors">
             Adopt
           </Link>
@@ -32,6 +30,9 @@ export default function Navbar() {
           </Link>
           <Link href="/volunteer" className="text-stone-600 hover:text-[#D4A017] transition-colors">
             Volunteer
+          </Link>
+          <Link href="/heart-of-the-rescue" className="text-stone-600 hover:text-[#D4A017] transition-colors whitespace-nowrap">
+            Heart of the Rescue
           </Link>
           <Link href="/forms" className="text-stone-600 hover:text-[#D4A017] transition-colors">
             Forms
