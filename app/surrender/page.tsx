@@ -84,11 +84,11 @@ export default function SurrenderPage() {
           <div className="w-12 h-1 bg-[#D4A017] mb-5 rounded-full" />
           <div className="flex items-center gap-4 mb-3">
             <Image src="/logo.png" alt="Logo" width={56} height={56} className="rounded bg-white p-1" />
-            <h1 className="font-display text-4xl font-bold">
-              Surrender <span className="text-[#D4A017]">an Animal</span>
+            <h1 className="font-display text-4xl font-bold text-[#D4A017]">
+              Surrender an Animal
             </h1>
           </div>
-          <p className="text-amber-200/80 max-w-xl">
+          <p className="text-amber-50/80 max-w-xl">
             We understand that circumstances change. Please reach out to us before
             submitting if possible — we want this process to be as smooth and
             compassionate as possible for you and your pet.

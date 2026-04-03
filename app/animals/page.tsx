@@ -41,10 +41,10 @@ export default async function AnimalsPage({
       <div className="bg-[#2D1606] text-white py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="w-12 h-1 bg-[#D4A017] mb-5 rounded-full" />
-          <h1 className="font-display text-5xl font-bold mb-3">
-            Find Your <span className="text-[#D4A017]">Forever Friend</span>
+          <h1 className="font-display text-5xl font-bold text-[#D4A017] mb-3">
+            Find Your Forever Friend
           </h1>
-          <p className="text-amber-200/80 text-lg max-w-xl">
+          <p className="text-amber-50/80 text-lg max-w-xl">
             Every animal here has been rescued, vetted, and is ready for a loving home.
             They've been through a lot — and they're worth every bit of it.
           </p>

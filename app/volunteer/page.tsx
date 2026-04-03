@@ -53,11 +53,11 @@ export default function VolunteerPage() {
           <div className="w-12 h-1 bg-[#D4A017] mb-5 rounded-full" />
           <div className="flex items-center gap-4 mb-3">
             <Image src="/logo.png" alt="Logo" width={56} height={56} className="rounded bg-white p-1" />
-            <h1 className="font-display text-4xl font-bold">
-              Volunteer with <span className="text-[#D4A017]">Us</span>
+            <h1 className="font-display text-4xl font-bold text-[#D4A017]">
+              Volunteer with Us
             </h1>
           </div>
-          <p className="text-amber-200/80 max-w-xl text-lg">
+          <p className="text-amber-50/80 max-w-xl text-lg">
             Annie Oakley Animal Rescue runs on the kindness of people like you.
             Every hour you give saves lives.
           </p>
