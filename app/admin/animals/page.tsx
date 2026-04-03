@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase'
+import { supabaseServer as supabase } from '@/lib/supabaseServer'
 import Image from 'next/image'
 import Link from 'next/link'
 import AnimalRowActions from './AnimalRowActions'

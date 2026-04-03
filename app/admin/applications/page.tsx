@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase'
+import { supabaseServer as supabase } from '@/lib/supabaseServer'
 import ApplicationActions from './ApplicationActions'
 
 async function getApplications() {
