@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
     // Notify admin
     await resend.emails.send({
-      from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
+      from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
       to: ADMIN_EMAIL,
       subject: `New Review Pending Approval — ${animal_name}`,
       html: `
