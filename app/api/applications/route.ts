@@ -36,8 +36,8 @@ export async function POST(req: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Supabase insert error:', error)
-      return NextResponse.json({ error: 'Failed to save application' }, { status: 500 })
+      console.error('Supabase insert error:', JSON.stringify(error))
+      return NextResponse.json({ error: error.message, details: error.details, hint: error.hint }, { status: 500 })
     }
 
     const typeLabel = type === 'adoption' ? 'Adoption' : type === 'foster' ? 'Foster' : 'Surrender'
