@@ -23,7 +23,7 @@ export default function AdminLoginPage() {
       })
 
       if (res.ok) {
-        router.push('/admin/dashboard')
+        window.location.href = '/admin/dashboard'
       } else {
         setError('Incorrect password. Please try again.')
         setLoading(false)
