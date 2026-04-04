@@ -12,7 +12,11 @@ export default function AnimalRowActions({ animalId }: { animalId: string }) {
   async function handleDelete() {
     if (!confirm('Delete this animal? This cannot be undone.')) return
     setLoading(true)
-    await supabase.from('animals').delete().eq('id', animalId)
+    await fetch('/api/admin/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ table: 'animals', id: animalId }),
+    })
     router.refresh()
     setLoading(false)
   }

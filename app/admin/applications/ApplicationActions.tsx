@@ -10,7 +10,11 @@ export default function ApplicationActions({ applicationId, status }: { applicat
 
   async function setStatus(newStatus: string) {
     setLoading(true)
-    await supabase.from('applications').update({ status: newStatus }).eq('id', applicationId)
+    await fetch('/api/admin/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ table: 'applications', id: applicationId, data: { status: newStatus } }),
+    })
     router.refresh()
     setLoading(false)
   }
@@ -18,7 +22,11 @@ export default function ApplicationActions({ applicationId, status }: { applicat
   async function handleDelete() {
     if (!confirm('Delete this application permanently?')) return
     setLoading(true)
-    await supabase.from('applications').delete().eq('id', applicationId)
+    await fetch('/api/admin/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ table: 'applications', id: applicationId }),
+    })
     router.refresh()
     setLoading(false)
   }

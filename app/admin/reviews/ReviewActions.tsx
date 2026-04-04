@@ -10,14 +10,22 @@ export default function ReviewActions({ reviewId, approved }: { reviewId: string
 
   async function handleApprove() {
     setLoading(true)
-    await supabase.from('reviews').update({ approved: true }).eq('id', reviewId)
+    await fetch('/api/admin/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ table: 'reviews', id: reviewId, data: { approved: true } }),
+    })
     router.refresh()
     setLoading(false)
   }
 
   async function handleUnapprove() {
     setLoading(true)
-    await supabase.from('reviews').update({ approved: false }).eq('id', reviewId)
+    await fetch('/api/admin/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ table: 'reviews', id: reviewId, data: { approved: false } }),
+    })
     router.refresh()
     setLoading(false)
   }
@@ -25,7 +33,11 @@ export default function ReviewActions({ reviewId, approved }: { reviewId: string
   async function handleDelete() {
     if (!confirm('Delete this review? This cannot be undone.')) return
     setLoading(true)
-    await supabase.from('reviews').delete().eq('id', reviewId)
+    await fetch('/api/admin/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ table: 'reviews', id: reviewId }),
+    })
     router.refresh()
     setLoading(false)
   }
