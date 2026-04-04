@@ -42,15 +42,10 @@ export default async function HomePage() {
 
       {/* ── IMPACT BAR ───────────────────────────────────────────── */}
       <div className="bg-[#D4A017] text-[#2D1606] py-3 px-4">
-        <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-x-10 gap-y-1 text-sm font-bold uppercase tracking-wider text-center">
-          <span>Nonprofit · Eastern Montana</span>
-          <span>·</span>
-          <span>Est. August 2024</span>
-          <span>·</span>
-          <span>Rescue · Vet · Rehome</span>
-          <span>·</span>
-          <span>Community Supported</span>
-        </div>
+        <p className="text-center text-sm font-bold uppercase tracking-wider leading-relaxed">
+          Nonprofit · Eastern Montana · Est. August 2024<br className="sm:hidden" />
+          <span className="hidden sm:inline"> · </span>Rescue · Vet · Rehome · Community Supported
+        </p>
       </div>
 
       {/* ── OUR STORY ────────────────────────────────────────────── */}
@@ -58,7 +53,7 @@ export default async function HomePage() {
         <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-14 items-start">
 
           {/* Logo + contact */}
-          <div className="flex-shrink-0 flex flex-col items-center gap-5 lg:sticky lg:top-24">
+          <div className="flex-shrink-0 flex flex-col items-center gap-5 lg:sticky lg:top-24 w-full lg:w-auto">
             <div className="bg-amber-50 border border-amber-100 rounded-2xl p-4 shadow-md">
               <Image
                 src="/logo.png"
