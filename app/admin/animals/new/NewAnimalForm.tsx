@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
 export default function NewAnimalForm() {
@@ -23,44 +22,42 @@ export default function NewAnimalForm() {
     setError('')
 
     const form = new FormData(e.currentTarget)
-    const name = form.get('name') as string
-    const species = form.get('species') as string
-    const breed = form.get('breed') as string
-    const sex = form.get('sex') as string
-    const ageYears = form.get('age_years') as string
-    const description = form.get('description') as string
-    const status = form.get('status') as string
 
-    // Upload photos
+    // Upload photos via server API
     const photoUrls: string[] = []
     for (const file of photoFiles) {
-      const ext = file.name.split('.').pop()
-      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-      const { error: uploadError } = await supabase.storage
-        .from('Animal Photos')
-        .upload(path, file, { upsert: false })
-      if (uploadError) {
-        setError('Photo upload failed: ' + uploadError.message)
+      const uploadForm = new FormData()
+      uploadForm.append('file', file)
+      uploadForm.append('bucket', 'Animal Photos')
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: uploadForm })
+      if (!res.ok) {
+        const err = await res.json()
+        setError('Photo upload failed: ' + err.error)
         setLoading(false)
         return
       }
-      const { data: urlData } = supabase.storage.from('Animal Photos').getPublicUrl(path)
-      photoUrls.push(urlData.publicUrl)
+      const { url } = await res.json()
+      photoUrls.push(url)
     }
 
-    const { error: insertError } = await supabase.from('animals').insert({
-      name,
-      species,
-      breed: breed || null,
-      sex: sex || null,
-      age_years: ageYears ? Number(ageYears) : null,
-      description: description || null,
-      status,
-      photo_urls: photoUrls.length > 0 ? photoUrls : null,
+    const res = await fetch('/api/admin/animals', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: form.get('name'),
+        species: form.get('species'),
+        breed: form.get('breed'),
+        sex: form.get('sex'),
+        age_years: form.get('age_years'),
+        description: form.get('description'),
+        status: form.get('status'),
+        photo_urls: photoUrls,
+      }),
     })
 
-    if (insertError) {
-      setError(insertError.message)
+    if (!res.ok) {
+      const err = await res.json()
+      setError(err.error ?? 'Failed to save animal')
       setLoading(false)
       return
     }
@@ -75,13 +72,11 @@ export default function NewAnimalForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
-      {/* Name */}
       <div>
         <label className={labelClass}>Name *</label>
         <input name="name" required className={fieldClass} placeholder="e.g. Biscuit" />
       </div>
 
-      {/* Species + sex */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className={labelClass}>Species *</label>
@@ -103,7 +98,6 @@ export default function NewAnimalForm() {
         </div>
       </div>
 
-      {/* Breed + age */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className={labelClass}>Breed</label>
@@ -115,7 +109,6 @@ export default function NewAnimalForm() {
         </div>
       </div>
 
-      {/* Status */}
       <div>
         <label className={labelClass}>Status *</label>
         <select name="status" required className={fieldClass} defaultValue="available">
@@ -126,7 +119,6 @@ export default function NewAnimalForm() {
         </select>
       </div>
 
-      {/* Description */}
       <div>
         <label className={labelClass}>Description</label>
         <textarea
@@ -137,7 +129,6 @@ export default function NewAnimalForm() {
         />
       </div>
 
-      {/* Photos */}
       <div>
         <label className={labelClass}>Photos</label>
         <input
