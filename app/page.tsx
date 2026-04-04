@@ -4,6 +4,7 @@ import { Heart, Home, Users, Mail, Phone } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import AnimalCarousel from '@/components/AnimalCarousel'
+import FacebookBanner from '@/components/FacebookBanner'
 
 async function getActiveDonation() {
   const { data } = await supabase
@@ -66,6 +67,9 @@ export default async function HomePage() {
             <div className="flex flex-col items-center gap-2 text-sm font-medium">
               <a href="tel:4064890382" className="flex items-center gap-2 text-[#D4A017] hover:underline">
                 <Phone className="w-4 h-4" /> (406) 489-0382
+              </a>
+              <a href="tel:4064780042" className="flex items-center gap-2 text-[#D4A017] hover:underline">
+                <Phone className="w-4 h-4" /> (406) 478-0042
               </a>
               <a href="mailto:annieoakleyanimalrescue@gmail.com" className="flex items-center gap-2 text-[#D4A017] hover:underline text-center text-xs">
                 <Mail className="w-4 h-4" /> annieoakleyanimalrescue@gmail.com
@@ -218,6 +222,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <FacebookBanner />
 
     </div>
   )

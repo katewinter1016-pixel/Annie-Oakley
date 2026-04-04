@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import FacebookBanner from '@/components/FacebookBanner'
 
 async function getAnimals() {
   const { data } = await supabase
@@ -23,6 +24,7 @@ export default async function FosterPage() {
   return (
     <div className="bg-amber-50 min-h-screen">
       {/* Header */}
+      <FacebookBanner />
       <div className="bg-[#2D1606] text-white py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="w-12 h-1 bg-[#D4A017] mb-5 rounded-full" />

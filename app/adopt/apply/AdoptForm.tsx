@@ -96,9 +96,7 @@ export default function AdoptForm({ animal }: { animal: Animal }) {
 
             <p className="text-stone-400 text-sm">
               Questions? Call us at{' '}
-              <a href="tel:4064890382" className="text-[#D4A017] font-semibold hover:underline">
-                (406) 489-0382
-              </a>
+              <a href="tel:4064890382" className="text-[#D4A017] font-semibold hover:underline">(406) 489-0382</a> or <a href="tel:4064780042" className="text-[#D4A017] font-semibold hover:underline">(406) 478-0042</a>
             </p>
 
             <div className="flex gap-3 flex-wrap justify-center pt-2">
@@ -245,7 +243,7 @@ export default function AdoptForm({ animal }: { animal: Animal }) {
 
         <p className="text-center text-stone-400 text-sm">
           Questions? Call{' '}
-          <a href="tel:4064890382" className="text-[#D4A017] hover:underline">(406) 489-0382</a>{' '}
+          <a href="tel:4064890382" className="text-[#D4A017] hover:underline">(406) 489-0382</a> or <a href="tel:4064780042" className="text-[#D4A017] hover:underline">(406) 478-0042</a>{' '}
           or email{' '}
           <a href="mailto:annieoakleyanimalrescue@gmail.com" className="text-[#D4A017] hover:underline">
             annieoakleyanimalrescue@gmail.com

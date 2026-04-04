@@ -63,7 +63,7 @@ export default function SurrenderPage() {
             We understand this is a difficult situation and we're here to help.
             A member of our team will reach out to you soon. You can also call us
             directly at{' '}
-            <a href="tel:4064890382" className="text-[#D4A017] font-semibold">(406) 489-0382</a>.
+            <a href="tel:4064890382" className="text-[#D4A017] font-semibold">(406) 489-0382</a> or <a href="tel:4064780042" className="text-[#D4A017] font-semibold">(406) 478-0042</a>.
           </p>
           <button
             onClick={() => router.push('/')}
@@ -103,6 +103,9 @@ export default function SurrenderPage() {
           <div className="flex gap-4">
             <a href="tel:4064890382" className="flex items-center gap-2 text-[#D4A017] font-semibold text-sm hover:underline">
               <Phone className="w-4 h-4" /> (406) 489-0382
+            </a>
+            <a href="tel:4064780042" className="flex items-center gap-2 text-[#D4A017] font-semibold text-sm hover:underline">
+              <Phone className="w-4 h-4" /> (406) 478-0042
             </a>
             <a href="mailto:annieoakleyanimalrescue@gmail.com" className="flex items-center gap-2 text-[#D4A017] font-semibold text-sm hover:underline">
               <Mail className="w-4 h-4" /> Email Us
@@ -199,7 +202,7 @@ export default function SurrenderPage() {
 
         <p className="text-center text-stone-400 text-sm">
           We are here to help — please don't hesitate to call{' '}
-          <a href="tel:4064890382" className="text-[#D4A017] hover:underline">(406) 489-0382</a>
+          <a href="tel:4064890382" className="text-[#D4A017] hover:underline">(406) 489-0382</a> or <a href="tel:4064780042" className="text-[#D4A017] hover:underline">(406) 478-0042</a>
         </p>
       </form>
     </div>

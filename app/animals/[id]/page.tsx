@@ -169,9 +169,7 @@ export default async function AnimalDetailPage({ params }: { params: { id: strin
             {/* Contact note */}
             <p className="text-stone-400 text-sm text-center">
               Questions? Call us at{' '}
-              <a href="tel:4064890382" className="text-[#D4A017] hover:underline font-medium">
-                (406) 489-0382
-              </a>
+              <a href="tel:4064890382" className="text-[#D4A017] hover:underline font-medium">(406) 489-0382</a> or <a href="tel:4064780042" className="text-[#D4A017] hover:underline font-medium">(406) 478-0042</a>
             </p>
 
           </div>

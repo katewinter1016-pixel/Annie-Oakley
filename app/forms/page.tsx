@@ -44,7 +44,7 @@ export default function FormsPage() {
           description="We understand that circumstances change. If you are no longer able to care for your animal, Annie Oakley Animal Rescue can help. Please reach out to us before completing a surrender — we want to make this process as smooth and compassionate as possible."
           href="/surrender"
           linkLabel="Surrender Form"
-          note="Please call us at (406) 489-0382 before submitting if possible."
+          note="Please call us at (406) 489-0382 or (406) 478-0042 before submitting if possible."
         />
 
       </div>
