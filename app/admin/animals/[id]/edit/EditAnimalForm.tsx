@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
 type Animal = {
@@ -41,38 +40,44 @@ export default function EditAnimalForm({ animal }: { animal: Animal }) {
 
     const form = new FormData(e.currentTarget)
 
-    // Upload new photos
+    // Upload new photos via server API
     const uploadedUrls: string[] = []
     for (const file of newPhotoFiles) {
-      const ext = file.name.split('.').pop()
-      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-      const { error: uploadError } = await supabase.storage
-        .from('Animal Photos')
-        .upload(path, file, { upsert: false })
-      if (uploadError) {
-        setError('Photo upload failed: ' + uploadError.message)
+      const uploadForm = new FormData()
+      uploadForm.append('file', file)
+      uploadForm.append('bucket', 'Animal Photos')
+      const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: uploadForm })
+      if (!uploadRes.ok) {
+        const err = await uploadRes.json()
+        setError('Photo upload failed: ' + err.error)
         setLoading(false)
         return
       }
-      const { data: urlData } = supabase.storage.from('Animal Photos').getPublicUrl(path)
-      uploadedUrls.push(urlData.publicUrl)
+      const { url } = await uploadRes.json()
+      uploadedUrls.push(url)
     }
 
     const allPhotos = [...existingPhotos, ...uploadedUrls]
 
-    const { error: updateError } = await supabase.from('animals').update({
-      name: form.get('name') as string,
-      species: form.get('species') as string,
-      breed: (form.get('breed') as string) || null,
-      sex: (form.get('sex') as string) || null,
-      age_years: form.get('age_years') ? Number(form.get('age_years')) : null,
-      description: (form.get('description') as string) || null,
-      status: form.get('status') as string,
-      photo_urls: allPhotos.length > 0 ? allPhotos : null,
-    }).eq('id', animal.id)
+    const res = await fetch('/api/admin/animals', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: animal.id,
+        name: form.get('name'),
+        species: form.get('species'),
+        breed: form.get('breed'),
+        sex: form.get('sex'),
+        age_years: form.get('age_years'),
+        description: form.get('description'),
+        status: form.get('status'),
+        photo_urls: allPhotos,
+      }),
+    })
 
-    if (updateError) {
-      setError(updateError.message)
+    if (!res.ok) {
+      const err = await res.json()
+      setError(err.error ?? 'Failed to save changes')
       setLoading(false)
       return
     }

@@ -1,9 +1,9 @@
-import { supabase } from '@/lib/supabase'
+import { supabaseServer } from '@/lib/supabaseServer'
 import { notFound } from 'next/navigation'
 import EditAnimalForm from './EditAnimalForm'
 
 export default async function EditAnimalPage({ params }: { params: { id: string } }) {
-  const { data: animal } = await supabase
+  const { data: animal } = await supabaseServer
     .from('animals')
     .select('*')
     .eq('id', params.id)

@@ -7,7 +7,6 @@
 
 import { useState, useRef } from 'react'
 import Image from 'next/image'
-import { supabase } from '@/lib/supabase'
 import { Upload } from 'lucide-react'
 
 export default function ReviewForm() {
@@ -37,30 +36,24 @@ export default function ReviewForm() {
     const fd = new FormData(e.currentTarget)
     let photoUrl: string | null = null
 
-    // Step 1: Upload photo to Supabase Storage if one was selected
+    // Step 1: Upload photo via server API if one was selected
     if (selectedFile) {
-      // Create a unique filename so two people with the same file name don't overwrite each other
-      const filename = `${Date.now()}-${selectedFile.name.replace(/\s+/g, '-')}`
+      const uploadForm = new FormData()
+      uploadForm.append('file', selectedFile)
+      const uploadRes = await fetch('/api/reviews/upload', { method: 'POST', body: uploadForm })
 
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('Review Photos')
-        .upload(filename, selectedFile)
-
-      if (uploadError) {
-        setError(`Upload error: ${uploadError.message}`)
+      if (!uploadRes.ok) {
+        const err = await uploadRes.json()
+        setError(`Upload error: ${err.error}`)
         setSubmitting(false)
         return
       }
 
-      // Step 2: Get the public URL so we can display the photo later
-      const { data: urlData } = supabase.storage
-        .from('Review Photos')
-        .getPublicUrl(uploadData.path)
-
-      photoUrl = urlData.publicUrl
+      const { url } = await uploadRes.json()
+      photoUrl = url
     }
 
-    // Step 3: Save the review via API (triggers email notification)
+    // Step 2: Save the review via API (triggers email notification)
     const res = await fetch('/api/reviews', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
