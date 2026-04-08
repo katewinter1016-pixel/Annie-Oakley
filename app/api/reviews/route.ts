@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
             <p><strong>Reviewer:</strong> ${reviewer_name}</p>
             <p><strong>Story:</strong> ${review_text}</p>
             <p style="margin-top:24px;">
-              <a href="https://annie-oakley.vercel.app/admin/reviews" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
+              <a href="https://www.annieoakleyanimalrescue.com/admin/reviews" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
                 Approve in Admin Dashboard
               </a>
             </p>

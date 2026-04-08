@@ -9,6 +9,9 @@ export default function NewAnimalForm() {
   const [error, setError] = useState('')
   const [photoFiles, setPhotoFiles] = useState<File[]>([])
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([])
+  const [goodWithKids, setGoodWithKids] = useState<boolean | null>(null)
+  const [goodWithDogs, setGoodWithDogs] = useState<boolean | null>(null)
+  const [goodWithCats, setGoodWithCats] = useState<boolean | null>(null)
 
   function handlePhotos(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? [])
@@ -51,6 +54,11 @@ export default function NewAnimalForm() {
         age_years: form.get('age_years'),
         description: form.get('description'),
         status: form.get('status'),
+        size: form.get('size'),
+        good_with_kids: goodWithKids,
+        good_with_dogs: goodWithDogs,
+        good_with_cats: goodWithCats,
+        special_needs: form.get('special_needs'),
         photo_urls: photoUrls,
       }),
     })
@@ -109,14 +117,55 @@ export default function NewAnimalForm() {
         </div>
       </div>
 
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className={labelClass}>Status *</label>
+          <select name="status" required className={fieldClass} defaultValue="available">
+            <option value="available">Available</option>
+            <option value="pending">Pending</option>
+            <option value="fostered">Fostered</option>
+            <option value="adopted">Adopted</option>
+          </select>
+        </div>
+        <div>
+          <label className={labelClass}>Size</label>
+          <select name="size" className={fieldClass}>
+            <option value="">Unknown</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+            <option value="extra-large">Extra-Large</option>
+          </select>
+        </div>
+      </div>
+
       <div>
-        <label className={labelClass}>Status *</label>
-        <select name="status" required className={fieldClass} defaultValue="available">
-          <option value="available">Available</option>
-          <option value="pending">Pending</option>
-          <option value="fostered">Fostered</option>
-          <option value="adopted">Adopted</option>
-        </select>
+        <label className={labelClass}>Good With</label>
+        <div className="flex flex-wrap gap-4 mt-1">
+          {[
+            { label: 'Kids', setter: setGoodWithKids, val: goodWithKids },
+            { label: 'Dogs', setter: setGoodWithDogs, val: goodWithDogs },
+            { label: 'Cats', setter: setGoodWithCats, val: goodWithCats },
+          ].map(({ label, setter, val }) => (
+            <div key={label} className="flex items-center gap-2">
+              <span className="text-sm text-stone-600 w-10">{label}</span>
+              <select
+                className="border border-stone-200 rounded-lg px-2 py-1 text-sm text-stone-800 focus:outline-none focus:border-[#D4A017] bg-white"
+                value={val === null ? '' : String(val)}
+                onChange={(e) => setter(e.target.value === '' ? null : e.target.value === 'true')}
+              >
+                <option value="">Unknown</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <label className={labelClass}>Special Needs</label>
+        <input name="special_needs" className={fieldClass} placeholder="e.g. Heartworm positive, needs medication" />
       </div>
 
       <div>

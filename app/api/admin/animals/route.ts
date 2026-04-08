@@ -24,6 +24,11 @@ export async function POST(req: NextRequest) {
     description: description || null,
     status,
     photo_urls: photo_urls?.length > 0 ? photo_urls : null,
+    size: body.size || null,
+    good_with_kids: body.good_with_kids ?? null,
+    good_with_dogs: body.good_with_dogs ?? null,
+    good_with_cats: body.good_with_cats ?? null,
+    special_needs: body.special_needs || null,
   }).select().single()
 
   if (error) {
@@ -50,6 +55,11 @@ export async function PUT(req: NextRequest) {
     description: fields.description || null,
     status: fields.status,
     photo_urls: fields.photo_urls?.length > 0 ? fields.photo_urls : null,
+    size: fields.size || null,
+    good_with_kids: fields.good_with_kids ?? null,
+    good_with_dogs: fields.good_with_dogs ?? null,
+    good_with_cats: fields.good_with_cats ?? null,
+    special_needs: fields.special_needs || null,
   }).eq('id', id)
 
   if (error) {

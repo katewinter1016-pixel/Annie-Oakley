@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
             <p><strong>Phone:</strong> ${fields.applicant_phone ?? '—'}</p>
             ${fields.animal_id ? `<p><strong>Animal ID:</strong> ${fields.animal_id}</p>` : ''}
             <p style="margin-top:24px;">
-              <a href="https://annie-oakley.vercel.app/admin/applications" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
+              <a href="https://www.annieoakleyanimalrescue.com/admin/applications" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
                 View in Admin Dashboard
               </a>
             </p>

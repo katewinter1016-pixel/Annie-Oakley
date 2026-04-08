@@ -51,7 +51,12 @@ export default function FosterForm({ animal }: { animal: Animal }) {
       setSubmitted(true)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } else {
-      setError('Something went wrong. Please try again or call us at (406) 489-0382.')
+      try {
+        const errData = await res.json()
+        setError(errData.error ?? 'Something went wrong. Please try again or call us at (406) 489-0382.')
+      } catch {
+        setError('Something went wrong. Please try again or call us at (406) 489-0382.')
+      }
     }
     setSubmitting(false)
   }

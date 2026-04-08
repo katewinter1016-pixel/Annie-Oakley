@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
             <p><strong>Availability:</strong> ${availability}</p>
             ${experience ? `<p><strong>Experience:</strong> ${experience}</p>` : ''}
             <p style="margin-top:24px;">
-              <a href="https://annie-oakley.vercel.app/admin/volunteers" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
+              <a href="https://www.annieoakleyanimalrescue.com/admin/volunteers" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
                 View in Admin Dashboard
               </a>
             </p>

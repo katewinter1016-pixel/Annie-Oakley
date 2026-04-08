@@ -13,6 +13,11 @@ type Animal = {
   description: string | null
   status: string
   photo_urls: string[] | null
+  size: string | null
+  good_with_kids: boolean | null
+  good_with_dogs: boolean | null
+  good_with_cats: boolean | null
+  special_needs: string | null
 }
 
 export default function EditAnimalForm({ animal }: { animal: Animal }) {
@@ -22,6 +27,9 @@ export default function EditAnimalForm({ animal }: { animal: Animal }) {
   const [newPhotoFiles, setNewPhotoFiles] = useState<File[]>([])
   const [newPhotoPreviews, setNewPhotoPreviews] = useState<string[]>([])
   const [existingPhotos, setExistingPhotos] = useState<string[]>(animal.photo_urls ?? [])
+  const [goodWithKids, setGoodWithKids] = useState<boolean | null>(animal.good_with_kids)
+  const [goodWithDogs, setGoodWithDogs] = useState<boolean | null>(animal.good_with_dogs)
+  const [goodWithCats, setGoodWithCats] = useState<boolean | null>(animal.good_with_cats)
 
   function handlePhotos(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? [])
@@ -71,6 +79,11 @@ export default function EditAnimalForm({ animal }: { animal: Animal }) {
         age_years: form.get('age_years'),
         description: form.get('description'),
         status: form.get('status'),
+        size: form.get('size'),
+        good_with_kids: goodWithKids,
+        good_with_dogs: goodWithDogs,
+        good_with_cats: goodWithCats,
+        special_needs: form.get('special_needs'),
         photo_urls: allPhotos,
       }),
     })
@@ -128,14 +141,55 @@ export default function EditAnimalForm({ animal }: { animal: Animal }) {
         </div>
       </div>
 
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className={labelClass}>Status *</label>
+          <select name="status" required defaultValue={animal.status} className={fieldClass}>
+            <option value="available">Available</option>
+            <option value="pending">Pending</option>
+            <option value="fostered">Fostered</option>
+            <option value="adopted">Adopted</option>
+          </select>
+        </div>
+        <div>
+          <label className={labelClass}>Size</label>
+          <select name="size" defaultValue={animal.size ?? ''} className={fieldClass}>
+            <option value="">Unknown</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+            <option value="extra-large">Extra-Large</option>
+          </select>
+        </div>
+      </div>
+
       <div>
-        <label className={labelClass}>Status *</label>
-        <select name="status" required defaultValue={animal.status} className={fieldClass}>
-          <option value="available">Available</option>
-          <option value="pending">Pending</option>
-          <option value="fostered">Fostered</option>
-          <option value="adopted">Adopted</option>
-        </select>
+        <label className={labelClass}>Good With</label>
+        <div className="flex flex-wrap gap-4 mt-1">
+          {[
+            { label: 'Kids', setter: setGoodWithKids, val: goodWithKids },
+            { label: 'Dogs', setter: setGoodWithDogs, val: goodWithDogs },
+            { label: 'Cats', setter: setGoodWithCats, val: goodWithCats },
+          ].map(({ label, setter, val }) => (
+            <div key={label} className="flex items-center gap-2">
+              <span className="text-sm text-stone-600 w-10">{label}</span>
+              <select
+                className="border border-stone-200 rounded-lg px-2 py-1 text-sm text-stone-800 focus:outline-none focus:border-[#D4A017] bg-white"
+                value={val === null ? '' : String(val)}
+                onChange={(e) => setter(e.target.value === '' ? null : e.target.value === 'true')}
+              >
+                <option value="">Unknown</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <label className={labelClass}>Special Needs</label>
+        <input name="special_needs" defaultValue={animal.special_needs ?? ''} className={fieldClass} placeholder="e.g. Heartworm positive, needs medication" />
       </div>
 
       <div>
