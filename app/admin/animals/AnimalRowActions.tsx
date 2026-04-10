@@ -33,7 +33,7 @@ export default function AnimalRowActions({ animalId }: { animalId: string }) {
         disabled={loading}
         className="text-red-400 text-xs font-bold px-3 py-1.5 rounded-full hover:bg-red-50 hover:text-red-600 transition-colors disabled:opacity-50"
       >
-        Delete
+        {loading ? 'Deleting…' : 'Delete'}
       </button>
     </div>
   )

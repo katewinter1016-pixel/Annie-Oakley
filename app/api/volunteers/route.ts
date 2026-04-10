@@ -5,6 +5,15 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!
 
+function esc(str: unknown): string {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -23,21 +32,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to save volunteer signup' }, { status: 500 })
     }
 
-    // Send emails — wrapped so a failure doesn't block the submission
     try {
       await resend.emails.send({
         from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: ADMIN_EMAIL,
-        subject: `New Volunteer Signup — ${name}`,
+        subject: `New Volunteer Signup — ${esc(name)}`,
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
             <h2 style="color:#2D1606;">New Volunteer Signup</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone || '—'}</p>
-            <p><strong>Interests:</strong> ${interests || '—'}</p>
-            <p><strong>Availability:</strong> ${availability}</p>
-            ${experience ? `<p><strong>Experience:</strong> ${experience}</p>` : ''}
+            <p><strong>Name:</strong> ${esc(name)}</p>
+            <p><strong>Email:</strong> ${esc(email)}</p>
+            <p><strong>Phone:</strong> ${esc(phone || '—')}</p>
+            <p><strong>Interests:</strong> ${esc(interests || '—')}</p>
+            <p><strong>Availability:</strong> ${esc(availability)}</p>
+            ${experience ? `<p><strong>Experience:</strong> ${esc(experience)}</p>` : ''}
             <p style="margin-top:24px;">
               <a href="https://www.annieoakleyanimalrescue.com/admin/volunteers" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
                 View in Admin Dashboard
@@ -52,20 +60,19 @@ export async function POST(req: NextRequest) {
         subject: 'Thank you for volunteering with Annie Oakley Animal Rescue!',
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-            <h2 style="color:#2D1606;">Thank you, ${name}!</h2>
+            <h2 style="color:#2D1606;">Thank you, ${esc(name)}!</h2>
             <p>We've received your volunteer signup and we're so grateful for your willingness to help. A member of our team will reach out to you soon.</p>
-            <p>If you have any questions in the meantime, reach us at <a href="mailto:${ADMIN_EMAIL}">${ADMIN_EMAIL}</a> or call <a href="tel:4064890382">(406) 489-0382</a>.</p>
+            <p>If you have any questions in the meantime, reach us at <a href="mailto:${esc(ADMIN_EMAIL)}">${esc(ADMIN_EMAIL)}</a> or call <a href="tel:4064890382">(406) 489-0382</a>.</p>
             <p style="margin-top:24px;color:#888;font-size:13px;">— The Annie Oakley Animal Rescue Team</p>
           </div>
         `,
       })
-    } catch (emailErr) {
-      console.error('Email send failed (non-fatal):', emailErr)
+    } catch {
+      // Email failure is non-fatal — submission already saved
     }
 
     return NextResponse.json({ success: true })
-  } catch (err) {
-    console.error('Volunteer signup error:', err)
+  } catch {
     return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
   }
 }

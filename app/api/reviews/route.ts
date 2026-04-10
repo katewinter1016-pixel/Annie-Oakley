@@ -5,6 +5,15 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!
 
+function esc(str: unknown): string {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -22,18 +31,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to save review' }, { status: 500 })
     }
 
-    // Send email — wrapped so a failure doesn't block the submission
     try {
       await resend.emails.send({
         from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: ADMIN_EMAIL,
-        subject: `New Review Pending Approval — ${animal_name}`,
+        subject: `New Review Pending Approval — ${esc(animal_name)}`,
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
             <h2 style="color:#2D1606;">New Review Submitted</h2>
-            <p><strong>Animal:</strong> ${animal_name}</p>
-            <p><strong>Reviewer:</strong> ${reviewer_name}</p>
-            <p><strong>Story:</strong> ${review_text}</p>
+            <p><strong>Animal:</strong> ${esc(animal_name)}</p>
+            <p><strong>Reviewer:</strong> ${esc(reviewer_name)}</p>
+            <p><strong>Story:</strong> ${esc(review_text)}</p>
             <p style="margin-top:24px;">
               <a href="https://www.annieoakleyanimalrescue.com/admin/reviews" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
                 Approve in Admin Dashboard
@@ -42,13 +50,12 @@ export async function POST(req: NextRequest) {
           </div>
         `,
       })
-    } catch (emailErr) {
-      console.error('Email send failed (non-fatal):', emailErr)
+    } catch {
+      // Email failure is non-fatal — submission already saved
     }
 
     return NextResponse.json({ success: true })
-  } catch (err) {
-    console.error('Review submission error:', err)
+  } catch {
     return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
   }
 }

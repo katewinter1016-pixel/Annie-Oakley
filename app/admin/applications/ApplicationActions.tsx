@@ -38,7 +38,7 @@ export default function ApplicationActions({ applicationId, status }: { applicat
           disabled={loading}
           className="bg-green-600 text-white text-xs font-bold px-4 py-1.5 rounded-full hover:bg-green-700 transition-colors disabled:opacity-50"
         >
-          Approve
+          {loading ? 'Saving…' : 'Approve'}
         </button>
       )}
       {status !== 'rejected' && (
@@ -47,7 +47,7 @@ export default function ApplicationActions({ applicationId, status }: { applicat
           disabled={loading}
           className="bg-stone-200 text-stone-600 text-xs font-bold px-4 py-1.5 rounded-full hover:bg-stone-300 transition-colors disabled:opacity-50"
         >
-          Reject
+          {loading ? 'Saving…' : 'Reject'}
         </button>
       )}
       {status === 'pending' && (
@@ -62,7 +62,7 @@ export default function ApplicationActions({ applicationId, status }: { applicat
         disabled={loading}
         className="text-red-400 text-xs font-bold px-3 py-1.5 rounded-full hover:bg-red-50 hover:text-red-600 transition-colors disabled:opacity-50"
       >
-        Delete
+        {loading ? 'Deleting…' : 'Delete'}
       </button>
     </div>
   )

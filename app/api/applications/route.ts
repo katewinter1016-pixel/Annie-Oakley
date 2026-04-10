@@ -5,7 +5,14 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!
 
-// This is the API endpoint that all three application forms post to.
+function esc(str: unknown): string {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,7 +23,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid application type' }, { status: 400 })
     }
 
-    // Save the application to Supabase
     const { data, error } = await supabase
       .from('applications')
       .insert({
@@ -29,32 +35,30 @@ export async function POST(req: NextRequest) {
         applicant_state: fields.applicant_state ?? 'MT',
         applicant_zip: fields.applicant_zip,
         animal_id: fields.animal_id ?? null,
-        form_data: fields, // store all extra fields in the flexible jsonb column
+        form_data: fields,
         status: 'pending',
       })
       .select()
       .single()
 
     if (error) {
-      console.error('Supabase insert error:', JSON.stringify(error))
-      return NextResponse.json({ error: error.message, details: error.details, hint: error.hint }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to save application' }, { status: 500 })
     }
 
     const typeLabel = type === 'adoption' ? 'Adoption' : type === 'foster' ? 'Foster' : 'Surrender'
 
-    // Send emails — wrapped so a failure doesn't block the submission
     try {
       await resend.emails.send({
         from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: ADMIN_EMAIL,
-        subject: `New ${typeLabel} Application — ${fields.applicant_name}`,
+        subject: `New ${typeLabel} Application — ${esc(fields.applicant_name)}`,
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
             <h2 style="color:#2D1606;">New ${typeLabel} Application</h2>
-            <p><strong>Name:</strong> ${fields.applicant_name}</p>
-            <p><strong>Email:</strong> ${fields.applicant_email}</p>
-            <p><strong>Phone:</strong> ${fields.applicant_phone ?? '—'}</p>
-            ${fields.animal_id ? `<p><strong>Animal ID:</strong> ${fields.animal_id}</p>` : ''}
+            <p><strong>Name:</strong> ${esc(fields.applicant_name)}</p>
+            <p><strong>Email:</strong> ${esc(fields.applicant_email)}</p>
+            <p><strong>Phone:</strong> ${esc(fields.applicant_phone ?? '—')}</p>
+            ${fields.animal_id ? `<p><strong>Animal ID:</strong> ${esc(fields.animal_id)}</p>` : ''}
             <p style="margin-top:24px;">
               <a href="https://www.annieoakleyanimalrescue.com/admin/applications" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">
                 View in Admin Dashboard
@@ -69,20 +73,19 @@ export async function POST(req: NextRequest) {
         subject: `We received your ${typeLabel.toLowerCase()} application!`,
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-            <h2 style="color:#2D1606;">Thank you, ${fields.applicant_name}!</h2>
+            <h2 style="color:#2D1606;">Thank you, ${esc(fields.applicant_name)}!</h2>
             <p>We've received your ${typeLabel.toLowerCase()} application and will be in touch soon.</p>
-            <p>If you have any questions in the meantime, reply to this email or reach us at <a href="mailto:${ADMIN_EMAIL}">${ADMIN_EMAIL}</a>.</p>
+            <p>If you have any questions in the meantime, reply to this email or reach us at <a href="mailto:${esc(ADMIN_EMAIL)}">${esc(ADMIN_EMAIL)}</a>.</p>
             <p style="margin-top:24px;color:#888;font-size:13px;">— The Annie Oakley Animal Rescue Team</p>
           </div>
         `,
       })
-    } catch (emailErr) {
-      console.error('Email send failed (non-fatal):', emailErr)
+    } catch {
+      // Email failure is non-fatal — submission already saved
     }
 
     return NextResponse.json({ success: true, id: data.id })
-  } catch (err) {
-    console.error('Application submission error:', err)
+  } catch {
     return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
   }
 }
