@@ -12,6 +12,7 @@ type Animal = {
   age_years: number | null
   description: string | null
   status: string
+  listing_type: string | null
   photo_urls: string[] | null
   size: string | null
   good_with_kids: boolean | null
@@ -84,6 +85,7 @@ export default function EditAnimalForm({ animal }: { animal: Animal }) {
         good_with_dogs: goodWithDogs,
         good_with_cats: goodWithCats,
         special_needs: form.get('special_needs'),
+        listing_type: form.get('listing_type') || 'both',
         photo_urls: allPhotos,
       }),
     })
@@ -139,6 +141,15 @@ export default function EditAnimalForm({ animal }: { animal: Animal }) {
           <label className={labelClass}>Age (years)</label>
           <input name="age_years" type="number" min="0" step="0.5" defaultValue={animal.age_years ?? ''} className={fieldClass} />
         </div>
+      </div>
+
+      <div>
+        <label className={labelClass}>List on *</label>
+        <select name="listing_type" required defaultValue={animal.listing_type ?? 'both'} className={fieldClass}>
+          <option value="both">Adopt &amp; Foster pages</option>
+          <option value="adoption">Adoption page only</option>
+          <option value="foster">Foster page only</option>
+        </select>
       </div>
 
       <div className="grid grid-cols-2 gap-4">

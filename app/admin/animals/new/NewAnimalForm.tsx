@@ -59,6 +59,7 @@ export default function NewAnimalForm() {
         good_with_dogs: goodWithDogs,
         good_with_cats: goodWithCats,
         special_needs: form.get('special_needs'),
+        listing_type: form.get('listing_type') || 'both',
         photo_urls: photoUrls,
       }),
     })
@@ -115,6 +116,15 @@ export default function NewAnimalForm() {
           <label className={labelClass}>Age (years)</label>
           <input name="age_years" type="number" min="0" step="0.5" className={fieldClass} placeholder="e.g. 2" />
         </div>
+      </div>
+
+      <div>
+        <label className={labelClass}>List on *</label>
+        <select name="listing_type" required className={fieldClass} defaultValue="both">
+          <option value="both">Adopt &amp; Foster pages</option>
+          <option value="adoption">Adoption page only</option>
+          <option value="foster">Foster page only</option>
+        </select>
       </div>
 
       <div className="grid grid-cols-2 gap-4">

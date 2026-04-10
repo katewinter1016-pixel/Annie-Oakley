@@ -2,6 +2,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 
+export const dynamic = 'force-dynamic'
+
 // Fetch all available animals from Supabase
 async function getAnimals(species?: string) {
   let query = supabase

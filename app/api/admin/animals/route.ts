@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
     good_with_dogs: body.good_with_dogs ?? null,
     good_with_cats: body.good_with_cats ?? null,
     special_needs: body.special_needs || null,
+    listing_type: body.listing_type || 'both',
   }).select().single()
 
   if (error) {
@@ -61,6 +62,7 @@ export async function PUT(req: NextRequest) {
     good_with_dogs: fields.good_with_dogs ?? null,
     good_with_cats: fields.good_with_cats ?? null,
     special_needs: fields.special_needs || null,
+    listing_type: fields.listing_type || 'both',
   }).eq('id', id)
 
   if (error) {

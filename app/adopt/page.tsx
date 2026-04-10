@@ -3,11 +3,14 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import FacebookBanner from '@/components/FacebookBanner'
 
+export const dynamic = 'force-dynamic'
+
 async function getAnimals() {
   const { data } = await supabase
     .from('animals')
-    .select('id, name, species, breed, age_years, sex, description, photo_urls, status')
+    .select('id, name, species, breed, age_years, sex, description, photo_urls, status, listing_type')
     .eq('status', 'available')
+    .in('listing_type', ['adoption', 'both'])
     .order('created_at', { ascending: false })
   return data ?? []
 }
