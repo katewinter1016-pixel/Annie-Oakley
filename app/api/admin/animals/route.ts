@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabaseServer } from '@/lib/supabaseServer'
 import { cookies } from 'next/headers'
 
-function isAdmin() {
-  const token = cookies().get('admin_auth')?.value
+async function isAdmin() {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('admin_auth')?.value
   return token && token === process.env.ADMIN_SECRET
 }
 
 export async function POST(req: NextRequest) {
-  if (!isAdmin()) {
+  if (!await isAdmin()) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-  if (!isAdmin()) {
+  if (!await isAdmin()) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
