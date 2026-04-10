@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Heart, Truck, Camera, DollarSign, CalendarDays, MoreHorizontal } from 'lucide-react'
 
@@ -13,10 +13,24 @@ const VOLUNTEER_ROLES = [
   { icon: MoreHorizontal, label: 'Other', desc: 'Have a skill that could help? We want to hear from you.' },
 ]
 
+const FIVE_K_INTEREST = 'Work at the 5K'
+
 export default function VolunteerPage() {
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
+  const [slotsRemaining, setSlotsRemaining] = useState<number | null>(null)
+  const [slotsFull, setSlotsFull] = useState(false)
+
+  useEffect(() => {
+    fetch('/api/events/5k-slots')
+      .then((r) => r.json())
+      .then((data) => {
+        setSlotsRemaining(data.remaining)
+        setSlotsFull(data.full)
+      })
+      .catch(() => {})
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -112,9 +126,54 @@ export default function VolunteerPage() {
               <Field label="Email" name="email" type="email" required />
               <Field label="Phone Number" name="phone" type="tel" placeholder="(000) 000-0000" />
 
+              {/* 5K Event Sign-Up */}
+              <div className={`rounded-2xl border-2 p-5 flex flex-col gap-3 ${slotsFull ? 'border-stone-200 bg-stone-50' : 'border-[#D4A017] bg-[#D4A017]/5'}`}>
+                <div className="flex items-start justify-between gap-3 flex-wrap">
+                  <div className="flex items-center gap-3">
+                    <div className="relative w-12 h-12 flex-shrink-0">
+                      <Image src="/fetch-5k.png" alt="5K Run" fill className="object-contain" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-[#2D1606] text-sm leading-tight">Fetch the Finish Line 5K</p>
+                      <p className="text-stone-400 text-xs">June 20, 2026 · Hosted by Winter Howlers</p>
+                    </div>
+                  </div>
+                  {slotsRemaining !== null && (
+                    <span className={`text-xs font-bold px-3 py-1 rounded-full flex-shrink-0 ${
+                      slotsFull
+                        ? 'bg-stone-200 text-stone-500'
+                        : slotsRemaining <= 3
+                        ? 'bg-red-100 text-red-600'
+                        : 'bg-green-100 text-green-700'
+                    }`}>
+                      {slotsFull ? 'Full' : `${slotsRemaining} spot${slotsRemaining !== 1 ? 's' : ''} left`}
+                    </span>
+                  )}
+                </div>
+
+                {slotsFull ? (
+                  <p className="text-stone-400 text-sm">
+                    All volunteer spots for this event are filled. Thank you for your interest!
+                  </p>
+                ) : (
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="interests"
+                      value={FIVE_K_INTEREST}
+                      className="accent-[#D4A017] w-4 h-4 flex-shrink-0"
+                    />
+                    <span className="text-sm text-stone-700 font-medium">
+                      I want to volunteer at the 5K event on June 20th
+                    </span>
+                  </label>
+                )}
+              </div>
+
+              {/* General interests */}
               <div className="flex flex-col gap-2">
                 <p className="text-sm font-semibold text-stone-700">
-                  Areas of Interest <span className="text-[#D4A017]">*</span>
+                  Other Areas of Interest <span className="text-[#D4A017]">*</span>
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {VOLUNTEER_ROLES.map(({ label }) => (

@@ -11,6 +11,7 @@ const LINKS = [
   { label: 'Foster', href: '/foster' },
   { label: 'Volunteer', href: '/volunteer' },
   { label: 'Heart of the Rescue', href: '/heart-of-the-rescue' },
+  { label: 'Events', href: '/events' },
   { label: 'Forms', href: '/forms' },
   { label: 'Shop', href: 'https://rusticrevivalclothingco.com/collections/annie-oakley-rescue', external: true },
 ]

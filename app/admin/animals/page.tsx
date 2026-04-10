@@ -5,19 +5,40 @@ import AnimalRowActions from './AnimalRowActions'
 
 export const dynamic = 'force-dynamic'
 
-async function getAnimals() {
-  const { data } = await supabase
+const PAGE_SIZE = 20
+
+async function getAnimals(page: number) {
+  // Always show all available animals
+  const { data: available } = await supabase
     .from('animals')
     .select('id, name, species, breed, age_years, sex, status, photo_urls, created_at')
+    .eq('status', 'available')
     .order('created_at', { ascending: false })
-  return data ?? []
+
+  const offset = (page - 1) * PAGE_SIZE
+  const { data: other, count } = await supabase
+    .from('animals')
+    .select('id, name, species, breed, age_years, sex, status, photo_urls, created_at', { count: 'exact' })
+    .neq('status', 'available')
+    .order('created_at', { ascending: false })
+    .range(offset, offset + PAGE_SIZE - 1)
+
+  return {
+    available: available ?? [],
+    other: other ?? [],
+    otherTotal: count ?? 0,
+  }
 }
 
-export default async function AdminAnimalsPage() {
-  const animals = await getAnimals()
-
-  const available = animals.filter((a) => a.status === 'available')
-  const other = animals.filter((a) => a.status !== 'available')
+export default async function AdminAnimalsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>
+}) {
+  const params = await searchParams
+  const page = Math.max(1, parseInt(params.page ?? '1', 10))
+  const { available, other, otherTotal } = await getAnimals(page)
+  const totalPages = Math.ceil(otherTotal / PAGE_SIZE)
 
   return (
     <div className="p-8">
@@ -57,17 +78,47 @@ export default async function AdminAnimalsPage() {
       </section>
 
       {/* Other statuses */}
-      {other.length > 0 && (
+      {(otherTotal > 0 || other.length > 0) && (
         <section>
           <h2 className="font-display text-xl font-bold text-stone-700 mb-5">
-            Other ({other.length})
+            Other ({otherTotal})
           </h2>
           <div className="flex flex-col gap-3">
             {other.map((animal) => (
               <AnimalRow key={animal.id} animal={animal} />
             ))}
           </div>
+          <Pagination page={page} totalPages={totalPages} basePath="/admin/animals" />
         </section>
+      )}
+    </div>
+  )
+}
+
+function Pagination({ page, totalPages, basePath }: { page: number; totalPages: number; basePath: string }) {
+  if (totalPages <= 1) return null
+  return (
+    <div className="flex items-center justify-between mt-6">
+      {page > 1 ? (
+        <Link
+          href={`${basePath}?page=${page - 1}`}
+          className="text-sm font-semibold text-stone-500 hover:text-stone-800 transition-colors px-4 py-2 rounded-full hover:bg-stone-100"
+        >
+          ← Previous
+        </Link>
+      ) : (
+        <span className="text-sm text-stone-300 px-4 py-2">← Previous</span>
+      )}
+      <span className="text-sm text-stone-400">Page {page} of {totalPages}</span>
+      {page < totalPages ? (
+        <Link
+          href={`${basePath}?page=${page + 1}`}
+          className="text-sm font-semibold text-stone-500 hover:text-stone-800 transition-colors px-4 py-2 rounded-full hover:bg-stone-100"
+        >
+          Next →
+        </Link>
+      ) : (
+        <span className="text-sm text-stone-300 px-4 py-2">Next →</span>
       )}
     </div>
   )

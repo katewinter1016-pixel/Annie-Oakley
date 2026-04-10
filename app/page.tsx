@@ -1,9 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Heart, Home, Users, Mail, Phone } from 'lucide-react'
+import { Heart, Home, Users, Mail, Phone, CalendarDays, MapPin } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import HeroSlideshow from '@/components/HeroSlideshow'
-import AnimalCarousel from '@/components/AnimalCarousel'
 import FacebookBanner from '@/components/FacebookBanner'
 
 async function getActiveDonation() {
@@ -15,19 +14,9 @@ async function getActiveDonation() {
   return data
 }
 
-async function getFeaturedAnimals() {
-  const { data } = await supabase
-    .from('animals')
-    .select('id, name, species, breed, photo_urls')
-    .eq('status', 'available')
-    .limit(9)
-  return data ?? []
-}
-
 export default async function HomePage() {
-  const [donation, animals] = await Promise.all([
+  const [donation] = await Promise.all([
     getActiveDonation(),
-    getFeaturedAnimals(),
   ])
 
   const progressPercent = donation
@@ -198,27 +187,59 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── ANIMALS CAROUSEL ─────────────────────────────────────── */}
+      {/* ── UPCOMING EVENT ───────────────────────────────────────── */}
       <section className="py-20 px-4 bg-amber-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <div className="w-12 h-1 bg-[#D4A017] mx-auto mb-4 rounded-full" />
-            <h2 className="font-display text-4xl font-bold text-[#2D1606]">
-              Animals Looking for Homes
-            </h2>
-            <p className="text-stone-500 mt-2 text-lg">These are the ones waiting for you right now.</p>
+            <h2 className="font-display text-4xl font-bold text-[#2D1606]">Upcoming Event</h2>
+            <p className="text-stone-500 mt-2 text-lg">Join us and make a difference.</p>
           </div>
 
-          {/* Client-side carousel component */}
-          <AnimalCarousel animals={animals} />
+          <div className="bg-[#2D1606] rounded-3xl overflow-hidden flex flex-col lg:flex-row items-center gap-0 shadow-2xl">
+            {/* Logo */}
+            <div className="lg:w-80 flex-shrink-0 flex items-center justify-center p-10 bg-[#2D1606]">
+              <div className="relative w-56 h-56">
+                <Image src="/fetch-5k.png" alt="Fetch the Finish Line 5K Run" fill className="object-contain drop-shadow-xl" />
+              </div>
+            </div>
 
-          <div className="text-center mt-10">
-            <Link
-              href="/animals"
-              className="bg-[#2D1606] text-white px-8 py-3 rounded-full font-bold hover:bg-[#D4A017] hover:text-[#2D1606] transition-colors"
-            >
-              See All Animals
-            </Link>
+            {/* Details */}
+            <div className="flex-1 p-8 lg:p-12 flex flex-col gap-5 text-center lg:text-left">
+              <div>
+                <span className="text-[#D4A017] text-xs font-bold uppercase tracking-widest">
+                  Annie Oakley Animal Rescue Fundraiser
+                </span>
+                <h3 className="font-display text-4xl font-bold text-white mt-2 leading-tight">
+                  Fetch the Finish Line<br /><span className="text-[#D4A017]">5K Run</span>
+                </h3>
+                <p className="text-amber-100/60 mt-1">Hosted by Winter Howlers</p>
+              </div>
+
+              <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-amber-100/70">
+                <span className="flex items-center gap-1.5"><CalendarDays className="w-4 h-4 text-[#D4A017]" /> June 20, 2026</span>
+                <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#D4A017]" /> Eastern Montana</span>
+              </div>
+
+              <p className="text-amber-100/60 leading-relaxed max-w-lg mx-auto lg:mx-0">
+                Lace up and bring your pups! Every entry directly supports the animals in our care. Dogs welcome on leash. T-shirt orders close May 29th.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-1">
+                <Link
+                  href="/events/5k-signup"
+                  className="bg-[#D4A017] text-[#2D1606] px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-400 transition-colors shadow-lg shadow-[#D4A017]/20"
+                >
+                  Sign Up Now
+                </Link>
+                <Link
+                  href="/events"
+                  className="border-2 border-amber-100/30 text-amber-100 px-8 py-4 rounded-full font-bold text-lg hover:border-[#D4A017] hover:text-[#D4A017] transition-colors"
+                >
+                  Event Details
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>

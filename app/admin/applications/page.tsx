@@ -1,21 +1,43 @@
 import { supabaseServer as supabase } from '@/lib/supabaseServer'
+import Link from 'next/link'
 import ApplicationActions from './ApplicationActions'
 
 export const dynamic = 'force-dynamic'
 
-async function getApplications() {
-  const { data } = await supabase
+const PAGE_SIZE = 20
+
+async function getApplications(page: number) {
+  const offset = (page - 1) * PAGE_SIZE
+
+  const { data: pending } = await supabase
     .from('applications')
     .select('*')
+    .eq('status', 'pending')
     .order('created_at', { ascending: false })
-  return data ?? []
+
+  const { data: reviewed, count } = await supabase
+    .from('applications')
+    .select('*', { count: 'exact' })
+    .neq('status', 'pending')
+    .order('created_at', { ascending: false })
+    .range(offset, offset + PAGE_SIZE - 1)
+
+  return {
+    pending: pending ?? [],
+    reviewed: reviewed ?? [],
+    reviewedTotal: count ?? 0,
+  }
 }
 
-export default async function AdminApplicationsPage() {
-  const applications = await getApplications()
-
-  const pending = applications.filter((a) => a.status === 'pending')
-  const reviewed = applications.filter((a) => a.status !== 'pending')
+export default async function AdminApplicationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>
+}) {
+  const params = await searchParams
+  const page = Math.max(1, parseInt(params.page ?? '1', 10))
+  const { pending, reviewed, reviewedTotal } = await getApplications(page)
+  const totalPages = Math.ceil(reviewedTotal / PAGE_SIZE)
 
   return (
     <div className="p-8">
@@ -51,18 +73,50 @@ export default async function AdminApplicationsPage() {
       {/* Reviewed */}
       <section>
         <h2 className="font-display text-xl font-bold text-stone-700 mb-5">
-          Reviewed ({reviewed.length})
+          Reviewed ({reviewedTotal})
         </h2>
         {reviewed.length === 0 ? (
           <p className="text-stone-400 text-sm">No reviewed applications yet.</p>
         ) : (
-          <div className="flex flex-col gap-4">
-            {reviewed.map((app) => (
-              <ApplicationCard key={app.id} app={app} />
-            ))}
-          </div>
+          <>
+            <div className="flex flex-col gap-4">
+              {reviewed.map((app) => (
+                <ApplicationCard key={app.id} app={app} />
+              ))}
+            </div>
+            <Pagination page={page} totalPages={totalPages} basePath="/admin/applications" />
+          </>
         )}
       </section>
+    </div>
+  )
+}
+
+function Pagination({ page, totalPages, basePath }: { page: number; totalPages: number; basePath: string }) {
+  if (totalPages <= 1) return null
+  return (
+    <div className="flex items-center justify-between mt-6">
+      {page > 1 ? (
+        <Link
+          href={`${basePath}?page=${page - 1}`}
+          className="text-sm font-semibold text-stone-500 hover:text-stone-800 transition-colors px-4 py-2 rounded-full hover:bg-stone-100"
+        >
+          ← Previous
+        </Link>
+      ) : (
+        <span className="text-sm text-stone-300 px-4 py-2">← Previous</span>
+      )}
+      <span className="text-sm text-stone-400">Page {page} of {totalPages}</span>
+      {page < totalPages ? (
+        <Link
+          href={`${basePath}?page=${page + 1}`}
+          className="text-sm font-semibold text-stone-500 hover:text-stone-800 transition-colors px-4 py-2 rounded-full hover:bg-stone-100"
+        >
+          Next →
+        </Link>
+      ) : (
+        <span className="text-sm text-stone-300 px-4 py-2">Next →</span>
+      )}
     </div>
   )
 }
@@ -113,7 +167,6 @@ function ApplicationCard({ app }: { app: Record<string, unknown> }) {
         <ApplicationActions applicationId={id} status={status} />
       </div>
 
-      {/* Form data details */}
       {formData && (
         <details className="group">
           <summary className="cursor-pointer text-xs font-semibold text-stone-400 hover:text-stone-600 transition-colors select-none">

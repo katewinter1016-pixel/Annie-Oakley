@@ -3,14 +3,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Star, ClipboardList, PawPrint, Users, LogOut } from 'lucide-react'
+import { LayoutDashboard, Star, ClipboardList, PawPrint, Users, LogOut, Flag } from 'lucide-react'
 
 const NAV = [
-  { label: 'Dashboard',    href: '/admin/dashboard',     icon: LayoutDashboard },
-  { label: 'Reviews',      href: '/admin/reviews',        icon: Star },
-  { label: 'Applications', href: '/admin/applications',   icon: ClipboardList },
-  { label: 'Animals',      href: '/admin/animals',        icon: PawPrint },
-  { label: 'Volunteers',   href: '/admin/volunteers',     icon: Users },
+  { label: 'Dashboard',      href: '/admin/dashboard',       icon: LayoutDashboard },
+  { label: 'Reviews',        href: '/admin/reviews',          icon: Star },
+  { label: 'Applications',   href: '/admin/applications',     icon: ClipboardList },
+  { label: 'Animals',        href: '/admin/animals',          icon: PawPrint },
+  { label: 'Volunteers',     href: '/admin/volunteers',       icon: Users },
+  { label: '5K Sign-Ups',    href: '/admin/registrations',    icon: Flag },
 ]
 
 export default function AdminSidebar() {

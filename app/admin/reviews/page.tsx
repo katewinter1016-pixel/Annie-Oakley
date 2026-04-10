@@ -1,22 +1,44 @@
 import { supabaseServer as supabase } from '@/lib/supabaseServer'
 import Image from 'next/image'
+import Link from 'next/link'
 import ReviewActions from './ReviewActions'
 
 export const dynamic = 'force-dynamic'
 
-async function getReviews() {
-  const { data } = await supabase
+const PAGE_SIZE = 20
+
+async function getReviews(page: number) {
+  const offset = (page - 1) * PAGE_SIZE
+
+  const { data: pending } = await supabase
     .from('reviews')
     .select('*')
+    .eq('approved', false)
     .order('created_at', { ascending: false })
-  return data ?? []
+
+  const { data: approved, count } = await supabase
+    .from('reviews')
+    .select('*', { count: 'exact' })
+    .eq('approved', true)
+    .order('created_at', { ascending: false })
+    .range(offset, offset + PAGE_SIZE - 1)
+
+  return {
+    pending: pending ?? [],
+    approved: approved ?? [],
+    approvedTotal: count ?? 0,
+  }
 }
 
-export default async function AdminReviewsPage() {
-  const reviews = await getReviews()
-
-  const pending = reviews.filter((r) => !r.approved)
-  const approved = reviews.filter((r) => r.approved)
+export default async function AdminReviewsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>
+}) {
+  const params = await searchParams
+  const page = Math.max(1, parseInt(params.page ?? '1', 10))
+  const { pending, approved, approvedTotal } = await getReviews(page)
+  const totalPages = Math.ceil(approvedTotal / PAGE_SIZE)
 
   return (
     <div className="p-8">
@@ -54,19 +76,51 @@ export default async function AdminReviewsPage() {
       {/* Approved reviews */}
       <section>
         <h2 className="font-display text-xl font-bold text-stone-700 mb-5">
-          Approved & Live ({approved.length})
+          Approved & Live ({approvedTotal})
         </h2>
 
         {approved.length === 0 ? (
           <p className="text-stone-400 text-sm">No approved reviews yet.</p>
         ) : (
-          <div className="flex flex-col gap-4">
-            {approved.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
-          </div>
+          <>
+            <div className="flex flex-col gap-4">
+              {approved.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
+            </div>
+            <Pagination page={page} totalPages={totalPages} basePath="/admin/reviews" />
+          </>
         )}
       </section>
+    </div>
+  )
+}
+
+function Pagination({ page, totalPages, basePath }: { page: number; totalPages: number; basePath: string }) {
+  if (totalPages <= 1) return null
+  return (
+    <div className="flex items-center justify-between mt-6">
+      {page > 1 ? (
+        <Link
+          href={`${basePath}?page=${page - 1}`}
+          className="text-sm font-semibold text-stone-500 hover:text-stone-800 transition-colors px-4 py-2 rounded-full hover:bg-stone-100"
+        >
+          ← Previous
+        </Link>
+      ) : (
+        <span className="text-sm text-stone-300 px-4 py-2">← Previous</span>
+      )}
+      <span className="text-sm text-stone-400">Page {page} of {totalPages}</span>
+      {page < totalPages ? (
+        <Link
+          href={`${basePath}?page=${page + 1}`}
+          className="text-sm font-semibold text-stone-500 hover:text-stone-800 transition-colors px-4 py-2 rounded-full hover:bg-stone-100"
+        >
+          Next →
+        </Link>
+      ) : (
+        <span className="text-sm text-stone-300 px-4 py-2">Next →</span>
+      )}
     </div>
   )
 }
@@ -124,7 +178,6 @@ function ReviewCard({ review }: {
           </p>
         </div>
 
-        {/* Client component handles approve/reject/delete buttons */}
         <ReviewActions reviewId={review.id} approved={review.approved} />
       </div>
     </div>
