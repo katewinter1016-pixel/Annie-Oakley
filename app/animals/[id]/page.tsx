@@ -14,8 +14,9 @@ async function getAnimal(id: string) {
   return data
 }
 
-export default async function AnimalDetailPage({ params }: { params: { id: string } }) {
-  const animal = await getAnimal(params.id)
+export default async function AnimalDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const animal = await getAnimal(id)
 
   // If no animal found with this ID, show the 404 page
   if (!animal) notFound()
