@@ -222,7 +222,7 @@ export default async function HomePage() {
               </div>
 
               <p className="text-amber-100/60 leading-relaxed max-w-lg mx-auto lg:mx-0">
-                Lace up and bring your pups! Every entry directly supports the animals in our care. Dogs welcome on leash. T-shirt orders close May 29th.
+                Lace up and bring your pups! Every sign-up goes directly toward our dream facility fund. Dogs welcome on leash. T-shirt orders close May 29th.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-1">

@@ -19,7 +19,7 @@ const UPCOMING_EVENTS = [
     time: 'TBD',
     location: 'Eastern Montana',
     description:
-      'Lace up your shoes and bring your four-legged friends! Join us for the Fetch the Finish Line 5K — a fundraiser run benefiting Annie Oakley Animal Rescue. Every mile run supports animals in our care. Dogs welcome on leash!',
+      'Lace up your shoes and bring your four-legged friends! Join us for the Fetch the Finish Line 5K — every sign-up goes directly toward our dream facility fund. Dogs welcome on leash. T-shirt orders close May 29th!',
     image: '/fetch-5k.png',
     featured: true,
   },
