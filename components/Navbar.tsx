@@ -12,7 +12,7 @@ const LINKS = [
   { label: 'Volunteer', href: '/volunteer' },
   { label: 'Heart of the Rescue', href: '/heart-of-the-rescue' },
   { label: 'Forms', href: '/forms' },
-  { label: 'Shop', href: 'https://rusticrevivalclothingco.com', external: true },
+  { label: 'Shop', href: 'https://rusticrevivalclothingco.com/collections/annie-oakley-rescue', external: true },
 ]
 
 export default function Navbar() {
