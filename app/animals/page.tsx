@@ -4,6 +4,16 @@ import { supabase } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
 
+export const metadata = {
+  title: 'Adoptable Animals',
+  description: 'Meet all the dogs, cats, and animals available for adoption at Annie Oakley Animal Rescue in Eastern Montana.',
+  openGraph: {
+    title: 'Adoptable Animals | Annie Oakley Animal Rescue',
+    description: 'Find your perfect pet — dogs, cats, and more available in Eastern Montana.',
+    url: 'https://www.annieoakleyanimalrescue.com/animals',
+  },
+}
+
 // Fetch all available animals from Supabase
 async function getAnimals(species?: string) {
   let query = supabase

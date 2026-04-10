@@ -5,6 +5,16 @@ import FacebookBanner from '@/components/FacebookBanner'
 
 export const dynamic = 'force-dynamic'
 
+export const metadata = {
+  title: 'Adopt a Pet',
+  description: 'Browse dogs, cats, and other animals available for adoption through Annie Oakley Animal Rescue in Eastern Montana. Find your forever companion today.',
+  openGraph: {
+    title: 'Adopt a Pet | Annie Oakley Animal Rescue',
+    description: 'Browse adoptable animals in Eastern Montana. Every pet has been rescued and fully vetted.',
+    url: 'https://www.annieoakleyanimalrescue.com/adopt',
+  },
+}
+
 async function getAnimals() {
   const { data } = await supabase
     .from('animals')

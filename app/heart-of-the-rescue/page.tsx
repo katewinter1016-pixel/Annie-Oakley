@@ -2,6 +2,16 @@ import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import ReviewForm from './ReviewForm'
 
+export const metadata = {
+  title: 'Heart of the Rescue',
+  description: 'Read adoption success stories from families who found their forever pets through Annie Oakley Animal Rescue in Eastern Montana.',
+  openGraph: {
+    title: 'Heart of the Rescue | Annie Oakley Animal Rescue',
+    description: 'Real stories from families who adopted through Annie Oakley Animal Rescue.',
+    url: 'https://www.annieoakleyanimalrescue.com/heart-of-the-rescue',
+  },
+}
+
 // Fetch all submitted reviews to display on the page
 async function getReviews() {
   const { data } = await supabase
