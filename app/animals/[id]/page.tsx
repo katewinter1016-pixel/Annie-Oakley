@@ -62,7 +62,7 @@ export default async function AnimalDetailPage({ params }: { params: Promise<{ i
                   src={photos[0]}
                   alt={animal.name}
                   fill
-                  className="object-cover"
+                  className="object-cover object-top"
                   priority
                 />
               ) : (

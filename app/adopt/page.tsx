@@ -161,7 +161,7 @@ function AnimalRow({
             src={animal.photo_urls[0]}
             alt={animal.name}
             fill
-            className="object-cover"
+            className="object-cover object-top"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-stone-300 text-sm">

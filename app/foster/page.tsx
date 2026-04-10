@@ -128,7 +128,7 @@ function AnimalRow({ animal, formPath }: {
     <div className="bg-white border border-amber-100 rounded-2xl overflow-hidden flex flex-col sm:flex-row shadow-sm hover:shadow-md hover:border-[#D4A017]/40 transition-all">
       <div className="sm:w-56 sm:flex-shrink-0 h-52 sm:h-auto relative bg-amber-50">
         {animal.photo_urls?.[0] ? (
-          <Image src={animal.photo_urls[0]} alt={animal.name} fill className="object-cover" />
+          <Image src={animal.photo_urls[0]} alt={animal.name} fill className="object-cover object-top" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-stone-300 text-sm">Photo coming soon</div>
         )}
