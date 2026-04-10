@@ -2,6 +2,8 @@ import { supabaseServer as supabase } from '@/lib/supabaseServer'
 import Image from 'next/image'
 import ReviewActions from './ReviewActions'
 
+export const dynamic = 'force-dynamic'
+
 async function getReviews() {
   const { data } = await supabase
     .from('reviews')

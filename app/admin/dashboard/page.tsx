@@ -2,6 +2,8 @@ import { supabaseServer as supabase } from '@/lib/supabaseServer'
 import Link from 'next/link'
 import { Star, ClipboardList, PawPrint, Users } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 async function getStats() {
   const [reviews, applications, animals, volunteers] = await Promise.all([
     supabase.from('reviews').select('id, approved').eq('approved', false),

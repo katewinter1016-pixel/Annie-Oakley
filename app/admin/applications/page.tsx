@@ -1,6 +1,8 @@
 import { supabaseServer as supabase } from '@/lib/supabaseServer'
 import ApplicationActions from './ApplicationActions'
 
+export const dynamic = 'force-dynamic'
+
 async function getApplications() {
   const { data } = await supabase
     .from('applications')

@@ -3,6 +3,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import AnimalRowActions from './AnimalRowActions'
 
+export const dynamic = 'force-dynamic'
+
 async function getAnimals() {
   const { data } = await supabase
     .from('animals')
