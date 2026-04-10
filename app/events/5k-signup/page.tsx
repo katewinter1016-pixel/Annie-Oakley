@@ -102,7 +102,7 @@ export default function FiveKSignupPage() {
             <p className="text-amber-100/70 mt-1">Hosted by Winter Howlers · Annie Oakley Animal Rescue Fundraiser</p>
             <div className="flex flex-wrap gap-4 mt-3 text-sm text-amber-100/60">
               <span className="flex items-center gap-1.5"><CalendarDays className="w-4 h-4 text-[#D4A017]" /> June 20, 2026</span>
-              <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#D4A017]" /> Eastern Montana</span>
+              <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#D4A017]" /> Details coming soon</span>
             </div>
           </div>
         </div>

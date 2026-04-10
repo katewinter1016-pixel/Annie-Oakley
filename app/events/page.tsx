@@ -17,7 +17,7 @@ const UPCOMING_EVENTS = [
     subtitle: 'Hosted by Winter Howlers',
     date: 'June 20, 2026',
     time: 'TBD',
-    location: 'Eastern Montana',
+    location: 'Details coming soon',
     description:
       'Lace up your shoes and bring your four-legged friends! Join us for the Fetch the Finish Line 5K — every sign-up goes directly toward our dream facility fund. Dogs welcome on leash. T-shirt orders close May 29th!',
     image: '/fetch-5k.png',

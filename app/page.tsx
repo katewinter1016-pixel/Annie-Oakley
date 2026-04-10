@@ -218,7 +218,7 @@ export default async function HomePage() {
 
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-amber-100/70">
                 <span className="flex items-center gap-1.5"><CalendarDays className="w-4 h-4 text-[#D4A017]" /> June 20, 2026</span>
-                <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#D4A017]" /> Eastern Montana</span>
+                <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#D4A017]" /> Details coming soon</span>
               </div>
 
               <p className="text-amber-100/60 leading-relaxed max-w-lg mx-auto lg:mx-0">
