@@ -32,6 +32,7 @@ export default function Footer() {
             <li><Link href="/foster" className="hover:text-[#D4A017] transition-colors">Foster Application</Link></li>
             <li><Link href="/surrender" className="hover:text-[#D4A017] transition-colors">Surrender an Animal</Link></li>
             <li><Link href="/volunteer" className="hover:text-[#D4A017] transition-colors">Volunteer</Link></li>
+            <li><a href="https://rusticrevivalclothingco.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#D4A017] transition-colors">Shop Apparel</a></li>
           </ul>
         </div>
 
