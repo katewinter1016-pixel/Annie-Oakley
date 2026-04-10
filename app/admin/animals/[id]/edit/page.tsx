@@ -2,6 +2,8 @@ import { supabaseServer } from '@/lib/supabaseServer'
 import { notFound } from 'next/navigation'
 import EditAnimalForm from './EditAnimalForm'
 
+export const dynamic = 'force-dynamic'
+
 export default async function EditAnimalPage({ params }: { params: { id: string } }) {
   const { data: animal } = await supabaseServer
     .from('animals')
