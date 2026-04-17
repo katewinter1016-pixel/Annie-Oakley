@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
+        from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: ADMIN_EMAIL,
         subject: `New Review Pending Approval — ${esc(animal_name)}`,
         html: `
