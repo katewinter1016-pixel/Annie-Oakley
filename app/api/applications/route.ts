@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
+        from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
         to: ADMIN_EMAIL,
         subject: `New ${typeLabel} Application — ${esc(fields.applicant_name)}`,
         html: `
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
         `,
       })
       await resend.emails.send({
-        from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
+        from: 'Annie Oakley Animal Rescue <hello@annieoakleyanimalrescue.com>',
         to: fields.applicant_email,
         subject: `We received your ${typeLabel.toLowerCase()} application!`,
         html: `
