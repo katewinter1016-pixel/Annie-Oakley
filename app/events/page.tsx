@@ -102,7 +102,7 @@ export default function EventsPage() {
                     href="/events/5k-signup"
                     className="bg-[#D4A017] text-[#2D1606] px-7 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition-colors text-center shadow-lg shadow-[#D4A017]/20"
                   >
-                    Sign Up for the 5K
+                    Learn More
                   </Link>
                   <Link
                     href="/volunteer"

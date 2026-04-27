@@ -112,15 +112,28 @@ export default function VolunteerPage() {
               <Field label="Email" name="email" type="email" required />
               <Field label="Phone Number" name="phone" type="tel" placeholder="(000) 000-0000" />
 
-              {/* 5K Event Sign-Up — coming soon */}
-              <div className="rounded-2xl border-2 border-dashed border-amber-200 bg-amber-50/50 p-5 flex items-center gap-4">
-                <div className="relative w-12 h-12 flex-shrink-0">
-                  <Image src="/fetch-5k.png" alt="5K Run" fill className="object-contain" />
+              {/* 5K Booth Volunteer */}
+              <div className="rounded-2xl border-2 border-[#D4A017] bg-[#D4A017]/5 p-5 flex flex-col gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="relative w-12 h-12 flex-shrink-0">
+                    <Image src="/fetch-5k.png" alt="5K Run" fill className="object-contain" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-[#2D1606] text-sm leading-tight">Fetch the Finish Line 5K — Volunteer at a Booth</p>
+                    <p className="text-stone-400 text-xs">Fairview, MT · Sharbono Park · Hosted by Winter Howlers</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-bold text-[#2D1606] text-sm">Fetch the Finish Line 5K — Volunteer Spots</p>
-                  <p className="text-stone-400 text-sm mt-0.5">More details coming soon. Check back for volunteer sign-up!</p>
-                </div>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="interests"
+                    value="Volunteer at 5K Booth"
+                    className="accent-[#D4A017] w-4 h-4 flex-shrink-0"
+                  />
+                  <span className="text-sm text-stone-700 font-medium">
+                    I want to volunteer at a booth at the 5K event
+                  </span>
+                </label>
               </div>
 
               {/* General interests */}
