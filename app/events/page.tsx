@@ -19,7 +19,7 @@ const UPCOMING_EVENTS = [
     time: 'TBD',
     location: 'Details coming soon',
     description:
-      'Lace up your shoes and bring your four-legged friends! Join us for the Fetch the Finish Line 5K — every sign-up goes directly toward our dream facility fund. Dogs welcome on leash. T-shirt orders close May 29th!',
+      'Lace up your shoes and bring your four-legged friends! Join us for the Fetch the Finish Line 5K — every sign-up goes directly toward our dream facility fund. Dogs welcome on leash. T-shirt sales close June 5th!',
     image: '/fetch-5k.png',
     featured: true,
   },
