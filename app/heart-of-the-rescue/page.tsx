@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import Image from 'next/image'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import ReviewForm from './ReviewForm'
 
 export const metadata = {
@@ -16,7 +16,7 @@ export const metadata = {
 
 // Fetch all submitted reviews to display on the page
 async function getReviews() {
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from('reviews')
     .select('*')
     .eq('approved', true)

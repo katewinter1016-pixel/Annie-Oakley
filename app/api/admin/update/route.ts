@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseServer } from '@/lib/supabaseServer'
+import { getSupabaseServer } from '@/lib/supabaseServer'
 import { cookies } from 'next/headers'
 
 async function isAdmin() {
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid table' }, { status: 400 })
   }
 
-  const { error } = await supabaseServer.from(table).update(data).eq('id', id)
+  const { error } = await getSupabaseServer().from(table).update(data).eq('id', id)
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

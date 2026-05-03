@@ -3,12 +3,12 @@ export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Heart, Home, Users, Mail, Phone } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import FacebookBanner from '@/components/FacebookBanner'
 
 async function getActiveDonation() {
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from('donations')
     .select('*')
     .eq('is_active', true)

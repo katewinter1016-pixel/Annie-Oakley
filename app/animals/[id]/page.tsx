@@ -3,12 +3,12 @@ export const dynamic = 'force-dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import { Heart, Home, Check, X } from 'lucide-react'
 
 // Fetch one animal by its ID from the URL
 async function getAnimal(id: string) {
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from('animals')
     .select('*')
     .eq('id', id)

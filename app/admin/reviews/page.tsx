@@ -1,4 +1,4 @@
-import { supabaseServer as supabase } from '@/lib/supabaseServer'
+import { getSupabaseServer } from '@/lib/supabaseServer'
 import Image from 'next/image'
 import Link from 'next/link'
 import ReviewActions from './ReviewActions'

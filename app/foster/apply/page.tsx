@@ -1,12 +1,12 @@
 export const dynamic = 'force-dynamic'
 
 import { Suspense } from 'react'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import FosterForm from './FosterForm'
 
 async function getAnimal(id: string | null) {
   if (!id) return null
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from('animals')
     .select('id, name, sex, photo_urls, species, breed')
     .eq('id', id)

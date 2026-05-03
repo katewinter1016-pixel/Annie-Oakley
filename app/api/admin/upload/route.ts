@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseServer } from '@/lib/supabaseServer'
+import { getSupabaseServer } from '@/lib/supabaseServer'
 import { cookies } from 'next/headers'
 
 async function isAdmin() {
@@ -32,13 +32,13 @@ export async function POST(req: NextRequest) {
   const ext = file.name.split('.').pop()
   const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
-  const { error } = await supabaseServer.storage.from(bucket).upload(path, file, { upsert: false })
+  const { error } = await getSupabaseServer().storage.from(bucket).upload(path, file, { upsert: false })
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  const { data: urlData } = supabaseServer.storage.from(bucket).getPublicUrl(path)
+  const { data: urlData } = getSupabaseServer().storage.from(bucket).getPublicUrl(path)
 
   return NextResponse.json({ url: urlData.publicUrl })
 }

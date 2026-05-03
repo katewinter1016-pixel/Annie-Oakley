@@ -1,4 +1,4 @@
-import { supabaseServer } from '@/lib/supabaseServer'
+import { getSupabaseServer } from '@/lib/supabaseServer'
 import { notFound } from 'next/navigation'
 import EditAnimalForm from './EditAnimalForm'
 
@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function EditAnimalPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const { data: animal } = await supabaseServer
+  const { data: animal } = await getSupabaseServer()
     .from('animals')
     .select('*')
     .eq('id', id)

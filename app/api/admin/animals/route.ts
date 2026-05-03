@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseServer } from '@/lib/supabaseServer'
+import { getSupabaseServer } from '@/lib/supabaseServer'
 import { cookies } from 'next/headers'
 
 async function isAdmin() {
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json()
   const { name, species, breed, sex, age_years, description, status, photo_urls } = body
 
-  const { data, error } = await supabaseServer.from('animals').insert({
+  const { data, error } = await getSupabaseServer().from('animals').insert({
     name,
     species,
     breed: breed || null,
@@ -48,7 +48,7 @@ export async function PUT(req: NextRequest) {
   const body = await req.json()
   const { id, ...fields } = body
 
-  const { error } = await supabaseServer.from('animals').update({
+  const { error } = await getSupabaseServer().from('animals').update({
     name: fields.name,
     species: fields.species,
     breed: fields.breed || null,

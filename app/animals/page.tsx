@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,7 +16,7 @@ export const metadata = {
 
 // Fetch all available animals from Supabase
 async function getAnimals(species?: string) {
-  let query = supabase
+  let query = getSupabase()
     .from('animals')
     .select('id, name, species, breed, age_years, sex, weight, photo_urls, status, good_with_kids, good_with_dogs, good_with_cats')
     .eq('status', 'available')

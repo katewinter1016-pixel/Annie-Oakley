@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { supabaseServer as supabase } from '@/lib/supabaseServer'
+import { getSupabaseServer } from '@/lib/supabaseServer'
 
 const TOTAL_SLOTS = 15
 

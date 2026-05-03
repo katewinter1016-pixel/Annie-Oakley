@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 import FacebookBanner from '@/components/FacebookBanner'
 
 export const dynamic = 'force-dynamic'
@@ -16,7 +16,7 @@ export const metadata = {
 }
 
 async function getAnimals() {
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from('animals')
     .select('id, name, species, breed, age_years, sex, description, photo_urls, status, listing_type')
     .eq('status', 'available')

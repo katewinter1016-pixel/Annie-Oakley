@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseServer } from '@/lib/supabaseServer'
+import { getSupabaseServer } from '@/lib/supabaseServer'
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
   const filename = `${Date.now()}-${file.name.replace(/\s+/g, '-')}`
 
-  const { data: uploadData, error } = await supabaseServer.storage
+  const { data: uploadData, error } = await getSupabaseServer().storage
     .from('Review Photos')
     .upload(filename, file, { upsert: false })
 
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  const { data: urlData } = supabaseServer.storage
+  const { data: urlData } = getSupabaseServer().storage
     .from('Review Photos')
     .getPublicUrl(uploadData.path)
 
