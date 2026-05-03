@@ -34,7 +34,7 @@ export default async function AnimalDetailPage({ params }: { params: Promise<{ i
     { label: 'Breed', value: animal.breed },
     { label: 'Age', value: animal.age_years != null ? `${animal.age_years} year${animal.age_years !== 1 ? 's' : ''}` : null },
     { label: 'Sex', value: animal.sex },
-    { label: 'Size', value: animal.size },
+    { label: 'Weight', value: animal.weight ? `${animal.weight} lbs` : null },
     { label: 'Status', value: animal.status },
   ].filter((d) => d.value)
 

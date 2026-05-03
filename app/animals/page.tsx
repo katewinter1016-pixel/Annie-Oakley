@@ -18,7 +18,7 @@ export const metadata = {
 async function getAnimals(species?: string) {
   let query = supabase
     .from('animals')
-    .select('id, name, species, breed, age_years, sex, size, photo_urls, status, good_with_kids, good_with_dogs, good_with_cats')
+    .select('id, name, species, breed, age_years, sex, weight, photo_urls, status, good_with_kids, good_with_dogs, good_with_cats')
     .eq('status', 'available')
     .order('created_at', { ascending: false })
 
@@ -152,7 +152,7 @@ function AnimalCard({ animal }: { animal: {
   breed: string | null
   age_years: number | null
   sex: string | null
-  size: string | null
+  weight: number | null
   photo_urls: string[] | null
   good_with_kids: boolean | null
   good_with_dogs: boolean | null
@@ -195,9 +195,9 @@ function AnimalCard({ animal }: { animal: {
           {animal.name}
         </h3>
 
-        {/* Breed, age, sex, size details */}
+        {/* Breed, age, sex, weight details */}
         <p className="text-stone-500 text-sm capitalize">
-          {[animal.breed, animal.age_years != null && `${animal.age_years} yr${animal.age_years !== 1 ? 's' : ''}`, animal.sex, animal.size]
+          {[animal.breed, animal.age_years != null && `${animal.age_years} yr${animal.age_years !== 1 ? 's' : ''}`, animal.sex, animal.weight != null && `${animal.weight} lbs`]
             .filter(Boolean)
             .join(' · ')}
         </p>

@@ -54,7 +54,7 @@ export default function NewAnimalForm() {
         age_years: form.get('age_years'),
         description: form.get('description'),
         status: form.get('status'),
-        size: form.get('size'),
+        weight: form.get('weight') ? Number(form.get('weight')) : null,
         good_with_kids: goodWithKids,
         good_with_dogs: goodWithDogs,
         good_with_cats: goodWithCats,
@@ -138,14 +138,8 @@ export default function NewAnimalForm() {
           </select>
         </div>
         <div>
-          <label className={labelClass}>Size</label>
-          <select name="size" className={fieldClass}>
-            <option value="">Unknown</option>
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-            <option value="extra-large">Extra-Large</option>
-          </select>
+          <label className={labelClass}>Weight (lbs)</label>
+          <input name="weight" type="number" min="0" step="0.1" className={fieldClass} placeholder="e.g. 45" />
         </div>
       </div>
 
