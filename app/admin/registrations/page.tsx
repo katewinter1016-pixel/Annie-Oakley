@@ -6,7 +6,7 @@ const PAGE_SIZE = 20
 
 async function getRegistrations(page: number) {
   const offset = (page - 1) * PAGE_SIZE
-  const { data, count } = await supabase
+  const { data, count } = await getSupabaseServer()
     .from('event_registrations')
     .select('*', { count: 'exact' })
     .eq('event_id', '5k-2026')

@@ -10,13 +10,13 @@ const PAGE_SIZE = 20
 async function getReviews(page: number) {
   const offset = (page - 1) * PAGE_SIZE
 
-  const { data: pending } = await supabase
+  const { data: pending } = await getSupabaseServer()
     .from('reviews')
     .select('*')
     .eq('approved', false)
     .order('created_at', { ascending: false })
 
-  const { data: approved, count } = await supabase
+  const { data: approved, count } = await getSupabaseServer()
     .from('reviews')
     .select('*', { count: 'exact' })
     .eq('approved', true)

@@ -7,7 +7,7 @@ const PAGE_SIZE = 20
 
 async function getVolunteers(page: number) {
   const offset = (page - 1) * PAGE_SIZE
-  const { data, count } = await supabase
+  const { data, count } = await getSupabaseServer()
     .from('volunteers')
     .select('*', { count: 'exact' })
     .order('created_at', { ascending: false })

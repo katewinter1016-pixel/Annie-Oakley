@@ -9,13 +9,13 @@ const PAGE_SIZE = 20
 async function getApplications(page: number) {
   const offset = (page - 1) * PAGE_SIZE
 
-  const { data: pending } = await supabase
+  const { data: pending } = await getSupabaseServer()
     .from('applications')
     .select('*')
     .eq('status', 'pending')
     .order('created_at', { ascending: false })
 
-  const { data: reviewed, count } = await supabase
+  const { data: reviewed, count } = await getSupabaseServer()
     .from('applications')
     .select('*', { count: 'exact' })
     .neq('status', 'pending')

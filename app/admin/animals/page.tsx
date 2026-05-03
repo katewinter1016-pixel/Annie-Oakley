@@ -9,14 +9,14 @@ const PAGE_SIZE = 20
 
 async function getAnimals(page: number) {
   // Always show all available animals
-  const { data: available } = await supabase
+  const { data: available } = await getSupabaseServer()
     .from('animals')
     .select('id, name, species, breed, age_years, sex, status, photo_urls, created_at')
     .eq('status', 'available')
     .order('created_at', { ascending: false })
 
   const offset = (page - 1) * PAGE_SIZE
-  const { data: other, count } = await supabase
+  const { data: other, count } = await getSupabaseServer()
     .from('animals')
     .select('id, name, species, breed, age_years, sex, status, photo_urls, created_at', { count: 'exact' })
     .neq('status', 'available')

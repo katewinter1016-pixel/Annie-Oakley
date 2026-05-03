@@ -6,10 +6,10 @@ export const dynamic = 'force-dynamic'
 
 async function getStats() {
   const [reviews, applications, animals, volunteers] = await Promise.all([
-    supabase.from('reviews').select('id, approved').eq('approved', false),
-    supabase.from('applications').select('id, status').eq('status', 'pending'),
-    supabase.from('animals').select('id').eq('status', 'available'),
-    supabase.from('volunteers').select('id'),
+    getSupabaseServer().from('reviews').select('id, approved').eq('approved', false),
+    getSupabaseServer().from('applications').select('id, status').eq('status', 'pending'),
+    getSupabaseServer().from('animals').select('id').eq('status', 'available'),
+    getSupabaseServer().from('volunteers').select('id'),
   ])
   return {
     pendingReviews: reviews.data?.length ?? 0,
