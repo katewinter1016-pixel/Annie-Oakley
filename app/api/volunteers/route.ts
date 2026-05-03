@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { name, email, phone, availability, interests, experience } = body
 
-    const { error } = await supabase.from('volunteers').insert({
+    const { error } = await getSupabaseServer().from('volunteers').insert({
       name,
       email,
       phone: phone || null,

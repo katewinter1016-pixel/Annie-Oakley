@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid application type' }, { status: 400 })
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await getSupabaseServer()
       .from('applications')
       .insert({
         type,

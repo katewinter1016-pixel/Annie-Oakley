@@ -4,7 +4,7 @@ import { getSupabaseServer } from '@/lib/supabaseServer'
 const TOTAL_SLOTS = 15
 
 export async function GET() {
-  const { count } = await supabase
+  const { count } = await getSupabaseServer()
     .from('volunteers')
     .select('*', { count: 'exact', head: true })
     .ilike('interests', '%Work at the 5K%')

@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { reviewer_name, animal_name, review_text, photo_url } = body
 
-    const { error } = await supabase.from('reviews').insert({
+    const { error } = await getSupabaseServer().from('reviews').insert({
       reviewer_name,
       animal_name,
       review_text,

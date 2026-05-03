@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 })
     }
 
-    const { error } = await supabase.from('event_registrations').insert({
+    const { error } = await getSupabaseServer().from('event_registrations').insert({
       event_id: '5k-2026',
       registration_type,
       contact_name,
