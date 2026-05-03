@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { Suspense } from 'react'
 import { supabase } from '@/lib/supabase'
 import AdoptForm from './AdoptForm'
