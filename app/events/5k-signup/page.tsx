@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ReactNode, type ElementType } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CalendarDays, MapPin, Plus, Trash2, PawPrint, Users, User, CheckCircle2 } from 'lucide-react'
@@ -639,7 +639,7 @@ function FormSection({
 }: {
   title: string
   subtitle?: string
-  children: React.ReactNode
+  children: ReactNode
 }) {
   return (
     <div className="bg-white rounded-3xl border border-stone-100 shadow-sm p-6 sm:p-8 flex flex-col gap-5">
@@ -661,7 +661,7 @@ function TypeCard({
 }: {
   label: string
   desc: string
-  Icon: React.ElementType
+  Icon: ElementType
   selected: boolean
   onClick: () => void
 }) {
