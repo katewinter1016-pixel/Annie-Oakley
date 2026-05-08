@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServer } from '@/lib/supabaseServer'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!
+function getResend() { return new Resend(process.env.RESEND_API_KEY) }
 
 function esc(str: unknown): string {
   return String(str ?? '')
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-      await resend.emails.send({
+      await getResend().emails.send({
         from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: ADMIN_EMAIL,
         subject: `New Volunteer Signup — ${esc(name)}`,
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
           </div>
         `,
       })
-      await resend.emails.send({
+      await getResend().emails.send({
         from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: email,
         subject: 'Thank you for volunteering with Annie Oakley Animal Rescue!',

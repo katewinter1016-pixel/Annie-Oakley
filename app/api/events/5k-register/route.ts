@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServer } from '@/lib/supabaseServer'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!
+function getResend() { return new Resend(process.env.RESEND_API_KEY) }
 
 // June 20, 2026 at 6:30 AM MDT (30 min before 7 AM start)
 const REGISTRATION_CUTOFF = new Date('2026-06-20T06:30:00-06:00')
@@ -111,14 +111,14 @@ export async function POST(req: NextRequest) {
       : '<p><strong>Animals:</strong> None</p>'
 
     try {
-      await resend.emails.send({
+      await getResend().emails.send({
         from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: ADMIN_EMAIL,
         subject: `New Fun Run Registration — ${esc(contact_name)}`,
         html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto"><h2 style="color:#2D1606">New Fun Run Registration</h2><p><strong>Contact:</strong> ${esc(contact_name)}</p><p><strong>Email:</strong> ${esc(contact_email)}</p><p><strong>Phone:</strong> ${esc(contact_phone || '—')}</p><p><strong>Type:</strong> ${esc(registration_type)}</p>${volunteerLine}<table style="width:100%;border-collapse:collapse;margin:12px 0"><thead><tr style="text-align:left;border-bottom:2px solid #eee"><th style="padding:4px 12px 4px 0">Name</th><th style="padding:4px 12px 4px 0">Category</th><th style="padding:4px 12px 4px 0">Shirt</th><th>Price</th></tr></thead><tbody>${participantRows}</tbody></table>${animalSection}<p><strong>Total: $${total_cost}</strong></p><p style="margin-top:24px"><a href="https://www.annieoakleyanimalrescue.com/admin/registrations" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold">View in Admin</a></p></div>`,
       })
 
-      await resend.emails.send({
+      await getResend().emails.send({
         from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: contact_email,
         subject: "You're registered for the Fetch the Finish Line Fun Run!",
