@@ -201,9 +201,9 @@ export default async function HomePage() {
             </div>
 
             <p className="text-amber-100/70 leading-relaxed">
-              Run or walk through Fairview with your four-legged best friend! Dogs are welcome on leash.
-              Every registration directly supports Annie Oakley Animal Rescue. Entry fees:{' '}
-              <strong className="text-white">$40 adult · $30 youth · free 5&amp;under</strong>.
+              Run or walk through Fairview and support Annie Oakley Animal Rescue. Every registration goes
+              directly toward the animals in our care. Entry fee:{' '}
+              <strong className="text-white">$40 · free for 5 &amp; under</strong>.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">

@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect, type ReactNode, type ElementType } from 'react'
+import { useState, type ReactNode, type ElementType } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { CalendarDays, MapPin, Plus, Trash2, PawPrint, Users, User, CheckCircle2 } from 'lucide-react'
+import { CalendarDays, MapPin, Plus, Trash2, Users, User, CheckCircle2 } from 'lucide-react'
 
-type AgeCategory = 'adult' | 'youth' | 'under5'
-type VolunteerRole = 'booth' | 'walk' | 'alternate'
+type AgeCategory = 'adult' | 'under5'
 
 interface Participant {
   name: string
@@ -15,37 +14,16 @@ interface Participant {
   price: number
 }
 
-interface Animal {
-  pet_name: string
-  species: string
-  breed: string
-}
-
-interface SlotInfo {
-  taken: number
-  remaining: number
-  max: number
-}
-
-const PRICES: Record<AgeCategory, number> = { adult: 40, youth: 30, under5: 0 }
+const PRICES: Record<AgeCategory, number> = { adult: 40, under5: 0 }
 const AGE_LABELS: Record<AgeCategory, string> = {
-  adult: 'Adult (18+) — $40',
-  youth: 'Youth (6–17) — $30',
+  adult: 'Adult — $40',
   under5: '5 & Under — Free',
 }
 const SHIRT_SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL']
 
-const VOLUNTEER_ROLES: { id: VolunteerRole; label: string; desc: string; max: number }[] = [
-  { id: 'booth', label: 'Booth Volunteer', desc: 'Help at registration, merchandise, or sponsor booths.', max: 6 },
-  { id: 'walk', label: 'Walk Volunteer', desc: 'Walk alongside participants and assist with course marshaling.', max: 4 },
-  { id: 'alternate', label: 'Alternate Volunteer', desc: 'Flexible backup role — assigned day-of where help is needed most.', max: 5 },
-]
-
 const WAIVER_TEXT = `I, the undersigned, do hereby release and hold harmless Annie Oakley Animal Rescue, Winter Howlers, the City of Fairview, and all event volunteers, sponsors, and organizers (collectively "Released Parties") from any and all claims, demands, causes of action, costs, or expenses of any nature arising out of my participation in the Fetch the Finish Line Fun Run event on June 20, 2026 at Sharbono Park in Fairview, Montana.
 
 I acknowledge that participating in a fun run event involves physical activity and associated risks, including but not limited to bodily injury, property damage, or death. I voluntarily assume all such risks.
-
-If I am bringing an animal to this event, I further agree that I am solely responsible for the behavior and safety of my animal at all times. My animal must remain leashed at all times. I agree to release the Released Parties from any liability arising from my animal's actions or behavior during the event.
 
 I certify that I am physically fit to participate in this event and have not been advised otherwise by a qualified medical professional. I grant permission for emergency medical treatment in the event I am unable to communicate.
 
@@ -58,27 +36,19 @@ export default function FiveKSignupPage() {
   const [participants, setParticipants] = useState<Participant[]>([
     { name: '', age_category: 'adult', shirt_size: '', price: 40 },
   ])
-  const [bringAnimal, setBringAnimal] = useState(false)
-  const [animals, setAnimals] = useState<Animal[]>([{ pet_name: '', species: 'dog', breed: '' }])
-  const [wantVolunteer, setWantVolunteer] = useState(false)
-  const [volunteerRole, setVolunteerRole] = useState<VolunteerRole | ''>('')
-  const [slots, setSlots] = useState<Record<VolunteerRole, SlotInfo> | null>(null)
   const [contactName, setContactName] = useState('')
   const [contactEmail, setContactEmail] = useState('')
   const [contactPhone, setContactPhone] = useState('')
+  const [mailingStreet, setMailingStreet] = useState('')
+  const [mailingCity, setMailingCity] = useState('')
+  const [mailingState, setMailingState] = useState('')
+  const [mailingZip, setMailingZip] = useState('')
   const [waiverAccepted, setWaiverAccepted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [submittedName, setSubmittedName] = useState('')
   const [submittedTotal, setSubmittedTotal] = useState(0)
   const [error, setError] = useState('')
-
-  useEffect(() => {
-    fetch('/api/events/5k-slots')
-      .then(r => r.json())
-      .then(setSlots)
-      .catch(() => {})
-  }, [])
 
   const totalCost = participants.reduce((sum, p) => sum + p.price, 0)
 
@@ -102,19 +72,6 @@ export default function FiveKSignupPage() {
     setParticipants(prev => prev.filter((_, idx) => idx !== i))
   }
 
-  function updateAnimal(i: number, updates: Partial<Animal>) {
-    setAnimals(prev => prev.map((a, idx) => (idx !== i ? a : { ...a, ...updates })))
-  }
-
-  function addAnimal() {
-    setAnimals(prev => [...prev, { pet_name: '', species: 'dog', breed: '' }])
-  }
-
-  function removeAnimal(i: number) {
-    if (animals.length <= 1) return
-    setAnimals(prev => prev.filter((_, idx) => idx !== i))
-  }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
@@ -131,14 +88,6 @@ export default function FiveKSignupPage() {
       setError('Contact name and email are required.')
       return
     }
-    if (wantVolunteer && !volunteerRole) {
-      setError("Please select a volunteer role or uncheck \"I'd like to volunteer.\"")
-      return
-    }
-    if (bringAnimal && animals.some(a => !a.pet_name.trim())) {
-      setError('Please enter a name for each animal.')
-      return
-    }
 
     setSubmitting(true)
     try {
@@ -150,11 +99,14 @@ export default function FiveKSignupPage() {
           contact_name: contactName,
           contact_email: contactEmail,
           contact_phone: contactPhone,
+          mailing_address: mailingStreet
+            ? { street: mailingStreet, city: mailingCity, state: mailingState, zip: mailingZip }
+            : null,
           participants,
           total_cost: totalCost,
-          animals: bringAnimal ? animals : [],
+          animals: [],
           liability_accepted: true,
-          volunteer_role: wantVolunteer ? volunteerRole : null,
+          volunteer_role: null,
         }),
       })
       const data = await res.json()
@@ -204,12 +156,9 @@ export default function FiveKSignupPage() {
       {/* Header */}
       <div className="bg-[#2D1606] text-white py-12 px-4">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-6">
-          {/* Fun Run logo */}
           <div className="relative w-28 h-28 flex-shrink-0">
             <Image src="/fetch-5k.png" alt="Fetch the Finish Line Fun Run" fill className="object-contain" />
           </div>
-
-          {/* Text */}
           <div className="flex-1">
             <p className="text-[#D4A017] text-xs font-bold uppercase tracking-widest mb-1">
               Annie Oakley Animal Rescue Fundraiser
@@ -227,8 +176,6 @@ export default function FiveKSignupPage() {
               </span>
             </div>
           </div>
-
-          {/* Hoopfest logo */}
           <div className="flex-shrink-0 flex flex-col items-center gap-1.5">
             <div className="bg-white rounded-2xl p-2 shadow-lg">
               <div className="relative w-24 h-20">
@@ -269,7 +216,7 @@ export default function FiveKSignupPage() {
           {/* ── Participants ──────────────────────────────────────── */}
           <FormSection
             title="Participants"
-            subtitle="Add each person joining the run or walk. T-shirts available for adults and youth."
+            subtitle="Add each person joining the run or walk. T-shirts available for adults."
           >
             <div className="flex flex-col gap-4">
               {participants.map((p, i) => (
@@ -302,7 +249,7 @@ export default function FiveKSignupPage() {
                     </div>
                     <div className="flex flex-col gap-1.5">
                       <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">
-                        Age Category *
+                        Category *
                       </label>
                       <select
                         value={p.age_category}
@@ -358,177 +305,6 @@ export default function FiveKSignupPage() {
             </div>
           </FormSection>
 
-          {/* ── Animals ───────────────────────────────────────────── */}
-          <FormSection
-            title="Bringing Your Animal?"
-            subtitle="Dogs are welcome on leash! Let us know who's coming."
-          >
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-4">
-                <ToggleCard
-                  label="Yes, bringing a pet!"
-                  selected={bringAnimal}
-                  onClick={() => setBringAnimal(true)}
-                  icon="🐾"
-                />
-                <ToggleCard
-                  label="No animals this time"
-                  selected={!bringAnimal}
-                  onClick={() => setBringAnimal(false)}
-                  icon="🚶"
-                />
-              </div>
-
-              {bringAnimal && (
-                <div className="flex flex-col gap-4 mt-2">
-                  {animals.map((a, i) => (
-                    <div key={i} className="bg-stone-50 border border-stone-200 rounded-2xl p-5 flex flex-col gap-4">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-stone-700 text-sm flex items-center gap-2">
-                          <PawPrint className="w-4 h-4 text-[#D4A017]" /> Animal {i + 1}
-                        </span>
-                        {animals.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={() => removeAnimal(i)}
-                            className="text-stone-400 hover:text-red-500 transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        )}
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">
-                            Pet Name *
-                          </label>
-                          <input
-                            type="text"
-                            value={a.pet_name}
-                            onChange={e => updateAnimal(i, { pet_name: e.target.value })}
-                            placeholder="Buddy"
-                            className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
-                            required={bringAnimal}
-                          />
-                        </div>
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Species</label>
-                          <select
-                            value={a.species}
-                            onChange={e => updateAnimal(i, { species: e.target.value })}
-                            className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017] bg-white"
-                          >
-                            <option value="dog">Dog</option>
-                            <option value="cat">Cat</option>
-                            <option value="other">Other</option>
-                          </select>
-                        </div>
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">
-                            Breed (optional)
-                          </label>
-                          <input
-                            type="text"
-                            value={a.breed}
-                            onChange={e => updateAnimal(i, { breed: e.target.value })}
-                            placeholder="Lab mix"
-                            className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={addAnimal}
-                    className="flex items-center gap-2 text-[#D4A017] font-semibold text-sm hover:text-yellow-600 transition-colors self-start"
-                  >
-                    <Plus className="w-4 h-4" /> Add Another Animal
-                  </button>
-                </div>
-              )}
-            </div>
-          </FormSection>
-
-          {/* ── Volunteer ─────────────────────────────────────────── */}
-          <FormSection
-            title="Volunteer at the Event"
-            subtitle="Help make Fetch the Finish Line a success! Limited spots available."
-          >
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-4">
-                <ToggleCard
-                  label="I'd like to volunteer!"
-                  selected={wantVolunteer}
-                  onClick={() => setWantVolunteer(true)}
-                  icon="🙋"
-                />
-                <ToggleCard
-                  label="Just participating"
-                  selected={!wantVolunteer}
-                  onClick={() => {
-                    setWantVolunteer(false)
-                    setVolunteerRole('')
-                  }}
-                  icon="🏃"
-                />
-              </div>
-
-              {wantVolunteer && (
-                <div className="flex flex-col gap-3 mt-2">
-                  <p className="text-sm text-stone-500">Select your preferred volunteer role:</p>
-                  {VOLUNTEER_ROLES.map(role => {
-                    const slotData = slots?.[role.id]
-                    const isFull = slotData ? slotData.remaining === 0 : false
-                    return (
-                      <label
-                        key={role.id}
-                        className={`flex items-start gap-4 p-4 rounded-2xl border-2 transition-all ${
-                          isFull
-                            ? 'opacity-50 cursor-not-allowed border-stone-100 bg-stone-50'
-                            : volunteerRole === role.id
-                            ? 'border-[#D4A017] bg-amber-50 cursor-pointer'
-                            : 'border-stone-200 hover:border-amber-300 bg-white cursor-pointer'
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="volunteer_role"
-                          value={role.id}
-                          checked={volunteerRole === role.id}
-                          disabled={isFull}
-                          onChange={() => setVolunteerRole(role.id)}
-                          className="mt-0.5 accent-[#D4A017]"
-                        />
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between gap-2 flex-wrap">
-                            <span className="font-semibold text-stone-800 text-sm">{role.label}</span>
-                            {slotData ? (
-                              <span
-                                className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                                  isFull
-                                    ? 'bg-red-100 text-red-500'
-                                    : slotData.remaining <= 2
-                                    ? 'bg-amber-100 text-amber-700'
-                                    : 'bg-green-100 text-green-700'
-                                }`}
-                              >
-                                {isFull ? 'Full' : `${slotData.remaining} of ${slotData.max} spots left`}
-                              </span>
-                            ) : (
-                              <span className="text-xs text-stone-400">{role.max} spots</span>
-                            )}
-                          </div>
-                          <p className="text-xs text-stone-500 mt-0.5">{role.desc}</p>
-                        </div>
-                      </label>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
-          </FormSection>
-
           {/* ── Contact Info ──────────────────────────────────────── */}
           <FormSection title="Contact Information">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -565,6 +341,60 @@ export default function FiveKSignupPage() {
                   placeholder="(406) 555-0000"
                   className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
                 />
+              </div>
+
+              {/* Mailing Address */}
+              <div className="sm:col-span-2 border-t border-stone-100 pt-4 flex flex-col gap-3">
+                <div>
+                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1">Mailing Address</p>
+                  <p className="text-xs text-stone-400 leading-relaxed">
+                    Optional — for event communications only. Once your order is placed, a mailing address cannot be added or changed. All purchases are final.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Street Address</label>
+                  <input
+                    type="text"
+                    value={mailingStreet}
+                    onChange={e => setMailingStreet(e.target.value)}
+                    placeholder="123 Main St"
+                    className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
+                  />
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div className="flex flex-col gap-1.5 col-span-2 sm:col-span-1">
+                    <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">City</label>
+                    <input
+                      type="text"
+                      value={mailingCity}
+                      onChange={e => setMailingCity(e.target.value)}
+                      placeholder="Fairview"
+                      className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">State</label>
+                    <input
+                      type="text"
+                      value={mailingState}
+                      onChange={e => setMailingState(e.target.value)}
+                      placeholder="MT"
+                      maxLength={2}
+                      className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017] uppercase"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">ZIP</label>
+                    <input
+                      type="text"
+                      value={mailingZip}
+                      onChange={e => setMailingZip(e.target.value)}
+                      placeholder="59221"
+                      maxLength={10}
+                      className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </FormSection>
@@ -684,31 +514,6 @@ function TypeCard({
         <p className={`font-bold text-sm ${selected ? 'text-[#2D1606]' : 'text-stone-600'}`}>{label}</p>
         <p className="text-stone-400 text-xs mt-0.5">{desc}</p>
       </div>
-    </button>
-  )
-}
-
-function ToggleCard({
-  label,
-  selected,
-  onClick,
-  icon,
-}: {
-  label: string
-  selected: boolean
-  onClick: () => void
-  icon: string
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`flex-1 flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
-        selected ? 'border-[#D4A017] bg-amber-50' : 'border-stone-200 hover:border-amber-300 bg-white'
-      }`}
-    >
-      <span className="text-2xl">{icon}</span>
-      <span className={`font-semibold text-sm ${selected ? 'text-[#2D1606]' : 'text-stone-500'}`}>{label}</span>
     </button>
   )
 }
