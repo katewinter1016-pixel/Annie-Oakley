@@ -2,18 +2,23 @@ export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Heart, Home, Users, Mail, Phone } from 'lucide-react'
+import { Heart, Home, Users, Mail, Phone, CalendarDays, MapPin } from 'lucide-react'
 import { getSupabase } from '@/lib/supabase'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import FacebookBanner from '@/components/FacebookBanner'
 
 async function getActiveDonation() {
-  const { data } = await getSupabase()
-    .from('donations')
-    .select('*')
-    .eq('is_active', true)
-    .single()
-  return data
+  try {
+    const { data, error } = await getSupabase()
+      .from('donations')
+      .select('*')
+      .eq('is_active', true)
+      .maybeSingle()
+    if (error) return null
+    return data
+  } catch {
+    return null
+  }
 }
 
 export default async function HomePage() {
@@ -155,6 +160,82 @@ export default async function HomePage() {
           >
             Donate via Venmo
           </a>
+        </div>
+      </section>
+
+      {/* ── FETCH THE FINISH LINE FUN RUN ────────────────────────── */}
+      <section className="py-20 px-4 bg-[#2D1606]">
+        <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-10">
+
+          {/* Fun Run logo */}
+          <div className="flex-shrink-0">
+            <div className="relative w-44 h-44">
+              <Image
+                src="/fetch-5k.png"
+                alt="Fetch the Finish Line Fun Run"
+                fill
+                className="object-contain drop-shadow-xl"
+              />
+            </div>
+          </div>
+
+          {/* Info */}
+          <div className="flex-1 flex flex-col gap-5 text-center lg:text-left">
+            <div>
+              <p className="text-[#D4A017] text-xs font-bold uppercase tracking-widest mb-2">
+                Upcoming Fundraiser Event
+              </p>
+              <h2 className="font-display text-4xl font-bold text-white leading-tight">
+                Fetch the Finish Line Fun Run
+              </h2>
+              <p className="text-amber-100/60 mt-1">Hosted by Winter Howlers</p>
+            </div>
+
+            <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-amber-100/70">
+              <span className="flex items-center gap-2">
+                <CalendarDays className="w-4 h-4 text-[#D4A017]" /> June 20, 2026 · 7:00 AM
+              </span>
+              <span className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-[#D4A017]" /> Sharbono Park · Fairview, MT
+              </span>
+            </div>
+
+            <p className="text-amber-100/70 leading-relaxed">
+              Run or walk through Fairview with your four-legged best friend! Dogs are welcome on leash.
+              Every registration directly supports Annie Oakley Animal Rescue. Entry fees:{' '}
+              <strong className="text-white">$40 adult · $30 youth · free 5&amp;under</strong>.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+              <Link
+                href="/events/5k-signup"
+                className="bg-[#D4A017] text-[#2D1606] px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition-colors shadow-lg shadow-black/30"
+              >
+                Register Now →
+              </Link>
+              <Link
+                href="/events"
+                className="border border-white/20 text-amber-100/70 px-8 py-3.5 rounded-full font-semibold hover:border-white/50 hover:text-white transition-colors text-sm"
+              >
+                View All Events
+              </Link>
+            </div>
+          </div>
+
+          {/* Hoopfest logo */}
+          <div className="flex-shrink-0 flex flex-col items-center gap-2">
+            <div className="bg-white rounded-2xl p-3 shadow-xl">
+              <div className="relative w-28 h-24">
+                <Image
+                  src="/hoopfest-logo.png"
+                  alt="Hoopfest Border Town"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
+            <p className="text-amber-100/50 text-xs font-semibold uppercase tracking-wide">Part of Hoopfest</p>
+          </div>
         </div>
       </section>
 

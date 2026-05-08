@@ -34,8 +34,8 @@ export default async function AdminRegistrationsPage({
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-stone-800">5K Registrations</h1>
-        <p className="text-stone-400 mt-1">Fetch the Finish Line 5K · June 20, 2026</p>
+        <h1 className="font-display text-3xl font-bold text-stone-800">Fun Run Registrations</h1>
+        <p className="text-stone-400 mt-1">Fetch the Finish Line Fun Run · June 20, 2026</p>
       </div>
 
       {/* Stats */}
