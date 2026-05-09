@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { CheckCircle2, Clock } from 'lucide-react'
 
 export default function PaymentToggle({
@@ -10,10 +11,12 @@ export default function PaymentToggle({
   id: string
   initialPaid: boolean
 }) {
+  const router = useRouter()
   const [paid, setPaid] = useState(initialPaid)
   const [loading, setLoading] = useState(false)
 
-  async function toggle() {
+  async function toggle(e: React.MouseEvent) {
+    e.stopPropagation()
     setLoading(true)
     const next = !paid
     const res = await fetch('/api/admin/5k-payment', {
@@ -21,7 +24,10 @@ export default function PaymentToggle({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, payment_received: next }),
     })
-    if (res.ok) setPaid(next)
+    if (res.ok) {
+      setPaid(next)
+      router.refresh()
+    }
     setLoading(false)
   }
 
@@ -29,7 +35,7 @@ export default function PaymentToggle({
     <button
       onClick={toggle}
       disabled={loading}
-      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors disabled:opacity-50 ${
+      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors disabled:opacity-50 whitespace-nowrap ${
         paid
           ? 'bg-green-100 text-green-700 hover:bg-green-200'
           : 'bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200'

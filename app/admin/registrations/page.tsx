@@ -1,11 +1,17 @@
 import type { ReactNode } from 'react'
 import { getSupabaseServer } from '@/lib/supabaseServer'
-import PaymentToggle from './PaymentToggle'
+import RegistrationCard from './RegistrationCard'
 
 export const dynamic = 'force-dynamic'
 
 type Participant = { name: string; age_category: string; shirt_size: string; price: number }
-type MailingAddress = { street: string; city: string; state: string; zip: string } | null
+
+const ROLE_LABELS: Record<string, string> = {
+  'sign-in-booth': 'Sign-In Booth',
+  'post-run-booth': 'Post Run Booth',
+  'race-setup': 'Race Set-Up',
+  'alternate-volunteer': 'Alternate',
+}
 
 async function getData() {
   const supabase = getSupabaseServer()
@@ -27,26 +33,19 @@ async function getData() {
   return { runners: runners ?? [], staffVolunteers: staffVolunteers ?? [] }
 }
 
-const ROLE_LABELS: Record<string, string> = {
-  'sign-in-booth': 'Sign-In Booth',
-  'post-run-booth': 'Post Run Booth',
-  'race-setup': 'Race Set-Up',
-  'alternate-volunteer': 'Alternate',
-}
-
 export default async function AdminRegistrationsPage() {
   const { runners, staffVolunteers } = await getData()
 
-  const paid = runners.filter(r => r.payment_received)
+  const registered = runners.filter(r => r.payment_received)
   const pending = runners.filter(r => !r.payment_received)
 
-  const totalRevenue = paid.reduce((sum, r) => sum + (r.total_cost ?? 0), 0)
-  const totalParticipants = paid.reduce(
+  const totalRevenue = registered.reduce((sum, r) => sum + (r.total_cost ?? 0), 0)
+  const totalParticipants = registered.reduce(
     (sum, r) => sum + ((r.participants as Participant[])?.length ?? 0), 0
   )
 
   return (
-    <div className="p-8 max-w-5xl">
+    <div className="p-8 max-w-4xl">
       <div className="mb-8">
         <h1 className="font-display text-3xl font-bold text-stone-800">Fetch the Finish Line</h1>
         <p className="text-stone-400 mt-1">Fun Run · June 20, 2026 · Sharbono Park, Fairview MT</p>
@@ -55,22 +54,10 @@ export default async function AdminRegistrationsPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
         <StatCard label="Total Sign-Ups" value={String(runners.length)} />
-        <StatCard label="Paid" value={String(paid.length)} highlight />
+        <StatCard label="Registered (Paid)" value={String(registered.length)} highlight />
         <StatCard label="Participants (Paid)" value={String(totalParticipants)} />
         <StatCard label="Revenue Confirmed" value={`$${totalRevenue.toLocaleString()}`} />
       </div>
-
-      {/* ── Paid Registrations ─────────────────────────────────── */}
-      <Section
-        title="Paid Registrations"
-        count={paid.length}
-        badge="green"
-        empty="No paid registrations yet."
-      >
-        {paid.map(reg => (
-          <RegistrationCard key={reg.id} reg={reg} />
-        ))}
-      </Section>
 
       {/* ── Pending Payment ────────────────────────────────────── */}
       <Section
@@ -78,9 +65,21 @@ export default async function AdminRegistrationsPage() {
         count={pending.length}
         badge="amber"
         empty="No pending registrations."
-        className="mt-10"
       >
         {pending.map(reg => (
+          <RegistrationCard key={reg.id} reg={reg} />
+        ))}
+      </Section>
+
+      {/* ── Registered (Paid) ──────────────────────────────────── */}
+      <Section
+        title="Registered"
+        count={registered.length}
+        badge="green"
+        empty="No paid registrations yet."
+        className="mt-10"
+      >
+        {registered.map(reg => (
           <RegistrationCard key={reg.id} reg={reg} />
         ))}
       </Section>
@@ -140,121 +139,14 @@ export default async function AdminRegistrationsPage() {
   )
 }
 
-function RegistrationCard({ reg }: { reg: Record<string, unknown> }) {
-  const participants = (reg.participants as Participant[]) ?? []
-  const mailing = reg.mailing_address as MailingAddress
-  const volunteerRole = reg.volunteer_role as string | null
-  const contactName = reg.contact_name as string
-  const contactEmail = reg.contact_email as string
-  const contactPhone = reg.contact_phone as string | null
-  const registrationType = reg.registration_type as string
-  const createdAt = reg.created_at as string
-  const totalCost = reg.total_cost as number
-  const id = reg.id as string
-  const paymentReceived = !!(reg.payment_received)
-
-  return (
-    <div className="bg-white rounded-2xl border border-stone-100 shadow-sm p-5">
-      <div className="flex items-start justify-between flex-wrap gap-3 mb-4">
-        <div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold text-stone-800 text-lg">{contactName}</span>
-            <span className="bg-stone-100 text-stone-500 text-xs font-semibold px-2.5 py-0.5 rounded-full capitalize">
-              {registrationType}
-            </span>
-            {volunteerRole && (
-              <span className="bg-blue-50 text-blue-600 border border-blue-200 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                Runner volunteer: {ROLE_LABELS[volunteerRole] ?? volunteerRole}
-              </span>
-            )}
-          </div>
-          <p className="text-stone-400 text-sm mt-0.5">{contactEmail}</p>
-          {contactPhone && <p className="text-stone-400 text-sm">{contactPhone}</p>}
-          <p className="text-stone-300 text-xs mt-1">
-            {new Date(createdAt).toLocaleDateString('en-US', {
-              month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit',
-            })}
-          </p>
-        </div>
-        <div className="flex flex-col items-end gap-2">
-          <p className="font-bold text-[#D4A017] text-xl">${totalCost}</p>
-          <PaymentToggle id={id} initialPaid={paymentReceived} />
-        </div>
-      </div>
-
-      {/* Participants + T-shirt sizes */}
-      <div className="border-t border-stone-100 pt-4 mb-4">
-        <p className="text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Participants & T-Shirt Sizes</p>
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="text-left">
-              <th className="text-xs text-stone-400 font-semibold pb-1.5 pr-4">Name</th>
-              <th className="text-xs text-stone-400 font-semibold pb-1.5 pr-4">Category</th>
-              <th className="text-xs text-stone-400 font-semibold pb-1.5 pr-4">Shirt Size</th>
-              <th className="text-xs text-stone-400 font-semibold pb-1.5">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {participants.map((p, i) => (
-              <tr key={i}>
-                <td className="text-stone-700 pr-4 pb-1">{p.name}</td>
-                <td className="text-stone-500 pr-4 pb-1 capitalize">{p.age_category}</td>
-                <td className="text-stone-500 pr-4 pb-1">
-                  {p.shirt_size
-                    ? <span className="bg-stone-100 text-stone-600 text-xs font-bold px-2 py-0.5 rounded">{p.shirt_size}</span>
-                    : '—'}
-                </td>
-                <td className="text-stone-500 pb-1">${p.price}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Liability + Mailing */}
-      <div className="flex flex-wrap gap-6 border-t border-stone-100 pt-4">
-        <div>
-          <p className="text-xs font-semibold text-stone-400 uppercase tracking-wide mb-1">Liability Waiver</p>
-          <p className="text-sm text-green-600 font-semibold flex items-center gap-1">
-            ✓ Accepted
-          </p>
-        </div>
-        {mailing ? (
-          <div>
-            <p className="text-xs font-semibold text-stone-400 uppercase tracking-wide mb-1">Mailing Address</p>
-            <p className="text-sm text-stone-700">
-              {mailing.street}, {mailing.city}, {mailing.state} {mailing.zip}
-            </p>
-          </div>
-        ) : (
-          <div>
-            <p className="text-xs font-semibold text-stone-400 uppercase tracking-wide mb-1">Mailing Address</p>
-            <p className="text-sm text-stone-400">Not provided</p>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
 function Section({
-  title,
-  count,
-  badge,
-  empty,
-  children,
-  className = '',
+  title, count, badge, empty, children, className = '',
 }: {
-  title: string
-  count: number
-  badge: 'green' | 'amber'
-  empty: string
-  children: ReactNode
-  className?: string
+  title: string; count: number; badge: 'green' | 'amber'; empty: string; children: ReactNode; className?: string
 }) {
   return (
     <section className={className}>
-      <div className="flex items-center gap-3 mb-5">
+      <div className="flex items-center gap-3 mb-4">
         <h2 className="font-display text-xl font-bold text-stone-700">{title}</h2>
         <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
           badge === 'green' ? 'bg-green-100 text-green-700' : 'bg-amber-50 text-amber-700 border border-amber-200'
@@ -267,7 +159,7 @@ function Section({
           <p className="text-stone-400">{empty}</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-4">{children}</div>
+        <div className="flex flex-col gap-2">{children}</div>
       )}
     </section>
   )
