@@ -64,12 +64,15 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    const mailingAddress = body.mailing_address ?? null
+
     const { error } = await supabase.from('event_registrations').insert({
       event_id: '5k-2026',
       registration_type,
       contact_name,
       contact_email,
       contact_phone: contact_phone || null,
+      mailing_address: mailingAddress,
       participants,
       total_cost,
       animals: animals?.length ? animals : null,

@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server'
 import { getSupabaseServer } from '@/lib/supabaseServer'
 
-const LIMITS: Record<string, number> = { booth: 6, walk: 4, alternate: 5 }
+const LIMITS: Record<string, number> = {
+  booth: 6,
+  walk: 4,
+  alternate: 5,
+  'sign-in-booth': 2,
+  'post-run-booth': 2,
+  'race-setup': 2,
+  'alternate-volunteer': 2,
+}
 
 export async function GET() {
   const { data } = await getSupabaseServer()
@@ -10,7 +18,7 @@ export async function GET() {
     .eq('event_id', '5k-2026')
     .not('volunteer_role', 'is', null)
 
-  const counts: Record<string, number> = { booth: 0, walk: 0, alternate: 0 }
+  const counts: Record<string, number> = Object.fromEntries(Object.keys(LIMITS).map(k => [k, 0]))
   for (const row of data ?? []) {
     const role = row.volunteer_role as string
     if (role in counts) counts[role]++

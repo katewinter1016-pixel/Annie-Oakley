@@ -11,7 +11,7 @@ const NAV = [
   { label: 'Applications',   href: '/admin/applications',     icon: ClipboardList },
   { label: 'Animals',        href: '/admin/animals',          icon: PawPrint },
   { label: 'Volunteers',     href: '/admin/volunteers',       icon: Users },
-  { label: 'Fun Run Sign-Ups', href: '/admin/registrations', icon: Flag },
+  { label: 'Fetch the Finish Line', href: '/admin/registrations', icon: Flag },
 ]
 
 export default function AdminSidebar() {
