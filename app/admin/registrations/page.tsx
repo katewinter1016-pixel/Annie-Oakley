@@ -143,6 +143,7 @@ export default async function AdminRegistrationsPage() {
 function RegistrationCard({ reg }: { reg: Record<string, unknown> }) {
   const participants = (reg.participants as Participant[]) ?? []
   const mailing = reg.mailing_address as MailingAddress
+  const volunteerRole = reg.volunteer_role as string | null
 
   return (
     <div className="bg-white rounded-2xl border border-stone-100 shadow-sm p-5">
@@ -153,9 +154,9 @@ function RegistrationCard({ reg }: { reg: Record<string, unknown> }) {
             <span className="bg-stone-100 text-stone-500 text-xs font-semibold px-2.5 py-0.5 rounded-full capitalize">
               {reg.registration_type as string}
             </span>
-            {reg.volunteer_role && (
+            {volunteerRole && (
               <span className="bg-blue-50 text-blue-600 border border-blue-200 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                Runner volunteer: {ROLE_LABELS[reg.volunteer_role as string] ?? reg.volunteer_role as string}
+                Runner volunteer: {ROLE_LABELS[volunteerRole] ?? volunteerRole}
               </span>
             )}
           </div>
