@@ -144,15 +144,23 @@ function RegistrationCard({ reg }: { reg: Record<string, unknown> }) {
   const participants = (reg.participants as Participant[]) ?? []
   const mailing = reg.mailing_address as MailingAddress
   const volunteerRole = reg.volunteer_role as string | null
+  const contactName = reg.contact_name as string
+  const contactEmail = reg.contact_email as string
+  const contactPhone = reg.contact_phone as string | null
+  const registrationType = reg.registration_type as string
+  const createdAt = reg.created_at as string
+  const totalCost = reg.total_cost as number
+  const id = reg.id as string
+  const paymentReceived = !!(reg.payment_received)
 
   return (
     <div className="bg-white rounded-2xl border border-stone-100 shadow-sm p-5">
       <div className="flex items-start justify-between flex-wrap gap-3 mb-4">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold text-stone-800 text-lg">{reg.contact_name as string}</span>
+            <span className="font-bold text-stone-800 text-lg">{contactName}</span>
             <span className="bg-stone-100 text-stone-500 text-xs font-semibold px-2.5 py-0.5 rounded-full capitalize">
-              {reg.registration_type as string}
+              {registrationType}
             </span>
             {volunteerRole && (
               <span className="bg-blue-50 text-blue-600 border border-blue-200 text-xs font-semibold px-2.5 py-0.5 rounded-full">
@@ -160,17 +168,17 @@ function RegistrationCard({ reg }: { reg: Record<string, unknown> }) {
               </span>
             )}
           </div>
-          <p className="text-stone-400 text-sm mt-0.5">{reg.contact_email as string}</p>
-          {reg.contact_phone && <p className="text-stone-400 text-sm">{reg.contact_phone as string}</p>}
+          <p className="text-stone-400 text-sm mt-0.5">{contactEmail}</p>
+          {contactPhone && <p className="text-stone-400 text-sm">{contactPhone}</p>}
           <p className="text-stone-300 text-xs mt-1">
-            {new Date(reg.created_at as string).toLocaleDateString('en-US', {
+            {new Date(createdAt).toLocaleDateString('en-US', {
               month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit',
             })}
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
-          <p className="font-bold text-[#D4A017] text-xl">${reg.total_cost as number}</p>
-          <PaymentToggle id={reg.id as string} initialPaid={!!(reg.payment_received)} />
+          <p className="font-bold text-[#D4A017] text-xl">${totalCost}</p>
+          <PaymentToggle id={id} initialPaid={paymentReceived} />
         </div>
       </div>
 
