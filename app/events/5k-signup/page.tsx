@@ -43,6 +43,9 @@ export default function FiveKSignupPage() {
   const [mailingCity, setMailingCity] = useState('')
   const [mailingState, setMailingState] = useState('')
   const [mailingZip, setMailingZip] = useState('')
+  const [emergencyName, setEmergencyName] = useState('')
+  const [emergencyPhone, setEmergencyPhone] = useState('')
+  const [emergencyRelation, setEmergencyRelation] = useState('')
   const [waiverAccepted, setWaiverAccepted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -92,6 +95,10 @@ export default function FiveKSignupPage() {
       setError('A mailing address is required for T-shirt delivery.')
       return
     }
+    if (!emergencyName.trim() || !emergencyPhone.trim()) {
+      setError('Emergency contact name and phone are required.')
+      return
+    }
 
     setSubmitting(true)
     try {
@@ -103,9 +110,8 @@ export default function FiveKSignupPage() {
           contact_name: contactName,
           contact_email: contactEmail,
           contact_phone: contactPhone,
-          mailing_address: mailingStreet
-            ? { street: mailingStreet, city: mailingCity, state: mailingState, zip: mailingZip }
-            : null,
+          mailing_address: { street: mailingStreet, city: mailingCity, state: mailingState, zip: mailingZip },
+          emergency_contact: { name: emergencyName, phone: emergencyPhone, relation: emergencyRelation },
           participants,
           total_cost: totalCost,
           animals: [],
@@ -206,6 +212,15 @@ export default function FiveKSignupPage() {
       <div className="max-w-3xl mx-auto px-4 py-12">
         <form onSubmit={handleSubmit} className="flex flex-col gap-8">
 
+          {/* ── Disclaimer ────────────────────────────────────────── */}
+          <div className="bg-[#D4A017]/10 border border-[#D4A017]/40 rounded-2xl px-6 py-4 flex flex-col gap-1">
+            <p className="text-xs font-bold text-[#2D1606] uppercase tracking-wide">T-Shirt Deadline</p>
+            <p className="text-sm text-stone-700 leading-relaxed">
+              T-shirts ordered before <strong>June 3rd</strong> will be mailed in time for the race.
+              Orders placed after this date may not receive their shirts in time.
+            </p>
+          </div>
+
           {/* ── Registration Type ─────────────────────────────────── */}
           <FormSection title="Registration Type">
             <div className="flex gap-4">
@@ -303,13 +318,15 @@ export default function FiveKSignupPage() {
                 </div>
               ))}
 
-              <button
-                type="button"
-                onClick={addParticipant}
-                className="flex items-center gap-2 text-[#D4A017] font-semibold text-sm hover:text-yellow-600 transition-colors self-start"
-              >
-                <Plus className="w-4 h-4" /> Add Another Participant
-              </button>
+              {regType === 'group' && (
+                <button
+                  type="button"
+                  onClick={addParticipant}
+                  className="flex items-center gap-2 text-[#D4A017] font-semibold text-sm hover:text-yellow-600 transition-colors self-start"
+                >
+                  <Plus className="w-4 h-4" /> Add Another Participant
+                </button>
+              )}
 
               <div className="border-t border-stone-200 pt-4 flex justify-between items-center">
                 <span className="font-semibold text-stone-600">Registration Total</span>
@@ -412,6 +429,47 @@ export default function FiveKSignupPage() {
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+          </FormSection>
+
+          {/* ── Emergency Contact ────────────────────────────────── */}
+          <FormSection
+            title="Emergency Contact"
+            subtitle="Required — someone we can reach if needed on race day."
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1.5 sm:col-span-2">
+                <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Full Name *</label>
+                <input
+                  type="text"
+                  value={emergencyName}
+                  onChange={e => setEmergencyName(e.target.value)}
+                  placeholder="Emergency contact name"
+                  required
+                  className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Phone *</label>
+                <input
+                  type="tel"
+                  value={emergencyPhone}
+                  onChange={e => setEmergencyPhone(e.target.value)}
+                  placeholder="(406) 555-0000"
+                  required
+                  className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Relationship</label>
+                <input
+                  type="text"
+                  value={emergencyRelation}
+                  onChange={e => setEmergencyRelation(e.target.value)}
+                  placeholder="e.g. Spouse, Parent, Friend"
+                  className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
+                />
               </div>
             </div>
           </FormSection>

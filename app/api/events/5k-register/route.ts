@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
       animals,
       liability_accepted,
       volunteer_role,
+      emergency_contact,
     } = body
 
     if (!registration_type || !contact_name || !contact_email || !participants?.length) {
@@ -73,6 +74,7 @@ export async function POST(req: NextRequest) {
       contact_email,
       contact_phone: contact_phone || null,
       mailing_address: mailingAddress,
+      emergency_contact: emergency_contact || null,
       participants,
       total_cost,
       animals: animals?.length ? animals : null,
@@ -134,6 +136,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true })
   } catch (err) {
     console.error('5k-register unexpected error:', err)
-    return NextResponse.json({ error: 'Something went wrong.' }, { status: 500 })
+    const msg = err instanceof Error ? err.message : String(err)
+    return NextResponse.json({ error: msg || 'Something went wrong.' }, { status: 500 })
   }
 }

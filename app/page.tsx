@@ -164,77 +164,100 @@ export default async function HomePage() {
       </section>
 
       {/* ── FETCH THE FINISH LINE FUN RUN ────────────────────────── */}
-      <section className="py-20 px-4 bg-[#2D1606]">
-        <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-10">
+      <section className="py-20 px-4 bg-[#2D1606] relative overflow-hidden">
+        {/* background accent */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#3d1e08] via-[#2D1606] to-[#1a0d03] pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#D4A017] to-transparent" />
 
-          {/* Fun Run logo */}
-          <div className="flex-shrink-0">
-            <div className="relative w-44 h-44">
-              <Image
-                src="/fetch-5k.png"
-                alt="Fetch the Finish Line Fun Run"
-                fill
-                className="object-contain drop-shadow-xl"
-              />
-            </div>
+        <div className="relative max-w-5xl mx-auto">
+          {/* Top badge */}
+          <div className="flex justify-center mb-8">
+            <span className="bg-[#D4A017] text-[#2D1606] text-xs font-bold uppercase tracking-widest px-5 py-2 rounded-full shadow-lg shadow-[#D4A017]/30">
+              Upcoming Fundraiser Event · June 20, 2026
+            </span>
           </div>
 
-          {/* Info */}
-          <div className="flex-1 flex flex-col gap-5 text-center lg:text-left">
-            <div>
-              <p className="text-[#D4A017] text-xs font-bold uppercase tracking-widest mb-2">
-                Upcoming Fundraiser Event
-              </p>
-              <h2 className="font-display text-4xl font-bold text-white leading-tight">
-                Fetch the Finish Line Fun Run
-              </h2>
-              <p className="text-amber-100/60 mt-1">Hosted by Winter Howlers</p>
-            </div>
-
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-amber-100/70">
-              <span className="flex items-center gap-2">
-                <CalendarDays className="w-4 h-4 text-[#D4A017]" /> June 20, 2026 · 7:00 AM
-              </span>
-              <span className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#D4A017]" /> Sharbono Park · Fairview, MT
-              </span>
-            </div>
-
-            <p className="text-amber-100/70 leading-relaxed">
-              Run or walk through Fairview and support Annie Oakley Animal Rescue. Every registration goes
-              directly toward the animals in our care. Entry fee:{' '}
-              <strong className="text-white">$40 · free for 5 &amp; under</strong>.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-              <Link
-                href="/events/5k-signup"
-                className="bg-[#D4A017] text-[#2D1606] px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition-colors shadow-lg shadow-black/30"
-              >
-                Register Now →
-              </Link>
-              <Link
-                href="/events"
-                className="border border-white/20 text-amber-100/70 px-8 py-3.5 rounded-full font-semibold hover:border-white/50 hover:text-white transition-colors text-sm"
-              >
-                View All Events
-              </Link>
-            </div>
-          </div>
-
-          {/* Hoopfest logo */}
-          <div className="flex-shrink-0 flex flex-col items-center gap-2">
-            <div className="bg-white rounded-2xl p-3 shadow-xl">
-              <div className="relative w-28 h-24">
+          <div className="flex flex-col lg:flex-row items-center gap-10">
+            {/* Fun Run logo */}
+            <div className="flex-shrink-0">
+              <div className="relative w-52 h-52 drop-shadow-2xl">
                 <Image
-                  src="/hoopfest-logo.png"
-                  alt="Hoopfest Border Town"
+                  src="/fetch-5k.png"
+                  alt="Fetch the Finish Line Fun Run"
                   fill
                   className="object-contain"
                 />
               </div>
             </div>
-            <p className="text-amber-100/50 text-xs font-semibold uppercase tracking-wide">Part of Hoopfest</p>
+
+            {/* Info */}
+            <div className="flex-1 flex flex-col gap-5 text-center lg:text-left">
+              <div>
+                <h2 className="font-display text-4xl sm:text-5xl font-bold text-white leading-tight">
+                  Fetch the Finish Line Fun Run
+                </h2>
+                <p className="text-amber-100/60 mt-1.5">Hosted by Winter Howlers</p>
+              </div>
+
+              <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-amber-100/70">
+                <span className="flex items-center gap-2">
+                  <CalendarDays className="w-4 h-4 text-[#D4A017]" /> June 20, 2026 · 7:00 AM
+                </span>
+                <span className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-[#D4A017]" /> Sharbono Park · Fairview, MT
+                </span>
+              </div>
+
+              <p className="text-amber-100/70 leading-relaxed">
+                Run or walk through Fairview and support Annie Oakley Animal Rescue. Every registration goes
+                directly toward the animals in our care.
+              </p>
+
+              {/* Entry fee callout */}
+              <div className="flex justify-center lg:justify-start">
+                <div className="bg-white/10 border border-white/20 rounded-2xl px-6 py-3 flex items-center gap-4">
+                  <div className="text-center">
+                    <p className="text-[#D4A017] text-2xl font-display font-bold">$40</p>
+                    <p className="text-amber-100/60 text-xs">Adults</p>
+                  </div>
+                  <div className="w-px h-8 bg-white/20" />
+                  <div className="text-center">
+                    <p className="text-white text-2xl font-display font-bold">Free</p>
+                    <p className="text-amber-100/60 text-xs">5 &amp; Under</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                <Link
+                  href="/events/5k-signup"
+                  className="bg-[#D4A017] text-[#2D1606] px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition-colors shadow-lg shadow-[#D4A017]/40 text-center"
+                >
+                  Register Now →
+                </Link>
+                <Link
+                  href="/events"
+                  className="border border-white/20 text-amber-100/70 px-8 py-3.5 rounded-full font-semibold hover:border-white/50 hover:text-white transition-colors text-sm text-center"
+                >
+                  View All Events
+                </Link>
+              </div>
+            </div>
+
+            {/* Hoopfest logo */}
+            <div className="flex-shrink-0 flex flex-col items-center gap-2">
+              <div className="bg-white rounded-2xl p-3 shadow-xl">
+                <div className="relative w-28 h-24">
+                  <Image
+                    src="/hoopfest-logo.png"
+                    alt="Hoopfest Border Town"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+              <p className="text-amber-100/50 text-xs font-semibold uppercase tracking-wide">Part of Hoopfest</p>
+            </div>
           </div>
         </div>
       </section>
