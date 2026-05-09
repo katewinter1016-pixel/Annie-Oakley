@@ -132,7 +132,8 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true })
-  } catch {
+  } catch (err) {
+    console.error('5k-register unexpected error:', err)
     return NextResponse.json({ error: 'Something went wrong.' }, { status: 500 })
   }
 }

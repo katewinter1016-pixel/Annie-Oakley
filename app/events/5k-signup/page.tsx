@@ -88,6 +88,10 @@ export default function FiveKSignupPage() {
       setError('Contact name and email are required.')
       return
     }
+    if (!mailingStreet.trim() || !mailingCity.trim() || !mailingState.trim() || !mailingZip.trim()) {
+      setError('A mailing address is required for T-shirt delivery.')
+      return
+    }
 
     setSubmitting(true)
     try {
@@ -118,6 +122,11 @@ export default function FiveKSignupPage() {
       setSubmittedName(contactName)
       setSubmittedTotal(totalCost)
       setSubmitted(true)
+      if (totalCost > 0) {
+        setTimeout(() => {
+          window.location.href = 'https://venmo.com/CareMt24'
+        }, 3000)
+      }
     } catch {
       setError('Network error. Please try again.')
       setSubmitting(false)
@@ -140,9 +149,16 @@ export default function FiveKSignupPage() {
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 w-full text-sm text-stone-700 text-left">
             <p className="font-bold text-[#2D1606] mb-2">Complete your payment:</p>
             <p>Send <strong className="text-[#D4A017]">${submittedTotal}</strong> via Venmo to <strong>@CareMt24</strong></p>
-            <p className="text-stone-400 text-xs mt-1.5">Note: &ldquo;Fun Run – {submittedName}&rdquo;</p>
+            <p className="text-stone-500 text-xs mt-1.5">
+              Note: Your name or group name + <strong>&ldquo;Fetch&rdquo;</strong> — e.g. <em>&ldquo;{submittedName} Fetch&rdquo;</em>
+            </p>
             <p className="text-stone-400 text-xs mt-1">Your registration is not confirmed until payment is received.</p>
           </div>
+          {submittedTotal > 0 && (
+            <p className="text-stone-400 text-xs text-center">
+              Redirecting you to Annie Oakley Animal Rescue&apos;s Venmo in a moment…
+            </p>
+          )}
           <Link href="/" className="text-[#D4A017] font-semibold hover:underline text-sm">
             ← Back to Home
           </Link>
@@ -346,18 +362,19 @@ export default function FiveKSignupPage() {
               {/* Mailing Address */}
               <div className="sm:col-span-2 border-t border-stone-100 pt-4 flex flex-col gap-3">
                 <div>
-                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1">Mailing Address</p>
+                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1">Mailing Address <span className="text-[#D4A017]">*</span></p>
                   <p className="text-xs text-stone-400 leading-relaxed">
-                    Optional — for event communications only. Once your order is placed, a mailing address cannot be added or changed. All purchases are final.
+                    Required for T-shirt delivery. Once your order is placed, a mailing address cannot be added or changed. All purchases are final.
                   </p>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Street Address</label>
+                  <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Street Address *</label>
                   <input
                     type="text"
                     value={mailingStreet}
                     onChange={e => setMailingStreet(e.target.value)}
                     placeholder="123 Main St"
+                    required
                     className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
                   />
                 </div>
@@ -431,7 +448,7 @@ export default function FiveKSignupPage() {
           )}
 
           {/* Submit */}
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-4">
             <button
               type="submit"
               disabled={submitting}
@@ -443,10 +460,16 @@ export default function FiveKSignupPage() {
                 ? 'Register — Free!'
                 : `Register — $${totalCost} due via Venmo`}
             </button>
-            <p className="text-stone-400 text-xs text-center max-w-sm">
-              After registering, send payment via Venmo to <strong>@CareMt24</strong> with note{' '}
-              <em>&ldquo;Fun Run – [your name]&rdquo;</em> to confirm your spot.
-            </p>
+            <div className="text-center max-w-sm flex flex-col gap-2">
+              <p className="text-stone-500 text-sm">
+                After submitting, this page will redirect you to{' '}
+                <strong>Annie Oakley Animal Rescue&apos;s Venmo (@CareMt24)</strong> to complete your payment.
+                In the note, put your name or group name + <strong>&ldquo;Fetch&rdquo;</strong> to register your party.
+              </p>
+              <p className="text-stone-400 text-xs">
+                <strong>Disclaimer:</strong> T-shirts ordered before June 3rd will be mailed in time for the race. Orders placed after this date may not receive their shirts in time.
+              </p>
+            </div>
           </div>
 
           <div className="text-center">
