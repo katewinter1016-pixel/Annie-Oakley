@@ -171,10 +171,24 @@ export default async function HomePage() {
 
         <div className="relative max-w-5xl mx-auto">
           {/* Top badge */}
-          <div className="flex justify-center mb-8">
+          {/* Centered header */}
+          <div className="text-center mb-10">
             <span className="bg-[#D4A017] text-[#2D1606] text-xs font-bold uppercase tracking-widest px-5 py-2 rounded-full shadow-lg shadow-[#D4A017]/30">
-              Upcoming Fundraiser Event · June 20, 2026
+              Upcoming Fundraiser Event · June 1, 2026
             </span>
+            <h2 className="font-display text-4xl sm:text-5xl font-bold text-white leading-tight mt-6">
+              Fetch the Finish Line
+            </h2>
+            <p className="text-[#D4A017] font-bold text-lg uppercase tracking-widest mt-2">Virtual 5K</p>
+            <p className="text-amber-100/60 mt-2">Hosted by Winter Howlers</p>
+            <div className="flex flex-wrap gap-4 justify-center mt-4 text-sm text-amber-100/70">
+              <span className="flex items-center gap-2">
+                <CalendarDays className="w-4 h-4 text-[#D4A017]" /> Starting June 1, 2026
+              </span>
+              <span className="flex items-center gap-2">
+                <Heart className="w-4 h-4 text-[#D4A017]" /> Virtual — Run from anywhere!
+              </span>
+            </div>
           </div>
 
           <div className="flex flex-col lg:flex-row items-center gap-10">
@@ -183,7 +197,7 @@ export default async function HomePage() {
               <div className="relative w-52 h-52 drop-shadow-2xl">
                 <Image
                   src="/fetch-5k.png"
-                  alt="Fetch the Finish Line Fun Run"
+                  alt="Fetch the Finish Line Virtual 5K"
                   fill
                   className="object-contain"
                 />
@@ -191,34 +205,23 @@ export default async function HomePage() {
             </div>
 
             {/* Info */}
-            <div className="flex-1 flex flex-col gap-5 text-center lg:text-left">
-              <div>
-                <h2 className="font-display text-4xl sm:text-5xl font-bold text-white leading-tight">
-                  Fetch the Finish Line Virtual Fun Run
-                </h2>
-                <p className="text-amber-100/60 mt-1.5">Hosted by Winter Howlers</p>
-              </div>
-
-              <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-amber-100/70">
-                <span className="flex items-center gap-2">
-                  <CalendarDays className="w-4 h-4 text-[#D4A017]" /> Starting June 1, 2026
-                </span>
-                <span className="flex items-center gap-2">
-                  <Heart className="w-4 h-4 text-[#D4A017]" /> Virtual — Run from anywhere!
-                </span>
-              </div>
-
+            <div className="flex-1 flex flex-col gap-5 text-center">
               <p className="text-amber-100/70 leading-relaxed">
                 Run or walk from anywhere and support Annie Oakley Animal Rescue. Every registration goes
                 directly toward the animals in our care.
               </p>
 
-              {/* Entry fee callout */}
-              <div className="flex justify-center lg:justify-start">
+              {/* Pricing callout */}
+              <div className="flex justify-center">
                 <div className="bg-white/10 border border-white/20 rounded-2xl px-6 py-3 flex items-center gap-4">
                   <div className="text-center">
                     <p className="text-[#D4A017] text-2xl font-display font-bold">$40</p>
-                    <p className="text-amber-100/60 text-xs">T-Shirt Included</p>
+                    <p className="text-amber-100/60 text-xs">T-Shirt Registration</p>
+                  </div>
+                  <div className="w-px h-8 bg-white/20" />
+                  <div className="text-center">
+                    <p className="text-[#D4A017] text-2xl font-display font-bold">$30</p>
+                    <p className="text-amber-100/60 text-xs">Hat Registration</p>
                   </div>
                   <div className="w-px h-8 bg-white/20" />
                   <div className="text-center">
@@ -228,13 +231,21 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   href="/events/5k-signup"
                   className="bg-[#D4A017] text-[#2D1606] px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition-colors shadow-lg shadow-[#D4A017]/40 text-center"
                 >
-                  Register Now →
+                  T-Shirt Registration →
                 </Link>
+                <a
+                  href="https://www.bonfire.com/fetch-the-finish-line-5k-1/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white/10 border border-white/30 text-white px-8 py-3.5 rounded-full font-bold hover:bg-white/20 transition-colors text-center"
+                >
+                  Hat Registration →
+                </a>
                 <Link
                   href="/events"
                   className="border border-white/20 text-amber-100/70 px-8 py-3.5 rounded-full font-semibold hover:border-white/50 hover:text-white transition-colors text-sm text-center"

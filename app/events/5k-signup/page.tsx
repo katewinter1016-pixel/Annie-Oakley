@@ -177,8 +177,9 @@ export default function FiveKSignupPage() {
               Annie Oakley Animal Rescue Fundraiser
             </p>
             <h1 className="font-display text-3xl sm:text-4xl font-bold text-white leading-tight">
-              Fetch the Finish Line Virtual Fun Run
+              Fetch the Finish Line
             </h1>
+            <p className="text-[#D4A017] font-bold uppercase tracking-widest text-sm mt-1">Virtual 5K — T-Shirt Registration</p>
             <p className="text-amber-100/70 mt-1">Hosted by Winter Howlers</p>
             <div className="flex flex-wrap gap-4 mt-3 text-sm text-amber-100/60">
               <span className="flex items-center gap-1.5">
@@ -194,6 +195,22 @@ export default function FiveKSignupPage() {
 
       <div className="max-w-3xl mx-auto px-4 py-12">
         <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+
+          {/* ── Hat option callout ────────────────────────────────── */}
+          <div className="bg-white rounded-3xl border border-stone-100 shadow-sm p-6 flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex-1">
+              <p className="font-bold text-[#2D1606] text-base">Want a hat instead? $30</p>
+              <p className="text-stone-500 text-sm mt-0.5">Order your Fetch the Finish Line hat through our Bonfire store.</p>
+            </div>
+            <a
+              href="https://www.bonfire.com/fetch-the-finish-line-5k-1/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#2D1606] text-[#D4A017] px-6 py-2.5 rounded-full font-bold text-sm hover:bg-[#3d1e08] transition-colors whitespace-nowrap flex-shrink-0"
+            >
+              Get a Hat →
+            </a>
+          </div>
 
           {/* ── T-shirt Disclaimer ────────────────────────────────── */}
           <div className="bg-[#D4A017]/10 border border-[#D4A017]/40 rounded-2xl px-6 py-4 flex flex-col gap-1">
