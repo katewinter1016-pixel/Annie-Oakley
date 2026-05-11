@@ -5,8 +5,8 @@ import { Resend } from 'resend'
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!
 function getResend() { return new Resend(process.env.RESEND_API_KEY) }
 
-// June 20, 2026 at 6:30 AM MDT (30 min before 7 AM start)
-const REGISTRATION_CUTOFF = new Date('2026-06-20T06:30:00-06:00')
+// June 15, 2026 — virtual run closes two weeks after start
+const REGISTRATION_CUTOFF = new Date('2026-06-15T23:59:00-06:00')
 
 const VOLUNTEER_LIMITS: Record<string, number> = { booth: 6, walk: 4, alternate: 5 }
 
@@ -119,15 +119,15 @@ export async function POST(req: NextRequest) {
       await getResend().emails.send({
         from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: ADMIN_EMAIL,
-        subject: `New Fun Run Registration — ${esc(contact_name)}`,
+        subject: `New Virtual Fun Run Registration — ${esc(contact_name)}`,
         html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto"><h2 style="color:#2D1606">New Fun Run Registration</h2><p><strong>Contact:</strong> ${esc(contact_name)}</p><p><strong>Email:</strong> ${esc(contact_email)}</p><p><strong>Phone:</strong> ${esc(contact_phone || '—')}</p><p><strong>Type:</strong> ${esc(registration_type)}</p>${volunteerLine}<table style="width:100%;border-collapse:collapse;margin:12px 0"><thead><tr style="text-align:left;border-bottom:2px solid #eee"><th style="padding:4px 12px 4px 0">Name</th><th style="padding:4px 12px 4px 0">Category</th><th style="padding:4px 12px 4px 0">Shirt</th><th>Price</th></tr></thead><tbody>${participantRows}</tbody></table>${animalSection}<p><strong>Total: $${total_cost}</strong></p><p style="margin-top:24px"><a href="https://www.annieoakleyanimalrescue.com/admin/registrations" style="background:#D4A017;color:#2D1606;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold">View in Admin</a></p></div>`,
       })
 
       await getResend().emails.send({
         from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
         to: contact_email,
-        subject: "You're registered for the Fetch the Finish Line Fun Run!",
-        html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto"><h2 style="color:#2D1606">You're In, ${esc(contact_name)}!</h2><p>Thank you for registering for the <strong>Fetch the Finish Line Fun Run</strong> on <strong>June 20, 2026 at 7:00 AM</strong> at Sharbono Park in Fairview, MT — part of Hoopfest!</p><table style="width:100%;border-collapse:collapse;margin:12px 0"><thead><tr style="text-align:left;border-bottom:2px solid #eee"><th style="padding:4px 12px 4px 0">Participant</th><th style="padding:4px 12px 4px 0">Category</th><th style="padding:4px 12px 4px 0">Shirt Size</th><th>Price</th></tr></thead><tbody>${participantRows}</tbody></table>${volunteer_role ? `<p><strong>Volunteer role:</strong> ${esc(volunteer_role)} — thank you for helping!</p>` : ''}<p><strong>Total Due: $${total_cost}</strong></p><p>Please complete your payment via Venmo to <strong>@CareMt24</strong> with the note <em>"Fun Run - ${esc(contact_name)}"</em>. Registration is not confirmed until payment is received.</p><p>Dogs are welcome on leash! We'll see you at the finish line.</p><p style="margin-top:24px;color:#888;font-size:13px">— The Annie Oakley Animal Rescue Team</p></div>`,
+        subject: "You're registered for the Fetch the Finish Line Virtual Fun Run!",
+        html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto"><h2 style="color:#2D1606">You're In, ${esc(contact_name)}!</h2><p>Thank you for registering for the <strong>Fetch the Finish Line Virtual Fun Run</strong> beginning <strong>June 1, 2026</strong>. Run or walk from anywhere!</p><table style="width:100%;border-collapse:collapse;margin:12px 0"><thead><tr style="text-align:left;border-bottom:2px solid #eee"><th style="padding:4px 12px 4px 0">Participant</th><th style="padding:4px 12px 4px 0">Category</th><th style="padding:4px 12px 4px 0">Shirt Size</th><th>Price</th></tr></thead><tbody>${participantRows}</tbody></table><p><strong>Total Due: $${total_cost}</strong></p>${total_cost > 0 ? `<p>Please complete your payment via Venmo to <strong>@CareMt24</strong> with the note <em>"${esc(contact_name)} Fetch"</em>. Registration is not confirmed until payment is received.</p>` : ''}<p><strong>📸 Photo Challenge:</strong> After your run, take a photo and tag <strong>@WinterHowlers</strong> and <strong>@AnnieOakleyAnimalRescue</strong> to show your support!</p><p style="margin-top:24px;color:#888;font-size:13px">— The Annie Oakley Animal Rescue Team</p></div>`,
       })
     } catch {
       // Email failure non-fatal

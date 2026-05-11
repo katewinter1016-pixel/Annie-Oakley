@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Heart, Home, Users, Mail, Phone, CalendarDays, MapPin } from 'lucide-react'
+import { Heart, Home, Users, Mail, Phone, CalendarDays } from 'lucide-react'
 import { getSupabase } from '@/lib/supabase'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import FacebookBanner from '@/components/FacebookBanner'
@@ -194,22 +194,22 @@ export default async function HomePage() {
             <div className="flex-1 flex flex-col gap-5 text-center lg:text-left">
               <div>
                 <h2 className="font-display text-4xl sm:text-5xl font-bold text-white leading-tight">
-                  Fetch the Finish Line Fun Run
+                  Fetch the Finish Line Virtual Fun Run
                 </h2>
                 <p className="text-amber-100/60 mt-1.5">Hosted by Winter Howlers</p>
               </div>
 
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-amber-100/70">
                 <span className="flex items-center gap-2">
-                  <CalendarDays className="w-4 h-4 text-[#D4A017]" /> June 20, 2026 · 7:00 AM
+                  <CalendarDays className="w-4 h-4 text-[#D4A017]" /> Starting June 1, 2026
                 </span>
                 <span className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[#D4A017]" /> Sharbono Park · Fairview, MT
+                  <Heart className="w-4 h-4 text-[#D4A017]" /> Virtual — Run from anywhere!
                 </span>
               </div>
 
               <p className="text-amber-100/70 leading-relaxed">
-                Run or walk through Fairview and support Annie Oakley Animal Rescue. Every registration goes
+                Run or walk from anywhere and support Annie Oakley Animal Rescue. Every registration goes
                 directly toward the animals in our care.
               </p>
 
@@ -218,12 +218,12 @@ export default async function HomePage() {
                 <div className="bg-white/10 border border-white/20 rounded-2xl px-6 py-3 flex items-center gap-4">
                   <div className="text-center">
                     <p className="text-[#D4A017] text-2xl font-display font-bold">$40</p>
-                    <p className="text-amber-100/60 text-xs">Adults</p>
+                    <p className="text-amber-100/60 text-xs">T-Shirt Included</p>
                   </div>
                   <div className="w-px h-8 bg-white/20" />
                   <div className="text-center">
                     <p className="text-white text-2xl font-display font-bold">Free</p>
-                    <p className="text-amber-100/60 text-xs">5 &amp; Under</p>
+                    <p className="text-amber-100/60 text-xs">All Donations Welcome</p>
                   </div>
                 </div>
               </div>
@@ -244,20 +244,6 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Hoopfest logo */}
-            <div className="flex-shrink-0 flex flex-col items-center gap-2">
-              <div className="bg-white rounded-2xl p-3 shadow-xl">
-                <div className="relative w-28 h-24">
-                  <Image
-                    src="/hoopfest-logo.png"
-                    alt="Hoopfest Border Town"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-              <p className="text-amber-100/50 text-xs font-semibold uppercase tracking-wide">Part of Hoopfest</p>
-            </div>
           </div>
         </div>
       </section>
