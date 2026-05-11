@@ -5,8 +5,8 @@ import { Resend } from 'resend'
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!
 function getResend() { return new Resend(process.env.RESEND_API_KEY) }
 
-// June 15, 2026 — virtual run closes two weeks after start
-const REGISTRATION_CUTOFF = new Date('2026-06-15T23:59:00-06:00')
+// July 1, 2026 midnight MDT
+const REGISTRATION_CUTOFF = new Date('2026-07-01T00:00:00-06:00')
 
 const VOLUNTEER_LIMITS: Record<string, number> = { booth: 6, walk: 4, alternate: 5 }
 

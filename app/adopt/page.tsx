@@ -16,13 +16,17 @@ export const metadata = {
 }
 
 async function getAnimals() {
-  const { data } = await getSupabase()
-    .from('animals')
-    .select('id, name, species, breed, age_years, sex, description, photo_urls, status, listing_type')
-    .eq('status', 'available')
-    .in('listing_type', ['adoption', 'both'])
-    .order('created_at', { ascending: false })
-  return data ?? []
+  try {
+    const { data } = await getSupabase()
+      .from('animals')
+      .select('id, name, species, breed, age_years, sex, description, photo_urls, status, listing_type')
+      .eq('status', 'available')
+      .in('listing_type', ['adoption', 'both'])
+      .order('created_at', { ascending: false })
+    return data ?? []
+  } catch {
+    return []
+  }
 }
 
 export default async function AdoptPage() {

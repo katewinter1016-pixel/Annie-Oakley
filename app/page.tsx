@@ -212,49 +212,43 @@ export default async function HomePage() {
               </p>
 
               {/* Pricing callout */}
-              <div className="flex justify-center">
-                <div className="bg-white/10 border border-white/20 rounded-2xl px-6 py-3 flex items-center gap-4">
-                  <div className="text-center">
-                    <p className="text-[#D4A017] text-2xl font-display font-bold">$40</p>
-                    <p className="text-amber-100/60 text-xs">T-Shirt Registration</p>
+              {new Date() < new Date('2026-07-01T00:00:00-06:00') ? (
+                <>
+                  <div className="flex justify-center">
+                    <div className="bg-white/10 border border-white/20 rounded-2xl px-6 py-3 flex items-center gap-4">
+                      <div className="text-center">
+                        <p className="text-[#D4A017] text-2xl font-display font-bold">$40</p>
+                        <p className="text-amber-100/60 text-xs">T-Shirt Registration</p>
+                      </div>
+                      <div className="w-px h-8 bg-white/20" />
+                      <div className="text-center">
+                        <p className="text-[#D4A017] text-2xl font-display font-bold">$30</p>
+                        <p className="text-amber-100/60 text-xs">Hat Registration</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="w-px h-8 bg-white/20" />
-                  <div className="text-center">
-                    <p className="text-[#D4A017] text-2xl font-display font-bold">$30</p>
-                    <p className="text-amber-100/60 text-xs">Hat Registration</p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a
+                      href="https://www.bonfire.com/fetch-the-finish-line/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#D4A017] text-[#2D1606] px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition-colors shadow-lg shadow-[#D4A017]/40 text-center"
+                    >
+                      T-Shirt Registration ($40) →
+                    </a>
+                    <a
+                      href="https://www.bonfire.com/fetch-the-finish-line-5k-1/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white/10 border border-white/30 text-white px-8 py-3.5 rounded-full font-bold hover:bg-white/20 transition-colors text-center"
+                    >
+                      Hat Registration ($30) →
+                    </a>
                   </div>
-                  <div className="w-px h-8 bg-white/20" />
-                  <div className="text-center">
-                    <p className="text-white text-2xl font-display font-bold">Free</p>
-                    <p className="text-amber-100/60 text-xs">All Donations Welcome</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href="https://www.bonfire.com/fetch-the-finish-line/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#D4A017] text-[#2D1606] px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition-colors shadow-lg shadow-[#D4A017]/40 text-center"
-                >
-                  T-Shirt Registration ($40) →
-                </a>
-                <a
-                  href="https://www.bonfire.com/fetch-the-finish-line-5k-1/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white/10 border border-white/30 text-white px-8 py-3.5 rounded-full font-bold hover:bg-white/20 transition-colors text-center"
-                >
-                  Hat Registration ($30) →
-                </a>
-                <Link
-                  href="/events/5k-signup"
-                  className="border border-white/20 text-amber-100/70 px-8 py-3.5 rounded-full font-semibold hover:border-white/50 hover:text-white transition-colors text-sm text-center"
-                >
-                  Register Free / Donate →
-                </Link>
-              </div>
+                </>
+              ) : (
+                <p className="text-amber-100/50 text-sm text-center">Registration is now closed. Thank you to everyone who participated!</p>
+              )}
             </div>
 
           </div>

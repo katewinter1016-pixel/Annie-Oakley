@@ -170,37 +170,38 @@ export default function FiveKSignupPage() {
       <div className="max-w-3xl mx-auto px-4 py-12">
         <form onSubmit={handleSubmit} className="flex flex-col gap-8">
 
-          {/* ── Merch callouts ────────────────────────────────────── */}
-          <div className="bg-white rounded-3xl border border-stone-100 shadow-sm p-6 flex flex-col gap-4">
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-wide">Shop the Collection on Bonfire</p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href="https://www.bonfire.com/fetch-the-finish-line/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 hover:border-[#D4A017] transition-colors group"
-              >
-                <div>
-                  <p className="font-bold text-[#2D1606] text-sm">T-Shirt Registration</p>
-                  <p className="text-stone-500 text-xs mt-0.5">Order through Bonfire</p>
-                </div>
-                <span className="font-display font-bold text-[#D4A017] text-xl">$40 →</span>
-              </a>
-              <a
-                href="https://www.bonfire.com/fetch-the-finish-line-5k-1/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 hover:border-[#D4A017] transition-colors group"
-              >
-                <div>
-                  <p className="font-bold text-[#2D1606] text-sm">Hat Registration</p>
-                  <p className="text-stone-500 text-xs mt-0.5">Order through Bonfire</p>
-                </div>
-                <span className="font-display font-bold text-[#D4A017] text-xl">$30 →</span>
-              </a>
+          {/* ── Merch callouts (hidden after July 1) ─────────────── */}
+          {new Date() < new Date('2026-07-01T00:00:00-06:00') && (
+            <div className="bg-white rounded-3xl border border-stone-100 shadow-sm p-6 flex flex-col gap-4">
+              <p className="text-xs font-bold text-stone-400 uppercase tracking-wide">Register on Bonfire</p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a
+                  href="https://www.bonfire.com/fetch-the-finish-line/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 hover:border-[#D4A017] transition-colors"
+                >
+                  <div>
+                    <p className="font-bold text-[#2D1606] text-sm">T-Shirt Registration</p>
+                    <p className="text-stone-500 text-xs mt-0.5">Order through Bonfire · Closes July 1</p>
+                  </div>
+                  <span className="font-display font-bold text-[#D4A017] text-xl">$40 →</span>
+                </a>
+                <a
+                  href="https://www.bonfire.com/fetch-the-finish-line-5k-1/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 hover:border-[#D4A017] transition-colors"
+                >
+                  <div>
+                    <p className="font-bold text-[#2D1606] text-sm">Hat Registration</p>
+                    <p className="text-stone-500 text-xs mt-0.5">Order through Bonfire · Closes July 1</p>
+                  </div>
+                  <span className="font-display font-bold text-[#D4A017] text-xl">$30 →</span>
+                </a>
+              </div>
             </div>
-            <p className="text-xs text-stone-400 text-center">Registering below is free — donations of any amount are always welcome.</p>
-          </div>
+          )}
 
           {/* ── Facility Fund Donation ───────────────────────────── */}
           <a
