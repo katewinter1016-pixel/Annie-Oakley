@@ -153,7 +153,7 @@ export default function FiveKSignupPage() {
             <h1 className="font-display text-3xl sm:text-4xl font-bold text-white leading-tight">
               Fetch the Finish Line
             </h1>
-            <p className="text-[#D4A017] font-bold uppercase tracking-widest text-sm mt-1">Virtual 5K — T-Shirt Registration</p>
+            <p className="text-[#D4A017] font-bold uppercase tracking-widest text-sm mt-1">Virtual 5K — Hat &amp; T-Shirt Registration</p>
             <p className="text-amber-100/70 mt-1">Hosted by Winter Howlers</p>
             <div className="flex flex-wrap gap-4 mt-3 text-sm text-amber-100/60">
               <span className="flex items-center gap-1.5">
@@ -202,14 +202,25 @@ export default function FiveKSignupPage() {
             <p className="text-xs text-stone-400 text-center">Registering below is free — donations of any amount are always welcome.</p>
           </div>
 
-          {/* ── T-shirt Disclaimer ────────────────────────────────── */}
-          <div className="bg-[#D4A017]/10 border border-[#D4A017]/40 rounded-2xl px-6 py-4 flex flex-col gap-1">
-            <p className="text-xs font-bold text-[#2D1606] uppercase tracking-wide">T-Shirt Deadline</p>
-            <p className="text-sm text-stone-700 leading-relaxed">
-              T-shirts ordered before <strong>June 3rd</strong> will be mailed in time for the run.
-              Orders placed after this date may not arrive in time.
-            </p>
-          </div>
+          {/* ── Facility Fund Donation ───────────────────────────── */}
+          <a
+            href="https://venmo.com/CareMt24"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#2D1606] rounded-3xl p-6 flex flex-col sm:flex-row items-center gap-4 hover:bg-[#3d1e08] transition-colors group"
+          >
+            <div className="flex-1 text-center sm:text-left">
+              <p className="text-[#D4A017] text-xs font-bold uppercase tracking-widest mb-1">Support Beyond the Run</p>
+              <p className="text-white font-bold text-base">Donate to Our Facility Fund</p>
+              <p className="text-amber-100/60 text-sm mt-0.5">
+                Every dollar helps us build a permanent rescue facility in Eastern Montana.
+                Donate any amount via Venmo to <strong className="text-amber-100/80">@CareMt24</strong>.
+              </p>
+            </div>
+            <span className="bg-[#D4A017] text-[#2D1606] px-6 py-2.5 rounded-full font-bold text-sm group-hover:bg-yellow-400 transition-colors whitespace-nowrap flex-shrink-0">
+              Donate on Venmo →
+            </span>
+          </a>
 
           {/* ── Your Info ─────────────────────────────────────────── */}
           <FormSection title="Your Information">
