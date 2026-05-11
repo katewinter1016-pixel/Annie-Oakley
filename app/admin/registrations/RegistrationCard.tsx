@@ -8,6 +8,14 @@ type Participant = { name: string; age_category: string; shirt_size: string; pri
 type MailingAddress = { street: string; city: string; state: string; zip: string } | null
 type EmergencyContact = { name: string; phone: string; relation?: string } | null
 
+const TYPE_LABELS: Record<string, string> = {
+  tshirt: 'T-Shirt',
+  hat: 'Hat',
+  individual: 'Individual',
+  group: 'Group',
+  donate: 'Donation',
+}
+
 const ROLE_LABELS: Record<string, string> = {
   'sign-in-booth': 'Sign-In Booth',
   'post-run-booth': 'Post Run Booth',
@@ -41,8 +49,8 @@ export default function RegistrationCard({ reg }: { reg: Record<string, unknown>
       >
         <div className="flex items-center gap-2 flex-wrap min-w-0">
           <span className="font-bold text-stone-800 text-base">{contactName}</span>
-          <span className="bg-stone-100 text-stone-500 text-xs font-semibold px-2.5 py-0.5 rounded-full capitalize flex-shrink-0">
-            {registrationType}
+          <span className="bg-stone-100 text-stone-500 text-xs font-semibold px-2.5 py-0.5 rounded-full flex-shrink-0">
+            {TYPE_LABELS[registrationType] ?? registrationType}
           </span>
           {volunteerRole && (
             <span className="bg-blue-50 text-blue-600 border border-blue-200 text-xs font-semibold px-2.5 py-0.5 rounded-full flex-shrink-0">

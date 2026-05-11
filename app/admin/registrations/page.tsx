@@ -20,7 +20,7 @@ async function getData() {
     .from('event_registrations')
     .select('*')
     .eq('event_id', '5k-2026')
-    .in('registration_type', ['individual', 'group'])
+    .in('registration_type', ['individual', 'group', 'tshirt', 'hat', 'donate'])
     .order('created_at', { ascending: false })
 
   const { data: staffVolunteers } = await supabase
