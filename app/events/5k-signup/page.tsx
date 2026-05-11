@@ -5,8 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { CalendarDays, CheckCircle2, Camera, Heart } from 'lucide-react'
 
-const SHIRT_SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL']
-
 const WAIVER_TEXT = `I, the undersigned, do hereby release and hold harmless Annie Oakley Animal Rescue, Winter Howlers, and all event organizers (collectively "Released Parties") from any and all claims, demands, causes of action, costs, or expenses of any nature arising out of my participation in the Fetch the Finish Line Virtual Fun Run beginning June 1, 2026.
 
 I acknowledge that participating in a running or walking event involves physical activity and associated risks, including but not limited to bodily injury, property damage, or death. I voluntarily assume all such risks and acknowledge that I am solely responsible for choosing a safe route and location for my virtual run or walk.
@@ -19,15 +17,9 @@ By checking the box below, I acknowledge that I have read and fully understand t
 
 export default function FiveKSignupPage() {
   const [participantName, setParticipantName] = useState('')
-  const [wantsShirt, setWantsShirt] = useState(true)
-  const [shirtSize, setShirtSize] = useState('')
   const [donationAmount, setDonationAmount] = useState('')
   const [contactEmail, setContactEmail] = useState('')
   const [contactPhone, setContactPhone] = useState('')
-  const [mailingStreet, setMailingStreet] = useState('')
-  const [mailingCity, setMailingCity] = useState('')
-  const [mailingState, setMailingState] = useState('')
-  const [mailingZip, setMailingZip] = useState('')
   const [emergencyName, setEmergencyName] = useState('')
   const [emergencyPhone, setEmergencyPhone] = useState('')
   const [emergencyRelation, setEmergencyRelation] = useState('')
@@ -38,9 +30,7 @@ export default function FiveKSignupPage() {
   const [submittedTotal, setSubmittedTotal] = useState(0)
   const [error, setError] = useState('')
 
-  const shirtCost = wantsShirt ? 40 : 0
-  const extraDonation = parseFloat(donationAmount) || 0
-  const totalCost = shirtCost + extraDonation
+  const totalCost = parseFloat(donationAmount) || 0
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -48,14 +38,6 @@ export default function FiveKSignupPage() {
 
     if (!participantName.trim() || !contactEmail.trim()) {
       setError('Name and email are required.')
-      return
-    }
-    if (wantsShirt && !shirtSize) {
-      setError('Please select a shirt size.')
-      return
-    }
-    if (wantsShirt && (!mailingStreet.trim() || !mailingCity.trim() || !mailingState.trim() || !mailingZip.trim())) {
-      setError('A mailing address is required for T-shirt delivery.')
       return
     }
     if (!emergencyName.trim() || !emergencyPhone.trim()) {
@@ -77,19 +59,11 @@ export default function FiveKSignupPage() {
           contact_name: participantName,
           contact_email: contactEmail,
           contact_phone: contactPhone,
-          mailing_address: wantsShirt
-            ? { street: mailingStreet, city: mailingCity, state: mailingState, zip: mailingZip }
-            : null,
+          mailing_address: null,
           emergency_contact: { name: emergencyName, phone: emergencyPhone, relation: emergencyRelation },
-          participants: [{
-            name: participantName,
-            age_category: 'adult',
-            shirt_size: wantsShirt ? shirtSize : '',
-            price: shirtCost,
-          }],
+          participants: [{ name: participantName, age_category: 'adult', shirt_size: '', price: 0 }],
           total_cost: totalCost,
-          wants_shirt: wantsShirt,
-          donation_amount: extraDonation,
+          donation_amount: totalCost,
           animals: [],
           liability_accepted: true,
           volunteer_role: null,
@@ -196,20 +170,36 @@ export default function FiveKSignupPage() {
       <div className="max-w-3xl mx-auto px-4 py-12">
         <form onSubmit={handleSubmit} className="flex flex-col gap-8">
 
-          {/* ── Hat option callout ────────────────────────────────── */}
-          <div className="bg-white rounded-3xl border border-stone-100 shadow-sm p-6 flex flex-col sm:flex-row items-center gap-4">
-            <div className="flex-1">
-              <p className="font-bold text-[#2D1606] text-base">Want a hat instead? $30</p>
-              <p className="text-stone-500 text-sm mt-0.5">Order your Fetch the Finish Line hat through our Bonfire store.</p>
+          {/* ── Merch callouts ────────────────────────────────────── */}
+          <div className="bg-white rounded-3xl border border-stone-100 shadow-sm p-6 flex flex-col gap-4">
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-wide">Shop the Collection on Bonfire</p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a
+                href="https://www.bonfire.com/fetch-the-finish-line/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 hover:border-[#D4A017] transition-colors group"
+              >
+                <div>
+                  <p className="font-bold text-[#2D1606] text-sm">T-Shirt Registration</p>
+                  <p className="text-stone-500 text-xs mt-0.5">Order through Bonfire</p>
+                </div>
+                <span className="font-display font-bold text-[#D4A017] text-xl">$40 →</span>
+              </a>
+              <a
+                href="https://www.bonfire.com/fetch-the-finish-line-5k-1/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 hover:border-[#D4A017] transition-colors group"
+              >
+                <div>
+                  <p className="font-bold text-[#2D1606] text-sm">Hat Registration</p>
+                  <p className="text-stone-500 text-xs mt-0.5">Order through Bonfire</p>
+                </div>
+                <span className="font-display font-bold text-[#D4A017] text-xl">$30 →</span>
+              </a>
             </div>
-            <a
-              href="https://www.bonfire.com/fetch-the-finish-line-5k-1/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#2D1606] text-[#D4A017] px-6 py-2.5 rounded-full font-bold text-sm hover:bg-[#3d1e08] transition-colors whitespace-nowrap flex-shrink-0"
-            >
-              Get a Hat →
-            </a>
+            <p className="text-xs text-stone-400 text-center">Registering below is free — donations of any amount are always welcome.</p>
           </div>
 
           {/* ── T-shirt Disclaimer ────────────────────────────────── */}
@@ -259,64 +249,11 @@ export default function FiveKSignupPage() {
             </div>
           </FormSection>
 
-          {/* ── T-shirt / Donation ────────────────────────────────── */}
-          <FormSection title="Participation Option" subtitle="Choose a T-shirt registration or participate free — all donations welcome.">
-            <div className="flex flex-col gap-4">
-
-              {/* T-shirt toggle */}
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  type="button"
-                  onClick={() => setWantsShirt(true)}
-                  className={`flex-1 flex flex-col items-center gap-2 p-5 rounded-2xl border-2 transition-all text-center ${
-                    wantsShirt ? 'border-[#D4A017] bg-amber-50' : 'border-stone-200 hover:border-amber-300 bg-white'
-                  }`}
-                >
-                  <p className={`font-bold text-sm ${wantsShirt ? 'text-[#2D1606]' : 'text-stone-600'}`}>T-shirt Registration</p>
-                  <p className={`text-2xl font-display font-bold ${wantsShirt ? 'text-[#D4A017]' : 'text-stone-400'}`}>$40</p>
-                  <p className="text-stone-400 text-xs">Includes event T-shirt mailed to you</p>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setWantsShirt(false)}
-                  className={`flex-1 flex flex-col items-center gap-2 p-5 rounded-2xl border-2 transition-all text-center ${
-                    !wantsShirt ? 'border-[#D4A017] bg-amber-50' : 'border-stone-200 hover:border-amber-300 bg-white'
-                  }`}
-                >
-                  <p className={`font-bold text-sm ${!wantsShirt ? 'text-[#2D1606]' : 'text-stone-600'}`}>Participate Free</p>
-                  <p className={`text-2xl font-display font-bold ${!wantsShirt ? 'text-[#D4A017]' : 'text-stone-400'}`}>$0</p>
-                  <p className="text-stone-400 text-xs">All donations welcome</p>
-                </button>
-              </div>
-
-              {/* Shirt size (if T-shirt selected) */}
-              {wantsShirt && (
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">T-Shirt Size *</label>
-                  <div className="flex flex-wrap gap-2">
-                    {SHIRT_SIZES.map(s => (
-                      <button
-                        key={s}
-                        type="button"
-                        onClick={() => setShirtSize(s)}
-                        className={`px-4 py-2 rounded-xl text-sm font-semibold border-2 transition-all ${
-                          shirtSize === s
-                            ? 'border-[#D4A017] bg-amber-50 text-[#2D1606]'
-                            : 'border-stone-200 text-stone-500 hover:border-amber-300'
-                        }`}
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Optional extra donation */}
-              <div className="flex flex-col gap-1.5 border-t border-stone-100 pt-4">
-                <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">
-                  Additional Donation (optional)
-                </label>
+          {/* ── Donation ──────────────────────────────────────────── */}
+          <FormSection title="Donation" subtitle="Registration is free — donations of any amount go directly to the animals in our care.">
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Donation Amount (optional)</label>
                 <div className="relative max-w-xs">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm">$</span>
                   <input
@@ -329,11 +266,9 @@ export default function FiveKSignupPage() {
                     className="border border-stone-200 rounded-xl pl-8 pr-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017] w-full"
                   />
                 </div>
-                <p className="text-xs text-stone-400">Every dollar goes directly to the animals in our care.</p>
+                <p className="text-xs text-stone-400">Send via Venmo to @CareMt24 with note &ldquo;[Your name] Fetch&rdquo; after registering.</p>
               </div>
-
-              {/* Total */}
-              <div className="flex justify-between items-center border-t border-stone-200 pt-4">
+              <div className="flex justify-between items-center border-t border-stone-100 pt-3">
                 <span className="font-semibold text-stone-600">Total</span>
                 <span className="font-bold text-[#2D1606] text-xl">
                   {totalCost === 0 ? 'Free' : `$${totalCost % 1 === 0 ? totalCost : totalCost.toFixed(2)}`}
@@ -341,42 +276,6 @@ export default function FiveKSignupPage() {
               </div>
             </div>
           </FormSection>
-
-          {/* ── Mailing Address (T-shirt only) ────────────────────── */}
-          {wantsShirt && (
-            <FormSection title="Mailing Address" subtitle="Required for T-shirt delivery. All purchases are final.">
-              <div className="flex flex-col gap-3">
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Street Address *</label>
-                  <input
-                    type="text"
-                    value={mailingStreet}
-                    onChange={e => setMailingStreet(e.target.value)}
-                    placeholder="123 Main St"
-                    required
-                    className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]"
-                  />
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  <div className="flex flex-col gap-1.5 col-span-2 sm:col-span-1">
-                    <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">City</label>
-                    <input type="text" value={mailingCity} onChange={e => setMailingCity(e.target.value)} placeholder="Fairview"
-                      className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]" />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">State</label>
-                    <input type="text" value={mailingState} onChange={e => setMailingState(e.target.value)} placeholder="MT" maxLength={2}
-                      className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017] uppercase" />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-stone-500 uppercase tracking-wide">ZIP</label>
-                    <input type="text" value={mailingZip} onChange={e => setMailingZip(e.target.value)} placeholder="59221" maxLength={10}
-                      className="border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4A017]" />
-                  </div>
-                </div>
-              </div>
-            </FormSection>
-          )}
 
           {/* ── Emergency Contact ─────────────────────────────────── */}
           <FormSection title="Emergency Contact" subtitle="Someone we can reach if needed.">

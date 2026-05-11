@@ -232,25 +232,27 @@ export default async function HomePage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  href="/events/5k-signup"
+                <a
+                  href="https://www.bonfire.com/fetch-the-finish-line/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-[#D4A017] text-[#2D1606] px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition-colors shadow-lg shadow-[#D4A017]/40 text-center"
                 >
-                  T-Shirt Registration →
-                </Link>
+                  T-Shirt Registration ($40) →
+                </a>
                 <a
                   href="https://www.bonfire.com/fetch-the-finish-line-5k-1/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-white/10 border border-white/30 text-white px-8 py-3.5 rounded-full font-bold hover:bg-white/20 transition-colors text-center"
                 >
-                  Hat Registration →
+                  Hat Registration ($30) →
                 </a>
                 <Link
-                  href="/events"
+                  href="/events/5k-signup"
                   className="border border-white/20 text-amber-100/70 px-8 py-3.5 rounded-full font-semibold hover:border-white/50 hover:text-white transition-colors text-sm text-center"
                 >
-                  View All Events
+                  Register Free / Donate →
                 </Link>
               </div>
             </div>
