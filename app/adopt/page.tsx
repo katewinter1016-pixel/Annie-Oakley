@@ -43,15 +43,24 @@ export default async function AdoptPage() {
       {/* Header */}
       <FacebookBanner />
       <div className="bg-[#2D1606] text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="w-12 h-1 bg-[#D4A017] mb-5 rounded-full" />
-          <h1 className="font-display text-5xl font-bold text-[#D4A017] mb-3">
-            Adopt a Rescue Animal
-          </h1>
-          <p className="text-amber-50/80 text-lg max-w-2xl">
-            Every animal here has been rescued and fully vetted. Browse below by dogs or cats,
-            then click Apply to start your adoption application — it takes just a few minutes.
-          </p>
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-8">
+          <Image
+            src="/dna-badge.webp"
+            alt="D.N.A. Pet Partner"
+            width={120}
+            height={120}
+            className="drop-shadow-lg flex-shrink-0"
+          />
+          <div>
+            <div className="w-12 h-1 bg-[#D4A017] mb-5 rounded-full" />
+            <h1 className="font-display text-5xl font-bold text-[#D4A017] mb-3">
+              Adopt a Rescue Animal
+            </h1>
+            <p className="text-amber-50/80 text-lg max-w-2xl">
+              Every animal here has been rescued and fully vetted. Browse below by dogs or cats,
+              then click Apply to start your adoption application — it takes just a few minutes.
+            </p>
+          </div>
         </div>
       </div>
 

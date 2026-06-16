@@ -43,16 +43,25 @@ export default async function FosterPage() {
       {/* Header */}
       <FacebookBanner />
       <div className="bg-[#2D1606] text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="w-12 h-1 bg-[#D4A017] mb-5 rounded-full" />
-          <h1 className="font-display text-5xl font-bold text-[#D4A017] mb-3">
-            Foster a Rescue Animal
-          </h1>
-          <p className="text-amber-50/80 text-lg max-w-2xl">
-            Fostering is one of the most powerful things you can do. You provide a safe,
-            loving home while we find the perfect forever family. Browse the animals
-            below and apply to foster any one of them.
-          </p>
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-8">
+          <Image
+            src="/dna-badge.webp"
+            alt="D.N.A. Pet Partner"
+            width={120}
+            height={120}
+            className="drop-shadow-lg flex-shrink-0"
+          />
+          <div>
+            <div className="w-12 h-1 bg-[#D4A017] mb-5 rounded-full" />
+            <h1 className="font-display text-5xl font-bold text-[#D4A017] mb-3">
+              Foster a Rescue Animal
+            </h1>
+            <p className="text-amber-50/80 text-lg max-w-2xl">
+              Fostering is one of the most powerful things you can do. You provide a safe,
+              loving home while we find the perfect forever family. Browse the animals
+              below and apply to foster any one of them.
+            </p>
+          </div>
         </div>
       </div>
 

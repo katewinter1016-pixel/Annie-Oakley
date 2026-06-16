@@ -282,6 +282,18 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── D.N.A. PET PARTNER ───────────────────────────────────── */}
+      <section className="py-14 px-4 bg-white flex flex-col items-center gap-4">
+        <Image
+          src="/dna-badge.webp"
+          alt="D.N.A. Pet Partner"
+          width={160}
+          height={160}
+          className="drop-shadow-md"
+        />
+        <p className="text-stone-500 text-sm font-medium">Proud D.N.A. Pet Partner</p>
+      </section>
+
       <FacebookBanner />
 
     </div>
