@@ -2,10 +2,39 @@ export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Heart, Home, Users, Mail, Phone, CalendarDays } from 'lucide-react'
+import { Heart, Home, Users, Mail, Phone } from 'lucide-react'
 import { getSupabase } from '@/lib/supabase'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import FacebookBanner from '@/components/FacebookBanner'
+
+async function getSlideshowPhotos(): Promise<string[]> {
+  try {
+    const supabase = getSupabase()
+    const [{ data: animals }, { data: reviews }] = await Promise.all([
+      supabase.from('animals').select('photo_urls').eq('status', 'available'),
+      supabase.from('reviews').select('photo_url').eq('approved', true),
+    ])
+
+    const animalPhotos = (animals ?? [])
+      .flatMap((a: { photo_urls: string[] | null }) => a.photo_urls ?? [])
+      .filter(Boolean)
+
+    const reviewPhotos = (reviews ?? [])
+      .map((r: { photo_url: string | null }) => r.photo_url)
+      .filter(Boolean) as string[]
+
+    // Interleave: animal photo, review photo, animal photo, review photo...
+    const combined: string[] = []
+    const maxLen = Math.max(animalPhotos.length, reviewPhotos.length)
+    for (let i = 0; i < maxLen; i++) {
+      if (animalPhotos[i]) combined.push(animalPhotos[i])
+      if (reviewPhotos[i]) combined.push(reviewPhotos[i])
+    }
+    return combined
+  } catch {
+    return []
+  }
+}
 
 async function getActiveDonation() {
   try {
@@ -22,8 +51,9 @@ async function getActiveDonation() {
 }
 
 export default async function HomePage() {
-  const [donation] = await Promise.all([
+  const [donation, slideshowPhotos] = await Promise.all([
     getActiveDonation(),
+    getSlideshowPhotos(),
   ])
 
   const progressPercent = donation
@@ -35,7 +65,7 @@ export default async function HomePage() {
 
       {/* ── HERO SLIDESHOW ───────────────────────────────────────── */}
       {/* Client component — cycles through rescue photos automatically */}
-      <HeroSlideshow />
+      <HeroSlideshow slides={slideshowPhotos} />
 
       {/* ── IMPACT BAR ───────────────────────────────────────────── */}
       <div className="bg-[#D4A017] text-[#2D1606] py-3 px-4">
@@ -171,94 +201,6 @@ export default async function HomePage() {
             </a>
             {' '}for mailing address.
           </p>
-        </div>
-      </section>
-
-      {/* ── FETCH THE FINISH LINE FUN RUN ────────────────────────── */}
-      <section className="py-20 px-4 bg-[#2D1606] relative overflow-hidden">
-        {/* background accent */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#3d1e08] via-[#2D1606] to-[#1a0d03] pointer-events-none" />
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#D4A017] to-transparent" />
-
-        <div className="relative max-w-5xl mx-auto">
-          {/* Top badge */}
-          {/* Centered header */}
-          <div className="text-center mb-10">
-            <span className="bg-[#D4A017] text-[#2D1606] text-xs font-bold uppercase tracking-widest px-5 py-2 rounded-full shadow-lg shadow-[#D4A017]/30">
-              Upcoming Fundraiser Event · June 1, 2026
-            </span>
-            <h2 className="font-display text-4xl sm:text-5xl font-bold text-white leading-tight mt-6">
-              Fetch the Finish Line
-            </h2>
-            <p className="text-[#D4A017] font-bold text-lg uppercase tracking-widest mt-2">Virtual 5K</p>
-            <p className="text-amber-100/60 mt-2">Hosted by Winter Howlers</p>
-            <div className="flex flex-wrap gap-4 justify-center mt-4 text-sm text-amber-100/70">
-              <span className="flex items-center gap-2">
-                <CalendarDays className="w-4 h-4 text-[#D4A017]" /> Starting June 1, 2026
-              </span>
-              <span className="flex items-center gap-2">
-                <Heart className="w-4 h-4 text-[#D4A017]" /> Virtual — Run from anywhere!
-              </span>
-            </div>
-          </div>
-
-          <div className="flex flex-col lg:flex-row items-center gap-10">
-            {/* Fun Run logo */}
-            <div className="flex-shrink-0">
-              <div className="relative w-52 h-52 drop-shadow-2xl">
-                <Image
-                  src="/fetch-5k.png"
-                  alt="Fetch the Finish Line Virtual 5K"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
-
-            {/* Info */}
-            <div className="flex-1 flex flex-col gap-5 text-center">
-              <p className="text-amber-100/70 leading-relaxed">
-                Run or walk from anywhere and support Annie Oakley Animal Rescue. Every registration goes
-                directly toward the animals in our care.
-              </p>
-
-              {/* Pricing callout */}
-              {new Date() < new Date('2026-07-01T00:00:00-06:00') ? (
-                <>
-                  <div className="flex justify-center">
-                    <div className="bg-white/10 border border-white/20 rounded-2xl px-6 py-3 flex items-center gap-4">
-                      <div className="text-center">
-                        <p className="text-[#D4A017] text-2xl font-display font-bold">$40</p>
-                        <p className="text-amber-100/60 text-xs">T-Shirt Registration</p>
-                      </div>
-                      <div className="w-px h-8 bg-white/20" />
-                      <div className="text-center">
-                        <p className="text-[#D4A017] text-2xl font-display font-bold">$30</p>
-                        <p className="text-amber-100/60 text-xs">Hat Registration</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <Link
-                      href="/events/5k-signup?type=tshirt"
-                      className="bg-[#D4A017] text-[#2D1606] px-8 py-3.5 rounded-full font-bold hover:bg-yellow-400 transition-colors shadow-lg shadow-[#D4A017]/40 text-center"
-                    >
-                      T-Shirt Registration ($40) →
-                    </Link>
-                    <Link
-                      href="/events/5k-signup?type=hat"
-                      className="bg-white/10 border border-white/30 text-white px-8 py-3.5 rounded-full font-bold hover:bg-white/20 transition-colors text-center"
-                    >
-                      Hat Registration ($30) →
-                    </Link>
-                  </div>
-                </>
-              ) : (
-                <p className="text-amber-100/50 text-sm text-center">Registration is now closed. Thank you to everyone who participated!</p>
-              )}
-            </div>
-
-          </div>
         </div>
       </section>
 

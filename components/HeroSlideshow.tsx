@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const SLIDES = [
+const FALLBACK_SLIDES = [
   '/rescue-photos/photo1.jpg',
   '/rescue-photos/photo2.jpg',
   '/rescue-photos/photo3.jpg',
@@ -21,7 +21,8 @@ const SLIDES = [
   '/rescue-photos/photo11.jpg',
 ]
 
-export default function HeroSlideshow() {
+export default function HeroSlideshow({ slides }: { slides?: string[] }) {
+  const SLIDES = (slides && slides.length > 0) ? slides : FALLBACK_SLIDES
   const [current, setCurrent] = useState(0)
   const [fading, setFading] = useState(false)
 
