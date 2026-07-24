@@ -160,6 +160,17 @@ export default async function HomePage() {
           >
             Donate via Venmo
           </a>
+
+          <p className="text-stone-600 text-sm">
+            Mailed donations accepted,{' '}
+            <a
+              href="#mailing-address"
+              className="inline-block bg-stone-200 hover:bg-stone-300 text-[#2D1606] font-semibold px-3 py-1 rounded-full text-sm transition-colors"
+            >
+              click here
+            </a>
+            {' '}for mailing address.
+          </p>
         </div>
       </section>
 

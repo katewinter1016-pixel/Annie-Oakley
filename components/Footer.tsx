@@ -38,7 +38,7 @@ export default function Footer() {
         </div>
 
         {/* Contact */}
-        <div>
+        <div id="mailing-address">
           <h3 className="text-[#D4A017] font-display font-bold text-lg mb-4">Contact Us</h3>
           <ul className="flex flex-col gap-3 text-sm text-amber-200/80">
             <li>
@@ -74,6 +74,11 @@ export default function Footer() {
               </a>
             </li>
             <li className="text-amber-200/40 text-xs mt-1">Eastern Montana</li>
+            <li className="mt-2">
+              <span className="text-[#D4A017] font-semibold block">Mailing Address:</span>
+              <span className="block">716 5th Ave SE</span>
+              <span className="block">Sidney, MT 59270</span>
+            </li>
           </ul>
         </div>
       </div>
