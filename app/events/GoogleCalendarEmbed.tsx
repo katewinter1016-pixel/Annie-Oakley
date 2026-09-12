@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────
 
 const CALENDAR_ID = '728ae4fd7948eb9dcf50e85795751bb6e55eac5032154c68ac93c3b4ec2d32ff@group.calendar.google.com'
-const CALENDAR_URL = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(CALENDAR_ID)}&ctz=America%2FDenver&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&mode=AGENDA`
+const CALENDAR_URL = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(CALENDAR_ID)}&ctz=America%2FChicago&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&mode=AGENDA`
 
 const isConfigured = CALENDAR_ID.length > 0
 
