@@ -73,10 +73,9 @@ export default function Footer() {
                 Instagram
               </a>
             </li>
-            <li className="text-amber-200/40 text-xs mt-1">Eastern Montana</li>
             <li className="mt-2">
               <span className="text-[#D4A017] font-semibold block">Mailing Address:</span>
-              <span className="block">716 5th Ave SE</span>
+              <span className="block">P.O. Box 146</span>
               <span className="block">Sidney, MT 59270</span>
             </li>
           </ul>
