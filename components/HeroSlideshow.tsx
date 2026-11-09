@@ -17,7 +17,6 @@ const FALLBACK_SLIDES = [
   '/rescue-photos/photo6.jpg',
   '/rescue-photos/photo7.jpg',
   '/rescue-photos/photo8.jpg',
-  '/rescue-photos/photo9.jpg',
   '/rescue-photos/photo10.jpg',
   '/rescue-photos/photo11.jpg',
 ]
