@@ -10,7 +10,7 @@ async function getVolunteers(page: number) {
   const { data, count } = await getSupabaseServer()
     .from('volunteers')
     .select('*', { count: 'exact' })
-    .order('created_at', { ascending: false })
+    .order('signed_up_at', { ascending: false })
     .range(offset, offset + PAGE_SIZE - 1)
   return { volunteers: data ?? [], total: count ?? 0 }
 }
@@ -63,7 +63,7 @@ export default async function AdminVolunteersPage({
                     <td className="px-5 py-3 text-stone-500">{v.phone ?? '—'}</td>
                     <td className="px-5 py-3 text-stone-500">{v.interests ?? '—'}</td>
                     <td className="px-5 py-3 text-stone-400 text-xs">
-                      {new Date(v.created_at).toLocaleDateString('en-US', {
+                      {new Date(v.signed_up_at).toLocaleDateString('en-US', {
                         month: 'short', day: 'numeric', year: 'numeric'
                       })}
                     </td>
