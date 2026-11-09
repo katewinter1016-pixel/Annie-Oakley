@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
   const { table, id, data } = await req.json()
 
-  const allowed = ['reviews', 'applications', 'animals']
+  const allowed = ['reviews', 'applications', 'animals', 'volunteers']
   if (!allowed.includes(table)) {
     return NextResponse.json({ error: 'Invalid table' }, { status: 400 })
   }

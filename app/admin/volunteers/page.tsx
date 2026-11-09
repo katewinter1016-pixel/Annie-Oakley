@@ -1,5 +1,6 @@
 import { getSupabaseServer } from '@/lib/supabaseServer'
 import Link from 'next/link'
+import VolunteerActions from './VolunteerActions'
 
 export const dynamic = 'force-dynamic'
 
@@ -49,11 +50,12 @@ export default async function AdminVolunteersPage({
                   <th className="text-left px-5 py-3 text-stone-500 font-semibold">Phone</th>
                   <th className="text-left px-5 py-3 text-stone-500 font-semibold">Interests</th>
                   <th className="text-left px-5 py-3 text-stone-500 font-semibold">Signed Up</th>
+                  <th className="text-left px-5 py-3 text-stone-500 font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {volunteers.map((v, i) => (
-                  <tr key={v.id} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50/50'}>
+                  <tr key={v.id} className={`${i % 2 === 0 ? 'bg-white' : 'bg-stone-50/50'} ${v.contacted ? 'opacity-60' : ''}`}>
                     <td className="px-5 py-3 font-semibold text-stone-800">{v.name}</td>
                     <td className="px-5 py-3 text-stone-500">
                       <a href={`mailto:${v.email}`} className="hover:text-[#D4A017] transition-colors">
@@ -66,6 +68,9 @@ export default async function AdminVolunteersPage({
                       {new Date(v.signed_up_at).toLocaleDateString('en-US', {
                         month: 'short', day: 'numeric', year: 'numeric'
                       })}
+                    </td>
+                    <td className="px-5 py-3">
+                      <VolunteerActions id={v.id} contacted={v.contacted ?? false} />
                     </td>
                   </tr>
                 ))}

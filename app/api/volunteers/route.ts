@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     try {
       await getResend().emails.send({
         from: 'Annie Oakley Animal Rescue <onboarding@resend.dev>',
-        to: ADMIN_EMAIL,
+        to: 'annieoakleyanimalrescue@gmail.com',
         subject: `New Volunteer Signup — ${esc(name)}`,
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
