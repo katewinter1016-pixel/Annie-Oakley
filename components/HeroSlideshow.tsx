@@ -17,6 +17,7 @@ const FALLBACK_SLIDES = [
   '/rescue-photos/photo6.jpg',
   '/rescue-photos/photo7.jpg',
   '/rescue-photos/photo8.jpg',
+  '/rescue-photos/photo9.jpg',
   '/rescue-photos/photo10.jpg',
   '/rescue-photos/photo11.jpg',
 ]
@@ -49,7 +50,22 @@ export default function HeroSlideshow({ slides }: { slides?: string[] }) {
   return (
     <section className="relative min-h-[680px] flex items-center overflow-hidden">
 
-      {/* Slideshow background image */}
+      {/* Blurred backdrop — fills the frame so no black bars */}
+      <div
+        className="absolute inset-0 transition-opacity duration-600"
+        style={{ opacity: fading ? 0 : 1 }}
+      >
+        <Image
+          key={`bg-${current}`}
+          src={SLIDES[current]}
+          alt=""
+          fill
+          className="object-cover object-center scale-110 blur-xl brightness-50"
+          aria-hidden
+        />
+      </div>
+
+      {/* Main photo — always fully visible, no cropping */}
       <div
         className="absolute inset-0 transition-opacity duration-600"
         style={{ opacity: fading ? 0 : 1 }}
@@ -59,7 +75,7 @@ export default function HeroSlideshow({ slides }: { slides?: string[] }) {
           src={SLIDES[current]}
           alt="Rescue animals"
           fill
-          className="object-cover object-center"
+          className="object-contain"
           priority
         />
       </div>
